@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
 EXTERNAL_APPS = [
     'accounts', 
+    'teacher_panel',
     'admin_panel',
     
 ]
