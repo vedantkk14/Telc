@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deutschtest Portal — Sign In</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #F5F4F0;
+            color: #1C1C1C;
+        }
+
+        /* ── Layout ── */
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Top bar ── */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 48px;
+            height: 64px;
+            background: #fff;
+            border-bottom: 1px solid #E8E6E0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-box {
+            width: 36px;
+            height: 36px;
+            background: #1C1C1C;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .logo-box i {
+            font-size: 19px;
+            color: #F5F4F0;
+        }
+
+        .logo-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1C1C1C;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-dot {
+            font-size: 16px;
+            color: #C8C0A8;
+            font-weight: 700;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .topbar-link {
+            font-size: 13px;
+            color: #6B6960;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 7px;
+            transition: background .15s, color .15s;
+        }
+
+        .topbar-link:hover {
+            background: #F0EFE9;
+            color: #1C1C1C;
+        }
+
+        .flag-bar {
+            display: flex;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-left: 8px;
+        }
+
+        .flag-bar span {
+            display: block;
+            width: 22px;
+            height: 14px;
+        }
+
+        /* ── Main split layout ── */
+        .main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: calc(100vh - 64px);
+        }
+
+        /* ── Left panel ── */
+        .left-panel {
+            background: #1C1C1C;
+            padding: 64px 56px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .left-top {}
+
+        .left-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #2A2A2A;
+            border: 1px solid #343434;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 11px;
+            color: #9A9A9A;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+        }
+
+        .left-headline {
+            font-size: clamp(32px, 4vw, 52px);
+            font-weight: 700;
+            color: #F5F4F0;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 20px;
+        }
+
+        .left-headline em {
+            color: #C8C0A8;
+            font-style: normal;
+        }
+
+        .left-sub {
+            font-size: 15px;
+            color: #6B6960;
+            line-height: 1.65;
+            max-width: 380px;
+        }
+
+        .cert-section {
+            margin-top: 48px;
+        }
+
+        .cert-label {
+            font-size: 11px;
+            color: #5A5A5A;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .cert-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .cert-pill {
+            border: 1px solid #2E2E2E;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #484848;
+        }
+
+        .cert-pill.active {
+            background: #F5F4F0;
+            color: #1C1C1C;
+            border-color: #F5F4F0;
+        }
+
+        .left-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 48px;
+        }
+
+        .stat-card {
+            background: #242424;
+            border: 1px solid #2E2E2E;
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        .stat-num {
+            font-size: 26px;
+            font-weight: 700;
+            color: #F5F4F0;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #5A5A5A;
+            margin-top: 4px;
+        }
+
+        .left-bottom {}
+
+        .trust-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #5A5A5A;
+        }
+
+        .trust-item i {
+            font-size: 14px;
+            color: #484848;
+        }
+
+        /* ── Right panel ── */
+        .right-panel {
+            background: #F5F4F0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 40px;
+        }
+
+        .form-box {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .form-header {
+            margin-bottom: 36px;
+        }
+
+        .form-kicker {
+            font-size: 12px;
+            color: #9A9890;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .form-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1C1C1C;
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+        }
+
+        .form-sub {
+            font-size: 14px;
+            color: #6B6960;
+        }
+
+        .tab-row {
+            display: flex;
+            gap: 0;
+            background: #ECEAE4;
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 28px;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 9px 0;
+            font-size: 13px;
+            font-weight: 600;
+            color: #9A9890;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 7px;
+            font-family: inherit;
+            transition: all .15s;
+        }
+
+        .tab.active {
+            background: #fff;
+            color: #1C1C1C;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .field-group {
+            margin-bottom: 16px;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #9A9890;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            margin-bottom: 7px;
+        }
+
+        .field-wrap {
+            position: relative;
+        }
+
+        .field-wrap .fi {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 17px;
+            color: #C5C3BB;
+            pointer-events: none;
+        }
+
+        .field-wrap .fr {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 17px;
+            color: #C5C3BB;
+            cursor: pointer;
+        }
+
+        .field-input {
+            width: 100%;
+            padding: 13px 14px 13px 44px;
+            border: 1px solid #E0DED8;
+            border-radius: 11px;
+            font-size: 14px;
+            color: #1C1C1C;
+            background: #fff;
+            outline: none;
+            font-family: inherit;
+            transition: border-color .15s;
+        }
+
+        .field-input:focus {
+            border-color: #1C1C1C;
+        }
+
+        .field-input::placeholder {
+            color: #C5C3BB;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            margin-top: 4px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #6B6960;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox {
+            width: 16px;
+            height: 16px;
+            border: 1px solid #C5C3BB;
+            border-radius: 4px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: border-color .15s;
+        }
+
+        .checkbox i {
+            font-size: 10px;
+            color: #1C1C1C;
+        }
+
+        .forgot {
+            font-size: 13px;
+            color: #1C1C1C;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .forgot:hover {
+            text-decoration: underline;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: #1C1C1C;
+            color: #F5F4F0;
+            border: none;
+            border-radius: 11px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            letter-spacing: 0.01em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: opacity .15s;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.85;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 22px 0;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: #E0DED8;
+        }
+
+        .divider-text {
+            font-size: 12px;
+            color: #B5B3AB;
+            white-space: nowrap;
+        }
+
+        .sso-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .sso-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 11px 0;
+            background: #fff;
+            border: 1px solid #E0DED8;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #4A4845;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .15s, border-color .15s;
+        }
+
+        .sso-btn:hover {
+            background: #F0EFE9;
+            border-color: #D0CEC8;
+        }
+
+        .signup-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            margin-top: 28px;
+            font-size: 13px;
+            color: #9A9890;
+        }
+
+        .signup-link {
+            color: #1C1C1C;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .signup-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            background: #fff;
+            border-top: 1px solid #E8E6E0;
+            padding: 14px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .footer-trust {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-trust-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: #9A9890;
+        }
+
+        .footer-trust-item i {
+            font-size: 13px;
+        }
+
+        .footer-copy {
+            font-size: 11px;
+            color: #B5B3AB;
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 768px) {
+            .topbar {
+                padding: 0 20px;
+                height: 56px;
+            }
+
+            .topbar-link {
+                display: none;
+            }
+
+            .main {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .left-panel {
+                padding: 36px 24px 32px;
+            }
+
+            .left-headline {
+                font-size: 30px;
+            }
+
+            .left-sub {
+                font-size: 14px;
+            }
+
+            .left-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin-top: 28px;
+            }
+
+            .stat-card {
+                padding: 14px 16px;
+            }
+
+            .stat-num {
+                font-size: 22px;
+            }
+
+            .cert-section {
+                margin-top: 28px;
+            }
+
+            .left-bottom {
+                margin-top: 28px;
+            }
+
+            .right-panel {
+                padding: 36px 24px 48px;
+            }
+
+            .form-title {
+                font-size: 22px;
+            }
+
+            .sso-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+
+            .footer {
+                padding: 14px 20px;
+            }
+
+            .footer-trust {
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .sso-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sso-btn {
+                padding: 12px;
+            }
+
+            .left-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+
+        <!-- Top bar -->
+        <!-- <header class="topbar">
+            <a href="#" class="logo-row">
+                <div class="logo-box"><i class="ti ti-language"></i></div>
+                <span class="logo-name">Deutschtest<span class="logo-dot">.</span></span>
+            </a>
+            <div class="topbar-right">
+                <a href="#" class="topbar-link"><i class="ti ti-help-circle"
+                        style="font-size:15px;vertical-align:-2px;margin-right:4px"></i>Help</a>
+                <a href="#" class="topbar-link">Accessibility</a>
+                <div class="flag-bar">
+                    <span style="background:#000"></span>
+                    <span style="background:#DD0000"></span>
+                    <span style="background:#FFCE00"></span>
+                </div>
+            </div>
+        </header> -->
+
+        <!-- Main -->
+        <main class="main">
+
+            <!-- Left panel -->
+            <section class="left-panel">
+                <div class="left-top">
+                    <div class="left-eyebrow">
+                        <i class="ti ti-shield-check" style="font-size:12px"></i>
+                        Official Federal Examination Platform
+                    </div>
+                    <h1 class="left-headline">Germany's<br>official <em>language<br>test</em> portal.</h1>
+                    <p class="left-sub">Access your exam registrations, results, and certificates — securely, from
+                        anywhere in Germany.</p>
+
+                    <div class="cert-section">
+                        <div class="cert-label">Supported levels</div>
+                        <div class="cert-row">
+                            <div class="cert-pill active">A1</div>
+                            <div class="cert-pill active">A2</div>
+                            <div class="cert-pill active">B1</div>
+                            <div class="cert-pill active">B2</div>
+                            <div class="cert-pill">C1</div>
+                            <div class="cert-pill">C2</div>
+                        </div>
+                    </div>
+
+                    <div class="left-stats">
+                        <div class="stat-card">
+                            <div class="stat-num">124k+</div>
+                            <div class="stat-label">Active candidates</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-num">16</div>
+                            <div class="stat-label">Federal states</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-num">98%</div>
+                            <div class="stat-label">Uptime SLA</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-num">3 min</div>
+                            <div class="stat-label">Avg. result time</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="left-bottom">
+                    <div class="trust-row">
+                        <div class="trust-item"><i class="ti ti-shield-lock"></i> GDPR compliant</div>
+                        <div class="trust-item"><i class="ti ti-lock"></i> SSL encrypted</div>
+                        <div class="trust-item"><i class="ti ti-building"></i> Federal authority</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right panel -->
+            <section class="right-panel">
+                <div class="form-box">
+                    <div class="form-header">
+                        <div class="form-kicker">Welcome back</div>
+                        <h2 class="form-title">Sign in to your account</h2>
+                        <p class="form-sub">Enter your credentials to continue to the portal.</p>
+                    </div>
+
+                    <div class="tab-row">
+                        <button class="tab active" type="button">Sign in</button>
+                        <button class="tab" type="button">Register</button>
+                    </div>
+
+                    <form onsubmit="return false">
+
+                        <div class="field-group">
+                            <label class="field-label" for="email">Email address</label>
+                            <div class="field-wrap">
+                                <i class="ti ti-mail fi"></i>
+                                <input id="email" class="field-input" type="email"
+                                    placeholder="max.mustermann@example.de" autocomplete="email" />
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label" for="password">Password</label>
+                            <div class="field-wrap">
+                                <i class="ti ti-lock fi"></i>
+                                <input id="password" class="field-input" type="password" placeholder="••••••••••"
+                                    autocomplete="current-password" />
+                                <i class="ti ti-eye fr" id="toggle-pw" title="Show password"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label class="remember">
+                                <div class="checkbox" id="cb-box"><i class="ti ti-check"></i></div>
+                                Keep me signed in
+                            </label>
+                            <a href="#" class="forgot">Forgot password?</a>
+                        </div>
+
+                        <button type="submit" class="btn-primary">
+                            Sign in <i class="ti ti-arrow-right" style="font-size:16px"></i>
+                        </button>
+
+                        <div class="divider">
+                            <div class="divider-line"></div>
+                            <span class="divider-text">or continue with</span>
+                            <div class="divider-line"></div>
+                        </div>
+
+                        <div class="sso-grid">
+                            <button type="button" class="sso-btn">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                                        fill="#4285F4" />
+                                    <path
+                                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                                        fill="#34A853" />
+                                    <path
+                                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
+                                        fill="#FBBC05" />
+                                    <path
+                                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                                        fill="#EA4335" />
+                                </svg>
+                                Google
+                            </button>
+                            <button type="button" class="sso-btn">
+                                <i class="ti ti-id-badge-2" style="font-size:16px"></i>
+                                BundID
+                            </button>
+                            <button type="button" class="sso-btn">
+                                <i class="ti ti-building-bank" style="font-size:16px"></i>
+                                Elster
+                            </button>
+                        </div>
+
+                        <div class="signup-row">
+                            Don't have an account?
+                            <a href="#" class="signup-link">Create one</a>
+                        </div>
+
+                    </form>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <!-- <footer class="footer">
+            <div class="footer-trust">
+                <div class="footer-trust-item"><i class="ti ti-shield-check"></i> SSL encrypted</div>
+                <div class="footer-trust-item"><i class="ti ti-lock"></i> GDPR compliant</div>
+                <div class="footer-trust-item"><i class="ti ti-building"></i> Federal authority</div>
+                <div class="footer-trust-item"><i class="ti ti-help-circle"></i> <a href="#"
+                        style="color:inherit;text-decoration:none">Support</a></div>
+            </div>
+            <div class="footer-copy">© 2026 Federal Republic of Germany</div>
+        </footer> -->
+
+    </div>
+
+    <script>
+        // Password toggle
+        const pwInput = document.getElementById('password');
+        const togglePw = document.getElementById('toggle-pw');
+        togglePw.addEventListener('click', () => {
+            const show = pwInput.type === 'password';
+            pwInput.type = show ? 'text' : 'password';
+            togglePw.className = (show ? 'ti ti-eye-off' : 'ti ti-eye') + ' fr';
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // Checkbox toggle
+        const cbBox = document.getElementById('cb-box');
+        let checked = true;
+        cbBox.parentElement.addEventListener('click', () => {
+            checked = !checked;
+            cbBox.querySelector('i').style.opacity = checked ? '1' : '0';
+        });
+    </script>
+</body>
+
+</html>
