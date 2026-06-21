@@ -157,92 +157,15 @@
 </head>
 
 <body class="bg-background text-on-background flex min-h-screen overflow-x-hidden">
-    <!-- NavigationDrawer -->
-    <aside
-        class="hidden md:flex flex-col h-full w-sidebar-width fixed left-0 top-0 bg-surface-container-lowest border-r border-outline-variant shadow-sm z-50">
-        <div class="p-lg flex items-center gap-sm">
-            <span class="material-symbols-outlined text-primary" data-weight="fill"
-                style="font-size: 32px;">school</span>
-            <span class="font-headline-md text-headline-md font-bold text-primary">LinguaTest</span>
-        </div>
-        <div class="px-md pb-md border-b border-outline-variant/30 flex items-center gap-sm">
-            <div
-                class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden flex items-center justify-center">
-                <img alt="Admin Profile" class="w-full h-full object-cover"
-                    data-alt="A professional headshot of a middle-aged male administrator in a light, modern office setting. The lighting is soft and natural, emphasizing a premium, authoritative yet approachable persona. The image is high-resolution with a slight bokeh effect in the background, fitting a sleek SaaS interface."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSC1LkCZVVlzaTPeDTzUWdWDxf-7lxgHgsKgvKUpywDvgsue4D4J1LL8L92kt5iGLYHednjF_8AiXV12-MWthBpo_zRwV49XR57xHNjQPi-d416i5js-PFwL9i6DT44OYavjjymkztSMzBHNiFTTxxZ5Ygzv1pR8A7DIjAU3CLQI0mMcA2IezYNyVT6qIG2xJdHvNtBbr03oSmmlH-lavqnh5f7WcwrP1hVV3zwQueVwDjV9xhNI4x_sJf8Sza38PZ1AiF0mk-Ewo" />
-            </div>
-            <div>
-                <p class="font-label-md text-label-md text-primary font-bold">LinguaTest Admin</p>
-                <p class="font-label-sm text-label-sm text-on-surface-variant">Global Administrator</p>
-            </div>
-        </div>
-        <nav class="flex-1 overflow-y-auto py-md px-sm space-y-1">
-            <a class="flex items-center gap-md px-md py-sm rounded-lg text-primary font-bold border-r-4 border-primary bg-surface-container-low transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-                href="#">
-                <span class="material-symbols-outlined" data-weight="fill">dashboard</span>
-                <span class="font-label-md text-label-md">Dashboard</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-                href="#">
-                <span class="material-symbols-outlined">group</span>
-                <span class="font-label-md text-label-md">Students</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-                href="#">
-                <span class="material-symbols-outlined">person_4</span>
-                <span class="font-label-md text-label-md">Teachers</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-                href="#">
-                <span class="material-symbols-outlined">quiz</span>
-                <span class="font-label-md text-label-md">Examinations</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-                href="#">
-                <span class="material-symbols-outlined">database</span>
-                <span class="font-label-md text-label-md">Question Bank</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-                href="#">
-                <span class="material-symbols-outlined">analytics</span>
-                <span class="font-label-md text-label-md">Results</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-                href="#">
-                <span class="material-symbols-outlined">workspace_premium</span>
-                <span class="font-label-md text-label-md">Certificates</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-                href="#">
-                <span class="material-symbols-outlined">assessment</span>
-                <span class="font-label-md text-label-md">Reports</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-                href="#">
-                <span class="material-symbols-outlined">notifications</span>
-                <span class="font-label-md text-label-md">Notifications</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform mt-auto"
-                href="#">
-                <span class="material-symbols-outlined">settings</span>
-                <span class="font-label-md text-label-md">Settings</span>
-            </a>
-        </nav>
-        <div class="p-md border-t border-outline-variant/30 flex items-center justify-between">
-            <p class="font-label-sm text-label-sm text-on-surface-variant">v2.1.0</p>
-            <button class="flex items-center gap-xs text-on-surface-variant hover:text-error transition-colors">
-                <span class="material-symbols-outlined" style="font-size: 18px;">logout</span>
-            </button>
-        </div>
-    </aside>
+    <!-- NavigationDrawer (included from sidebar.html) -->
+    {% include 'admin_panel/sidebar.html' %}
     <!-- Main Content Area -->
-    <main class="flex-1 md:ml-[260px] min-h-screen flex flex-col">
+    <main id="mainContent" class="main-content flex-1 md:ml-[260px] min-h-screen flex flex-col">
         <!-- TopAppBar -->
         <header
             class="flex justify-between items-center w-full px-lg h-20 bg-surface/80 backdrop-blur-md sticky top-0 right-0 z-40 transition-colors">
             <div class="flex items-center md:hidden">
-                <button
+                <button onclick="openMobileSidebar()"
                     class="text-on-surface-variant hover:text-primary transition-colors focus-within:ring-2 focus-within:ring-secondary/10 p-sm rounded-lg">
                     <span class="material-symbols-outlined">menu</span>
                 </button>
@@ -277,10 +200,15 @@
                         results efficiently.</p>
                 </div>
                 <div class="flex gap-sm">
+                    <a href="{% url 'create_admin' %}"
+                        class="h-12 px-lg rounded-lg bg-transparent border border-outline text-primary font-label-md text-label-md hover:bg-surface-container-high transition-colors flex items-center gap-xs no-underline">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">person_add</span>
+                        Add Admin
+                    </a>
                     <button
                         class="h-12 px-lg rounded-lg bg-transparent border border-outline text-primary font-label-md text-label-md hover:bg-surface-container-high transition-colors flex items-center gap-xs">
                         <span class="material-symbols-outlined" style="font-size: 18px;">person_add</span>
-                        Add Student
+                        Add Teacher
                     </button>
                     <button
                         class="h-12 px-lg rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-primary/90 hover:-translate-y-[1px] ambient-shadow-2 transition-all flex items-center gap-xs">
@@ -728,8 +656,7 @@
             </section>
         </div>
     </main>
-    <!-- Overlay / Backdrop (Hidden by default, used for modals/mobile drawer) -->
-    <div class="hidden fixed inset-0 bg-inverse-surface/40 backdrop-blur-sm z-40 transition-opacity"></div>
+    <!-- Overlay is now handled by sidebar.html -->
 </body>
 
 </html>

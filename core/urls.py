@@ -24,7 +24,11 @@ from admin_panel.views import *
 urlpatterns = [
     path("admin/", admin.site.urls),
 
-    path(route="", view=admin_dashboard, name="admin_dashboard"),
-    path(route="login_page/", view=login_page, name="login_page"),
+    #auth routes
+    path(route="", view=login_page, name="login_page"),
+    path(route="create_admin/", view=create_admin, name="create_admin"),
+
+    #admin side routes
     path(route="admin_dashboard/", view=admin_dashboard, name="admin_dashboard"),
+
 ]
