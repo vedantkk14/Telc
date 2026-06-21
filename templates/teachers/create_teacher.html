@@ -1,0 +1,641 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>telc — Teacher Provisioning</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #e2e8f0;
+            --card-bg: #ffffff;
+            --brand-bg: #0f172a;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent: #3b82f6;
+            --border-color: #cbd5e1;
+            --input-bg: #f8fafc;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 100% 0%, #cbd5e1 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, #f1f5f9 0%, transparent 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        /* ── The New Card Shape ── */
+        .admin-card {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            max-width: 900px;
+            min-height: 540px;
+            background: var(--card-bg);
+            /* Asymmetrical geometric shape */
+            border-radius: 48px 12px 48px 12px;
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+            overflow: hidden;
+        }
+
+        /* ── Left Pane: Branding ── */
+        .card-brand {
+            flex: 1;
+            background: var(--brand-bg);
+            color: #ffffff;
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-brand::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(59, 130, 246, 0.2);
+            border-radius: 50%;
+            filter: blur(40px);
+        }
+
+        .brand-top {
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            font-size: 24px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .brand-title {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-desc {
+            font-size: 15px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        .brand-bottom {
+            position: relative;
+            z-index: 1;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        /* ── Right Pane: Form ── */
+        .card-form {
+            flex: 1.3;
+            padding: 48px 56px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+            margin-bottom: 24px;
+            align-self: flex-start;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        .form-header {
+            margin-bottom: 32px;
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .field-label.required::after {
+            content: " *";
+            color: #ef4444;
+        }
+
+        .field-shell {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .field-shell i.fi {
+            position: absolute;
+            left: 16px;
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        .field-input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px 16px 14px 44px;
+            font-size: 15px;
+            color: var(--text-main);
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .field-input::placeholder {
+            color: #94a3b8;
+        }
+
+        .field-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--card-bg);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .field-toggle {
+            position: absolute;
+            right: 16px;
+            font-size: 18px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .field-toggle:hover {
+            color: var(--accent);
+        }
+
+        /* ── Action Buttons ── */
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: var(--brand-bg);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            margin-top: 28px;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #1e293b;
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+            display: none;
+        }
+
+        .btn-primary.loading .btn-spinner {
+            display: block;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .signin-row {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .signin-link {
+            color: var(--accent);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .signin-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Modal ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998;
+            padding: 20px;
+            animation: fadeIn .2s ease forwards;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 24px 8px 24px 8px;
+            /* Matching the geometric theme */
+            max-width: 400px;
+            width: 100%;
+            padding: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            animation: popIn .25s cubic-bezier(.21, 1.2, .5, 1) forwards;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-icon.success {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .modal-icon.error {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .modal-icon.warning {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .modal-icon.info {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+
+        .modal-icon i {
+            font-size: 28px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .modal-msg-list {
+            list-style: none;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .modal-msg-list li {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 6px;
+        }
+
+        .modal-btn-primary {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            background: var(--brand-bg);
+            color: #fff;
+            transition: background .2s;
+        }
+
+        .modal-btn-primary:hover {
+            background: #1e293b;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .admin-card {
+                flex-direction: column;
+                border-radius: 24px;
+                /* Soften geometric shape on mobile */
+            }
+
+            .card-brand {
+                padding: 32px;
+                flex: none;
+            }
+
+            .card-form {
+                padding: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Modal overlay -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <div class="modal-icon" id="modalIcon"><i class="ti ti-info-circle"></i></div>
+            <div class="modal-title" id="modalTitle">Notice</div>
+            <ul class="modal-msg-list" id="modalMsgList"></ul>
+            <button class="modal-btn-primary" id="modalCloseBtn">Continue</button>
+        </div>
+    </div>
+
+    <div class="admin-card">
+        <!-- Left Pane -->
+        <div class="card-brand">
+            <div class="brand-top">
+                <div class="brand-icon">
+                    <i class="ti ti-school"></i>
+                </div>
+                <h1 class="brand-title">Teacher<br>Provisioning.</h1>
+                <p class="brand-desc">Provision a teacher profile to manage student performance, evaluate examinations,
+                    and guide student learning.</p>
+            </div>
+            <div class="brand-bottom">
+                <i class="ti ti-lock"></i> Secured with end-to-end encryption.
+            </div>
+        </div>
+
+        <!-- Right Pane (Form) -->
+        <div class="card-form">
+            <a href="{% url 'admin_dashboard' %}" class="back-link">
+                <i class="ti ti-arrow-left"></i> Back to Dashboard
+            </a>
+
+            <div class="form-header">
+                <h2 class="form-title">Create account</h2>
+                <p class="form-subtitle">Register a new teacher profile.</p>
+            </div>
+
+            <form id="admin-register-form" method="POST" action="{% url 'create_teacher' %}" novalidate>
+                {% csrf_token %}
+
+                <div class="field">
+                    <label class="field-label required" for="full_name">Teacher Full Name</label>
+                    <div class="field-shell">
+                        <i class="ti ti-user fi"></i>
+                        <input id="full_name" name="full_name" class="field-input" type="text" placeholder="First Last"
+                            required autocomplete="full_name" />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="field-label required" for="email">Email</label>
+                    <div class="field-shell">
+                        <i class="ti ti-mail fi"></i>
+                        <input id="email" name="email" class="field-input" type="email" placeholder="name@gmail.com"
+                            required autocomplete="email" />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="field-label required" for="specialization">Specialization</label>
+                    <div class="field-shell">
+                        <i class="ti ti-book fi"></i>
+                        <input id="specialization" name="specialization" class="field-input" type="text"
+                            placeholder="e.g. B1, B2, C1, C2" required autocomplete="specialization" />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="field-label" for="experience_years">Experience (Years) <span
+                            style="font-size: 12px; color: var(--text-muted); font-weight: 400;">(Optional)</span></label>
+                    <div class="field-shell">
+                        <i class="ti ti-calendar fi"></i>
+                        <input id="experience_years" name="experience_years" class="field-input" type="number" min="0"
+                            placeholder="e.g. 5" autocomplete="experience_years" />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="field-label required" for="password">Password</label>
+                    <div class="field-shell">
+                        <i class="ti ti-lock fi"></i>
+                        <input id="password" name="password" class="field-input" type="password"
+                            placeholder="••••••••••" required autocomplete="new-password" />
+                        <i class="ti ti-eye field-toggle" id="toggle-pw"></i>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="field-label required" for="confirm_password">Confirm Password</label>
+                    <div class="field-shell">
+                        <i class="ti ti-shield-check fi"></i>
+                        <input id="confirm_password" name="confirm_password" class="field-input" type="password"
+                            placeholder="Repeat your password" required autocomplete="new-password" />
+                        <i class="ti ti-eye field-toggle" id="toggle-confirm-pw"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="register-btn">
+                    <div class="btn-spinner"></div>
+                    <span class="btn-text">Provision Teacher</span>
+                    <i class="ti ti-arrow-right" id="register-arrow"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // JS functionally identical to original file
+        const MODAL_ICONS = { success: 'ti-circle-check', error: 'ti-alert-circle', warning: 'ti-alert-triangle', info: 'ti-info-circle' };
+        const MODAL_TITLES = { success: 'Success', error: 'Registration failed', warning: 'Warning', info: 'Notice' };
+
+        function showModal(type, messages) {
+            const list = Array.isArray(messages) ? messages : [messages];
+            const overlay = document.getElementById('modalOverlay');
+            const icon = document.getElementById('modalIcon');
+            const title = document.getElementById('modalTitle');
+            const msgList = document.getElementById('modalMsgList');
+
+            icon.className = 'modal-icon ' + type;
+            icon.innerHTML = `<i class="ti ${MODAL_ICONS[type] || 'ti-info-circle'}"></i>`;
+            title.textContent = MODAL_TITLES[type] || 'Notice';
+            msgList.innerHTML = list.map(m => `<li>${m}</li>`).join('');
+
+            overlay.classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('show');
+        }
+
+        document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+        document.getElementById('modalOverlay').addEventListener('click', e => {
+            if (e.target.id === 'modalOverlay') closeModal();
+        });
+
+        function makeToggle(inputId, iconId) {
+            const inp = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            icon.addEventListener('click', () => {
+                const show = inp.type === 'password';
+                inp.type = show ? 'text' : 'password';
+                icon.className = (show ? 'ti ti-eye-off' : 'ti ti-eye') + ' field-toggle';
+            });
+        }
+
+        makeToggle('password', 'toggle-pw');
+        makeToggle('confirm_password', 'toggle-confirm-pw');
+
+        const form = document.getElementById('admin-register-form');
+        const btn = document.getElementById('register-btn');
+
+        function setLoading(on) {
+            btn.disabled = on;
+            btn.classList.toggle('loading', on);
+            btn.querySelector('.btn-spinner').style.display = on ? 'block' : 'none';
+            const arrow = document.getElementById('register-arrow');
+            if (arrow) arrow.style.display = on ? 'none' : '';
+        }
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            setLoading(true);
+
+            try {
+                const formData = new FormData(form);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                const data = await response.json();
+                setLoading(false);
+
+                if (data.status === 'success') {
+                    showModal('success', data.messages || ['Admin account created successfully.']);
+                    form.reset();
+                } else {
+                    showModal(data.status || 'error', data.messages || ['Something went wrong. Please try again.']);
+                }
+            } catch (err) {
+                setLoading(false);
+                showModal('error', ['Could not reach the server. Please check your connection and try again.']);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

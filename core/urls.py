@@ -20,15 +20,21 @@ from django.urls import path
 
 from accounts.views import *
 from admin_panel.views import *
+from teacher_panel.views import *
 
 urlpatterns = [
     path("admin/", admin.site.urls),
 
     #auth routes
     path(route="", view=login_page, name="login_page"),
-    path(route="create_admin/", view=create_admin, name="create_admin"),
+    path(route="logout/", view=logout_view, name="logout"),
 
     #admin side routes
     path(route="admin_dashboard/", view=admin_dashboard, name="admin_dashboard"),
-
+    path(route="create_admin/", view=create_admin, name="create_admin"),
+    path(route="create_teacher/", view=create_teacher, name="create_teacher"),
+    path(route="create_student/", view=create_student, name="create_student"),
+    
+    #teacher side routes
+    path(route="teacher_dashboard/", view=teacher_dashboard, name="teacher_dashboard")
 ]

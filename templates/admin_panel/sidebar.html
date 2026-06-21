@@ -180,7 +180,7 @@
     <div class="p-lg flex items-center gap-sm">
         <span class="material-symbols-outlined text-primary" data-weight="fill"
             style="font-size: 32px;">school</span>
-        <span class="sidebar-logo-text font-headline-md text-headline-md font-bold text-primary">LinguaTest</span>
+        <span class="sidebar-logo-text font-headline-md text-headline-md font-bold text-primary">Telc</span>
     </div>
 
     <!-- Profile -->
@@ -191,7 +191,7 @@
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSC1LkCZVVlzaTPeDTzUWdWDxf-7lxgHgsKgvKUpywDvgsue4D4J1LL8L92kt5iGLYHednjF_8AiXV12-MWthBpo_zRwV49XR57xHNjQPi-d416i5js-PFwL9i6DT44OYavjjymkztSMzBHNiFTTxxZ5Ygzv1pR8A7DIjAU3CLQI0mMcA2IezYNyVT6qIG2xJdHvNtBbr03oSmmlH-lavqnh5f7WcwrP1hVV3zwQueVwDjV9xhNI4x_sJf8Sza38PZ1AiF0mk-Ewo" />
         </div>
         <div class="sidebar-profile-info">
-            <p class="font-label-md text-label-md text-primary font-bold">LinguaTest Admin</p>
+            <p class="font-label-md text-label-md text-primary font-bold">Telc Admin</p>
             <p class="font-label-sm text-label-sm text-on-surface-variant">Global Administrator</p>
         </div>
     </div>
@@ -263,9 +263,9 @@
     <!-- Footer -->
     <div class="p-md border-t border-outline-variant/30 flex items-center justify-between">
         <p class="sidebar-version font-label-sm text-label-sm text-on-surface-variant">v2.1.0</p>
-        <button class="flex items-center gap-xs text-on-surface-variant hover:text-error transition-colors">
+        <a href="{% url 'logout' %}" class="flex items-center gap-xs text-on-surface-variant hover:text-error transition-colors">
             <span class="material-symbols-outlined" style="font-size: 18px;">logout</span>
-        </button>
+        </a>
     </div>
 </aside>
 

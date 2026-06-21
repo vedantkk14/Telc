@@ -781,7 +781,7 @@
                             <div class="field-wrap">
                                 <i class="ti ti-mail fi"></i>
                                 <input id="email" class="field-input" type="email" name="email"
-                                    placeholder="max.mustermann@example.de" autocomplete="email" />
+                                    placeholder="example@gmail.com" autocomplete="email" />
                             </div>
                             <div class="field-error" id="email-error"><i class="ti ti-alert-circle"
                                     style="font-size:13px"></i><span></span></div>
@@ -900,7 +900,7 @@
         // ── Trigger Success Toast and Redirect ──────────────────────
         {% if login_success %}
         (function() {
-            showToast('success', 'Login Successful');
+            showToast('success', '{{ welcome_message|escapejs }}');
             setTimeout(() => {
                 window.location.href = "{{ redirect_url }}";
             }, 1800);

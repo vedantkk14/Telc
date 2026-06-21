@@ -1,3 +1,7 @@
 from django.shortcuts import render
+from accounts.decorators import teacher_required
 
-# Create your views here.
+@teacher_required
+def teacher_dashboard(request):
+
+    return render(request, 'teachers/teacher_dashboard.html')

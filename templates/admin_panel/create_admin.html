@@ -115,6 +115,22 @@
       justify-content: center;
     }
 
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+      margin-bottom: 24px;
+      align-self: flex-start;
+    }
+    .back-link:hover {
+      color: var(--accent);
+    }
+
     .form-header { margin-bottom: 32px; }
     .form-title { font-size: 24px; font-weight: 600; margin-bottom: 6px; }
     .form-subtitle { font-size: 14px; color: var(--text-muted); }
@@ -127,6 +143,11 @@
       font-weight: 500; 
       color: var(--text-main); 
       margin-bottom: 8px;
+    }
+
+    .field-label.required::after {
+      content: " *";
+      color: #ef4444;
     }
 
     .field-shell {
@@ -309,6 +330,10 @@
 
     <!-- Right Pane (Form) -->
     <div class="card-form">
+      <a href="{% url 'admin_dashboard' %}" class="back-link">
+        <i class="ti ti-arrow-left"></i> Back to Dashboard
+      </a>
+
       <div class="form-header">
         <h2 class="form-title">Create account</h2>
         <p class="form-subtitle">Register a new administrator profile.</p>
@@ -318,23 +343,39 @@
         {% csrf_token %}
 
         <div class="field">
-          <label class="field-label" for="username">Administrator Username</label>
+          <label class="field-label required" for="full_name">Administrator Full Name</label>
           <div class="field-shell">
             <i class="ti ti-user fi"></i>
-            <input id="username" name="username" class="field-input" type="text" placeholder="e.g., admin_johndoe" required autocomplete="username" />
+            <input id="full_name" name="full_name" class="field-input" type="text" placeholder="First Last" required autocomplete="full_name" />
           </div>
         </div>
 
         <div class="field">
-          <label class="field-label" for="email">Corporate Email</label>
+          <label class="field-label required" for="email">Email</label>
           <div class="field-shell">
             <i class="ti ti-mail fi"></i>
-            <input id="email" name="email" class="field-input" type="email" placeholder="name@telc.net" required autocomplete="email" />
+            <input id="email" name="email" class="field-input" type="email" placeholder="name@gmail.com" required autocomplete="email" />
           </div>
         </div>
 
         <div class="field">
-          <label class="field-label" for="password">Password</label>
+          <label class="field-label" for="department">Department <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">(Optional)</span></label>
+          <div class="field-shell">
+            <i class="ti ti-building fi"></i>
+            <input id="department" name="department" class="field-input" type="text" placeholder="e.g. IT, HR, Finance" autocomplete="department" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="designation">Designation <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">(Optional)</span></label>
+          <div class="field-shell">
+            <i class="ti ti-briefcase fi"></i>
+            <input id="designation" name="designation" class="field-input" type="text" placeholder="e.g. System Administrator, Manager" autocomplete="designation" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label required" for="password">Password</label>
           <div class="field-shell">
             <i class="ti ti-lock fi"></i>
             <input id="password" name="password" class="field-input" type="password" placeholder="••••••••••" required autocomplete="new-password" />
@@ -343,7 +384,7 @@
         </div>
 
         <div class="field">
-          <label class="field-label" for="confirm_password">Confirm Password</label>
+          <label class="field-label required" for="confirm_password">Confirm Password</label>
           <div class="field-shell">
             <i class="ti ti-shield-check fi"></i>
             <input id="confirm_password" name="confirm_password" class="field-input" type="password" placeholder="Repeat your password" required autocomplete="new-password" />
@@ -356,11 +397,6 @@
           <span class="btn-text">Provision Administrator</span>
           <i class="ti ti-arrow-right" id="register-arrow"></i>
         </button>
-
-        <div class="signin-row">
-          Already authorized? 
-          <a href="/admin/login/" class="signin-link">Sign in instead</a>
-        </div>
       </form>
     </div>
   </div>
