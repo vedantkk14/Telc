@@ -112,13 +112,32 @@
         border-right-color: #2d3133;
     }
 
-    /* Main content margin transition */
+    /* Main content margin and width transitions */
     .main-content {
-        transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .main-content.sidebar-collapsed {
-        margin-left: 72px !important;
+    /* Fixed header width transition */
+    .top-header {
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Collapsed state layout adjustments - desktop only */
+    @media (min-width: 768px) {
+        .main-content.sidebar-collapsed {
+            margin-left: 72px !important;
+            width: calc(100% - 72px) !important;
+        }
+
+        .top-header.sidebar-collapsed {
+            width: calc(100% - 72px) !important;
+        }
+    }
+
+    /* Mobile close button */
+    .mobile-close-btn {
+        display: none;
     }
 
     /* Mobile overlay */
@@ -161,6 +180,10 @@
             opacity: 1 !important;
             width: auto !important;
         }
+
+        .mobile-close-btn {
+            display: flex;
+        }
     }
 </style>
 
@@ -176,11 +199,16 @@
         <span class="material-symbols-outlined toggle-icon">chevron_left</span>
     </button>
 
-    <!-- Logo -->
+    <!-- Logo + Mobile Close -->
     <div class="p-lg flex items-center gap-sm">
         <span class="material-symbols-outlined text-primary" data-weight="fill"
             style="font-size: 32px;">school</span>
-        <span class="sidebar-logo-text font-headline-md text-headline-md font-bold text-primary">Telc</span>
+        <span class="sidebar-logo-text font-headline-md text-headline-md font-bold text-primary flex-1">Telc</span>
+        <!-- Mobile close button -->
+        <button class="mobile-close-btn items-center justify-center w-9 h-9 rounded-full hover:bg-surface-container-high text-on-surface-variant transition-colors active:scale-90"
+            onclick="closeMobileSidebar()" aria-label="Close sidebar">
+            <span class="material-symbols-outlined" style="font-size: 22px;">close</span>
+        </button>
     </div>
 
     <!-- Profile -->
@@ -199,31 +227,31 @@
     <!-- Navigation -->
     <nav class="flex-1 overflow-y-auto py-md px-sm space-y-1">
         <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg text-primary font-bold border-r-4 border-primary nav-active-indicator bg-surface-container-low transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-            href="#">
+            href="{% url 'admin_dashboard' %}">
             <span class="material-symbols-outlined" data-weight="fill">dashboard</span>
             <span class="sidebar-label font-label-md text-label-md">Dashboard</span>
             <span class="nav-tooltip">Dashboard</span>
         </a>
         <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-            href="#">
+            href="{% url 'admin_student_management' %}">
             <span class="material-symbols-outlined">group</span>
             <span class="sidebar-label font-label-md text-label-md">Students</span>
             <span class="nav-tooltip">Students</span>
         </a>
         <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-            href="#">
+            href="{% url 'admin_teacher_management' %}">
             <span class="material-symbols-outlined">person_4</span>
             <span class="sidebar-label font-label-md text-label-md">Teachers</span>
             <span class="nav-tooltip">Teachers</span>
         </a>
         <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-            href="#">
+            href="{% url 'admin_examinations' %}">
             <span class="material-symbols-outlined">quiz</span>
             <span class="sidebar-label font-label-md text-label-md">Examinations</span>
             <span class="nav-tooltip">Examinations</span>
         </a>
         <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-            href="#">
+            href="{% url 'admin_questionbank' %}">
             <span class="material-symbols-outlined">database</span>
             <span class="sidebar-label font-label-md text-label-md">Question Bank</span>
             <span class="nav-tooltip">Question Bank</span>
@@ -278,11 +306,15 @@
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('mainContent');
+        const header = document.querySelector('.top-header');
         sidebarCollapsed = !sidebarCollapsed;
 
         sidebar.classList.toggle('collapsed', sidebarCollapsed);
         if (mainContent) {
             mainContent.classList.toggle('sidebar-collapsed', sidebarCollapsed);
+        }
+        if (header) {
+            header.classList.toggle('sidebar-collapsed', sidebarCollapsed);
         }
 
         // Persist preference
@@ -318,17 +350,46 @@
         }, 300);
     }
 
-    // ── Restore saved state on load ──
+    // ── Restore saved state on load & handle active links ──
     document.addEventListener('DOMContentLoaded', () => {
+        // Restore collapse state
         const saved = localStorage.getItem('sidebarCollapsed');
         if (saved === 'true') {
             sidebarCollapsed = true;
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('mainContent');
+            const header = document.querySelector('.top-header');
             sidebar.classList.add('collapsed');
             if (mainContent) {
                 mainContent.classList.add('sidebar-collapsed');
             }
+            if (header) {
+                header.classList.add('sidebar-collapsed');
+            }
         }
+
+        // Set active link based on current URL path
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('nav.flex-1 a.nav-item');
+        
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            // Check if URL matches the link href
+            if (href && href !== '#' && (currentPath === href || currentPath.startsWith(href))) {
+                link.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-high');
+                link.classList.add('text-primary', 'font-bold', 'border-r-4', 'border-primary', 'nav-active-indicator', 'bg-surface-container-low');
+                const icon = link.querySelector('.material-symbols-outlined');
+                if (icon) {
+                    icon.setAttribute('data-weight', 'fill');
+                }
+            } else {
+                link.classList.remove('text-primary', 'font-bold', 'border-r-4', 'border-primary', 'nav-active-indicator', 'bg-surface-container-low');
+                link.classList.add('text-on-surface-variant', 'hover:bg-surface-container-high');
+                const icon = link.querySelector('.material-symbols-outlined');
+                if (icon) {
+                    icon.removeAttribute('data-weight');
+                }
+            }
+        });
     });
 </script>

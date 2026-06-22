@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Examination Management - LinguaTest</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Inter:wght@400;500&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "outline-variant": "#c3c6ce",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#005047",
+                        "inverse-primary": "#afc9ea",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#88f5e3",
+                        "surface-container": "#eceef0",
+                        "secondary-fixed-dim": "#a7c8ff",
+                        "on-surface-variant": "#43474d",
+                        "surface-dim": "#d8dadc",
+                        "on-secondary-container": "#284f83",
+                        "tertiary-fixed-dim": "#6bd9c7",
+                        "on-background": "#191c1e",
+                        "secondary-container": "#9ec2fe",
+                        "surface-variant": "#e0e3e5",
+                        "on-primary-fixed-variant": "#2f4865",
+                        "surface-container-low": "#f2f4f6",
+                        "surface": "#f7f9fb",
+                        "on-surface": "#191c1e",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed": "#d5e3ff",
+                        "on-secondary-fixed-variant": "#1e477b",
+                        "primary-fixed": "#d1e4ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e6e8ea",
+                        "on-tertiary-fixed": "#00201c",
+                        "outline": "#74777e",
+                        "tertiary-container": "#003731",
+                        "on-error": "#ffffff",
+                        "secondary": "#395f94",
+                        "on-primary-fixed": "#001d36",
+                        "on-primary-container": "#819aba",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#34a999",
+                        "error": "#ba1a1a",
+                        "background": "#f7f9fb",
+                        "surface-container-highest": "#e0e3e5",
+                        "primary-fixed-dim": "#afc9ea",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#47607e",
+                        "primary": "#001d36",
+                        "surface-bright": "#f7f9fb",
+                        "tertiary": "#00201c",
+                        "on-secondary-fixed": "#001c3b",
+                        "inverse-on-surface": "#eff1f3",
+                        "inverse-surface": "#2d3133",
+                        "primary-container": "#17324d"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "3xl": "64px",
+                        "base": "4px",
+                        "md": "16px",
+                        "container-max": "1280px",
+                        "sidebar-width": "260px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "sm": "8px",
+                        "gutter": "24px",
+                        "2xl": "48px"
+                    },
+                    fontFamily: {
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"]
+                    },
+                    fontSize: {
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "60px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'inner-soft': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f7f9fb;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .pulse-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .5;
+            }
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface antialiased min-h-screen font-body-sm flex">
+    <!-- Sidebar Navigation -->
+    {% include 'admin_panel/sidebar.html' %}
+    <!-- Main Content Wrapper -->
+    <div id="mainContent" class="main-content flex-1 md:ml-[260px] flex flex-col min-h-screen transition-all">
+        <!-- Top App Bar -->
+        <header
+            class="flex justify-between items-center w-full px-lg h-20 bg-surface/80 dark:bg-background/80 backdrop-blur-md sticky top-0 z-40 border-b border-outline-variant/50">
+            <div class="flex items-center gap-sm md:hidden">
+                <button
+                    class="p-2 rounded-full hover:bg-surface-variant transition-colors text-on-surface-variant"
+                    id="menu-toggle">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <span class="font-headline-md text-headline-md font-bold text-primary">Examinations</span>
+            </div>
+            <div class="hidden md:block">
+                <h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">
+                    Examinations</h1>
+            </div>
+            <div class="flex items-center gap-sm">
+                <div
+                    class="relative focus-within:ring-2 focus-within:ring-secondary/10 rounded-full bg-surface-container-low px-md py-xs flex items-center gap-sm border border-outline-variant/50 hidden sm:flex">
+                    <span class="material-symbols-outlined text-on-surface-variant text-[20px]">search</span>
+                    <input
+                        class="bg-transparent border-none outline-none font-body-sm text-body-sm text-on-surface w-48 focus:ring-0 p-0"
+                        placeholder="Search exams..." type="text" />
+                </div>
+                <button class="p-2 rounded-full hover:bg-surface-variant transition-colors text-on-surface-variant sm:hidden">
+                    <span class="material-symbols-outlined text-[20px]">search</span>
+                </button>
+                <div class="flex gap-xs ml-md hidden md:flex">
+                    <button
+                        class="bg-surface-container text-on-surface font-label-md text-label-md py-xs px-md rounded-lg border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center justify-center gap-xs">
+                        <span class="material-symbols-outlined text-[18px]">download</span> Export
+                    </button>
+                    <button
+                        class="bg-surface-container text-on-surface font-label-md text-label-md py-xs px-md rounded-lg border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center justify-center gap-xs">
+                        <span class="material-symbols-outlined text-[18px]">upload</span> Import
+                    </button>
+                    <button
+                        class="bg-primary-container text-on-primary font-label-md text-label-md py-xs px-md rounded-lg shadow-sm hover:-translate-y-px transition-transform flex items-center justify-center gap-xs ml-sm">
+                        <span class="material-symbols-outlined text-[18px]">add</span> Create Exam
+                    </button>
+                </div>
+            </div>
+        </header>
+        <!-- Main Workspace -->
+        <main class="flex-1 p-md md:p-xl max-w-[1600px] w-full mx-auto flex flex-col gap-lg md:gap-xl">
+            <!-- Mobile Action Button Group (Import/Export) -->
+            <div class="flex items-center gap-sm md:hidden">
+                <button
+                    class="flex-1 justify-center flex items-center gap-2 px-4 py-2.5 rounded-lg border border-outline-variant text-primary hover:bg-surface-container transition-colors font-label-md bg-surface-container-lowest text-sm">
+                    <span class="material-symbols-outlined text-[18px]">download</span> Export
+                </button>
+                <button
+                    class="flex-1 justify-center flex items-center gap-2 px-4 py-2.5 rounded-lg border border-outline-variant text-primary hover:bg-surface-container transition-colors font-label-md bg-surface-container-lowest text-sm">
+                    <span class="material-symbols-outlined text-[18px]">upload</span> Import
+                </button>
+            </div>
+            <!-- KPIs -->
+            <section class="grid grid-cols-2 lg:grid-cols-4 gap-md">
+                <div
+                    class="glass-panel rounded-xl p-md shadow-soft flex flex-col justify-between relative overflow-hidden">
+                    <div class="flex justify-between items-start mb-sm relative z-10">
+                        <p class="font-label-md text-label-md text-on-surface-variant">Total Exams</p>
+                        <span class="material-symbols-outlined text-outline-variant">folder_copy</span>
+                    </div>
+                    <div class="flex items-end justify-between relative z-10">
+                        <p class="font-display-lg text-display-lg text-primary">124</p>
+                        <div
+                            class="flex items-center text-on-tertiary-container font-label-sm text-label-sm bg-tertiary-fixed-dim/20 px-xs py-base rounded">
+                            <span class="material-symbols-outlined text-[14px]">trending_up</span> +12%
+                        </div>
+                    </div>
+                    <!-- Fake Sparkline -->
+                    <svg class="absolute bottom-0 left-0 w-full h-12 text-outline-variant/20 fill-current"
+                        preserveaspectratio="none" viewbox="0 0 100 30">
+                        <path d="M0,30 L0,15 Q10,25 20,10 T40,20 T60,5 T80,15 T100,0 L100,30 Z"></path>
+                    </svg>
+                </div>
+                <div
+                    class="glass-panel rounded-xl p-md shadow-soft flex flex-col justify-between relative overflow-hidden">
+                    <div class="flex justify-between items-start mb-sm relative z-10">
+                        <p class="font-label-md text-label-md text-on-surface-variant">Scheduled</p>
+                        <span class="material-symbols-outlined text-outline-variant">calendar_clock</span>
+                    </div>
+                    <div class="flex items-end justify-between relative z-10">
+                        <p class="font-display-lg text-display-lg text-primary">12</p>
+                        <div
+                            class="flex items-center text-on-surface-variant font-label-sm text-label-sm bg-surface-container px-xs py-base rounded">
+                            This Week
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="bg-primary-container rounded-xl p-md shadow-soft flex flex-col justify-between relative overflow-hidden border border-primary-fixed/20">
+                    <div class="flex justify-between items-start mb-sm relative z-10">
+                        <div class="flex items-center gap-xs">
+                            <div class="w-2 h-2 rounded-full bg-tertiary-fixed pulse-dot"></div>
+                            <p class="font-label-md text-label-md text-on-primary">Live Now</p>
+                        </div>
+                        <span class="material-symbols-outlined text-on-primary/60">sensors</span>
+                    </div>
+                    <div class="flex items-end justify-between relative z-10">
+                        <p class="font-display-lg text-display-lg text-on-primary">3</p>
+                        <div class="text-on-primary/80 font-label-sm text-label-sm">
+                            142 Students Active
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="glass-panel rounded-xl p-md shadow-soft flex flex-col justify-between relative overflow-hidden">
+                    <div class="flex justify-between items-start mb-sm relative z-10">
+                        <p class="font-label-md text-label-md text-on-surface-variant">Pending Evaluation</p>
+                        <span class="material-symbols-outlined text-outline-variant">fact_check</span>
+                    </div>
+                    <div class="flex items-end justify-between relative z-10">
+                        <p class="font-display-lg text-display-lg text-primary">42</p>
+                        <div
+                            class="flex items-center text-error font-label-sm text-label-sm bg-error-container/50 px-xs py-base rounded">
+                            Requires Action
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Main Layout Grid -->
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-xl">
+                <!-- Left Column (Wider) -->
+                <div class="xl:col-span-2 flex flex-col gap-md">
+                    <!-- Filters & Search Bar for Table -->
+                    <div
+                        class="flex justify-between items-center bg-surface-container-lowest p-sm rounded-lg shadow-sm border border-outline-variant/50">
+                        <div class="flex gap-xs hide-scrollbar overflow-x-auto">
+                            <button
+                                class="shrink-0 bg-primary-container text-on-primary font-label-sm text-label-sm px-sm py-xs rounded-full">All</button>
+                            <button
+                                class="shrink-0 bg-transparent text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm px-sm py-xs rounded-full">Live</button>
+                            <button
+                                class="shrink-0 bg-transparent text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm px-sm py-xs rounded-full">Draft</button>
+                            <button
+                                class="shrink-0 bg-transparent text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm px-sm py-xs rounded-full">Published</button>
+                            <button
+                                class="shrink-0 bg-transparent text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm px-sm py-xs rounded-full">Completed</button>
+                        </div>
+                        <div class="flex items-center gap-xs text-on-surface-variant font-label-sm text-label-sm">
+                            <span class="material-symbols-outlined text-[18px]">filter_list</span> Filter
+                        </div>
+                    </div>
+                    <!-- Enhanced Exam Data Table -->
+                    <div
+                        class="hidden md:block bg-surface-container-lowest rounded-xl shadow-soft border border-outline-variant/50 overflow-hidden">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-surface-container-low border-b border-outline-variant/50">
+                                    <th
+                                        class="py-sm px-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                                        Exam Title</th>
+                                    <th
+                                        class="py-sm px-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                                        Status</th>
+                                    <th
+                                        class="py-sm px-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                                        Date / Time</th>
+                                    <th
+                                        class="py-sm px-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                                        Candidates</th>
+                                    <th
+                                        class="py-sm px-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider text-right">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="font-body-sm text-body-sm text-on-surface divide-y divide-outline-variant/30">
+                                <tr class="hover:bg-surface-container-lowest/50 transition-colors">
+                                    <td class="py-md px-md">
+                                        <div class="font-headline-sm text-headline-sm text-primary">German B2
+                                            Proficiency</div>
+                                        <div class="text-on-surface-variant text-[12px] mt-xs">Level: B2 Upper | 2h 30m
+                                        </div>
+                                    </td>
+                                    <td class="py-md px-md">
+                                        <span
+                                            class="inline-flex items-center gap-xs bg-tertiary-fixed-dim/20 text-on-tertiary-container px-xs py-base rounded font-label-sm text-label-sm">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container pulse-dot">
+                                            </div> Live
+                                        </span>
+                                    </td>
+                                    <td class="py-md px-md text-on-surface-variant">
+                                        <div>Oct 24, 2023</div>
+                                        <div class="text-[12px]">09:00 AM</div>
+                                    </td>
+                                    <td class="py-md px-md">
+                                        <div class="flex items-center gap-xs">
+                                            <div class="w-full bg-surface-container h-1.5 rounded-full w-16">
+                                                <div class="bg-primary-container h-full rounded-full"
+                                                    style="width: 66%"></div>
+                                            </div>
+                                            <span class="text-[12px]">32/48</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-md px-md text-right">
+                                        <button
+                                            class="text-primary hover:bg-surface-container p-xs rounded transition-colors"><span
+                                                class="material-symbols-outlined text-[20px]">monitor</span></button>
+                                        <button
+                                            class="text-on-surface-variant hover:bg-surface-container p-xs rounded transition-colors"><span
+                                                class="material-symbols-outlined text-[20px]">more_vert</span></button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-surface-container-lowest/50 transition-colors">
+                                    <td class="py-md px-md">
+                                        <div class="font-headline-sm text-headline-sm text-primary">English C1 Advanced
+                                        </div>
+                                        <div class="text-on-surface-variant text-[12px] mt-xs">Level: C1 | 3h 00m</div>
+                                    </td>
+                                    <td class="py-md px-md">
+                                        <span
+                                            class="inline-flex items-center gap-xs bg-surface-container text-on-surface-variant px-xs py-base rounded font-label-sm text-label-sm">
+                                            Scheduled
+                                        </span>
+                                    </td>
+                                    <td class="py-md px-md text-on-surface-variant">
+                                        <div>Oct 26, 2023</div>
+                                        <div class="text-[12px]">14:00 PM</div>
+                                    </td>
+                                    <td class="py-md px-md">
+                                        <span class="text-on-surface-variant">120 Enrolled</span>
+                                    </td>
+                                    <td class="py-md px-md text-right">
+                                        <button
+                                            class="text-primary hover:bg-surface-container p-xs rounded transition-colors"><span
+                                                class="material-symbols-outlined text-[20px]">edit</span></button>
+                                        <button
+                                            class="text-on-surface-variant hover:bg-surface-container p-xs rounded transition-colors"><span
+                                                class="material-symbols-outlined text-[20px]">more_vert</span></button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-surface-container-lowest/50 transition-colors opacity-70">
+                                    <td class="py-md px-md">
+                                        <div class="font-headline-sm text-headline-sm text-primary">Spanish A1
+                                            Foundations</div>
+                                        <div class="text-on-surface-variant text-[12px] mt-xs">Level: A1 | 1h 00m</div>
+                                    </td>
+                                    <td class="py-md px-md">
+                                        <span
+                                            class="inline-flex items-center gap-xs bg-error-container/50 text-error px-xs py-base rounded font-label-sm text-label-sm">
+                                            Draft
+                                        </span>
+                                    </td>
+                                    <td class="py-md px-md text-on-surface-variant">
+                                        <div>--</div>
+                                    </td>
+                                    <td class="py-md px-md">
+                                        <span class="text-on-surface-variant">--</span>
+                                    </td>
+                                    <td class="py-md px-md text-right">
+                                        <button
+                                            class="text-primary hover:bg-surface-container p-xs rounded transition-colors"><span
+                                                class="material-symbols-outlined text-[20px]">edit</span></button>
+                                        <button
+                                            class="text-on-surface-variant hover:bg-surface-container p-xs rounded transition-colors"><span
+                                                class="material-symbols-outlined text-[20px]">more_vert</span></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Mobile View: Card List (Visible on mobile, hidden on desktop) -->
+                    <div class="flex flex-col gap-md md:hidden">
+                        <!-- Card 1: German B2 -->
+                        <div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant/50 shadow-soft">
+                            <div class="flex justify-between items-start mb-sm">
+                                <div>
+                                    <div class="flex items-center gap-xs mb-xs">
+                                        <span class="bg-secondary-container text-on-secondary-container font-label-sm text-[10px] px-sm py-0.5 rounded">B2 Upper</span>
+                                        <span class="inline-flex items-center gap-xs bg-tertiary-fixed-dim/20 text-on-tertiary-container px-xs py-0.5 rounded font-label-sm text-[10px]">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container pulse-dot"></div> Live
+                                        </span>
+                                    </div>
+                                    <h4 class="font-headline-sm text-primary">German B2 Proficiency</h4>
+                                </div>
+                                <button class="text-on-surface-variant"><span class="material-symbols-outlined">more_vert</span></button>
+                            </div>
+                            <div class="flex flex-col gap-xs text-on-surface-variant text-[12px] mb-md">
+                                <span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">calendar_today</span> Oct 24, 2023 at 09:00 AM</span>
+                                <span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">schedule</span> 2h 30m</span>
+                                <span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">group</span> 32/48 Candidates</span>
+                            </div>
+                            <div class="flex gap-sm border-t border-outline-variant/30 pt-sm">
+                                <button class="flex-1 border border-outline-variant text-primary font-label-sm text-sm py-2 rounded-lg hover:bg-surface-container transition-colors flex items-center justify-center gap-xs">
+                                    <span class="material-symbols-outlined text-[16px]">monitor</span> Monitor
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Card 2: English C1 -->
+                        <div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant/50 shadow-soft">
+                            <div class="flex justify-between items-start mb-sm">
+                                <div>
+                                    <div class="flex items-center gap-xs mb-xs">
+                                        <span class="bg-surface-variant text-on-surface-variant font-label-sm text-[10px] px-sm py-0.5 rounded">C1 Advanced</span>
+                                        <span class="bg-surface-container text-on-surface-variant font-label-sm text-[10px] px-sm py-0.5 rounded">Scheduled</span>
+                                    </div>
+                                    <h4 class="font-headline-sm text-primary">English C1 Advanced</h4>
+                                </div>
+                                <button class="text-on-surface-variant"><span class="material-symbols-outlined">more_vert</span></button>
+                            </div>
+                            <div class="flex flex-col gap-xs text-on-surface-variant text-[12px] mb-md">
+                                <span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">calendar_today</span> Oct 26, 2023 at 14:00 PM</span>
+                                <span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">schedule</span> 3h 00m</span>
+                                <span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">group</span> 120 Candidates</span>
+                            </div>
+                            <div class="flex gap-sm border-t border-outline-variant/30 pt-sm">
+                                <button class="flex-1 border border-outline-variant text-primary font-label-sm text-sm py-2 rounded-lg hover:bg-surface-container transition-colors flex items-center justify-center gap-xs">
+                                    <span class="material-symbols-outlined text-[16px]">edit</span> Edit
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Card 3: Spanish A1 -->
+                        <div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant/50 shadow-soft">
+                            <div class="flex justify-between items-start mb-sm">
+                                <div>
+                                    <div class="flex items-center gap-xs mb-xs">
+                                        <span class="bg-surface-variant text-on-surface-variant font-label-sm text-[10px] px-sm py-0.5 rounded">A1 Beginner</span>
+                                        <span class="bg-error-container/50 text-error font-label-sm text-[10px] px-sm py-0.5 rounded">Draft</span>
+                                    </div>
+                                    <h4 class="font-headline-sm text-primary">Spanish A1 Foundations</h4>
+                                </div>
+                                <button class="text-on-surface-variant"><span class="material-symbols-outlined">more_vert</span></button>
+                            </div>
+                            <div class="flex flex-col gap-xs text-on-surface-variant text-[12px] mb-md">
+                                <span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">calendar_today</span> --</span>
+                                <span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">schedule</span> 1h 00m</span>
+                                <span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">group</span> -- Candidates</span>
+                            </div>
+                            <div class="flex gap-sm border-t border-outline-variant/30 pt-sm">
+                                <button class="flex-1 border border-outline-variant text-primary font-label-sm text-sm py-2 rounded-lg hover:bg-surface-container transition-colors flex items-center justify-center gap-xs">
+                                    <span class="material-symbols-outlined text-[16px]">edit</span> Edit Draft
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right Column (Mission Control / Narrow) -->
+                <div class="xl:col-span-1 flex flex-col gap-md">
+                    <h3 class="font-headline-sm text-headline-sm text-primary px-xs">Mission Control</h3>
+                    <!-- Live Monitoring Card -->
+                    <div
+                        class="bg-surface-container-lowest rounded-xl shadow-soft border-t-4 border-on-tertiary-container overflow-hidden">
+                        <div class="p-md bg-tertiary-fixed-dim/5 border-b border-outline-variant/30">
+                            <div class="flex justify-between items-start mb-sm">
+                                <div>
+                                    <div class="flex items-center gap-xs mb-xs">
+                                        <div class="w-2 h-2 rounded-full bg-on-tertiary-container pulse-dot"></div>
+                                        <span
+                                            class="font-label-sm text-label-sm text-on-tertiary-container uppercase tracking-wider">Live
+                                            Now</span>
+                                    </div>
+                                    <h4 class="font-headline-sm text-headline-sm text-primary">German B2</h4>
+                                    <p class="font-body-sm text-[12px] text-on-surface-variant">Group A - Morning
+                                        Session</p>
+                                </div>
+                                <button
+                                    class="bg-primary-container text-on-primary font-label-sm text-label-sm px-sm py-xs rounded hover:bg-primary transition-colors">
+                                    Monitor
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-md">
+                            <div class="mb-md">
+                                <div
+                                    class="flex justify-between font-label-sm text-[12px] text-on-surface-variant mb-xs">
+                                    <span>Progress (32/48)</span>
+                                    <span class="font-bold text-primary">66%</span>
+                                </div>
+                                <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+                                    <div class="bg-on-tertiary-container h-full rounded-full" style="width: 66%"></div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-sm mb-md text-[12px]">
+                                <div
+                                    class="bg-surface-container-low p-sm rounded border border-outline-variant/30 flex justify-between items-center">
+                                    <span class="text-on-surface-variant flex items-center gap-xs">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container"></div>Submitted
+                                    </span>
+                                    <span class="font-bold">32</span>
+                                </div>
+                                <div
+                                    class="bg-surface-container-low p-sm rounded border border-outline-variant/30 flex justify-between items-center">
+                                    <span class="text-on-surface-variant flex items-center gap-xs">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-primary-container"></div>Active
+                                    </span>
+                                    <span class="font-bold">12</span>
+                                </div>
+                                <div
+                                    class="bg-surface-container-low p-sm rounded border border-outline-variant/30 flex justify-between items-center">
+                                    <span class="text-on-surface-variant flex items-center gap-xs">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-error"></div>Issues
+                                    </span>
+                                    <span class="font-bold text-error">2</span>
+                                </div>
+                                <div
+                                    class="bg-surface-container-low p-sm rounded border border-outline-variant/30 flex justify-between items-center">
+                                    <span class="text-on-surface-variant flex items-center gap-xs">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-outline"></div>Idle
+                                    </span>
+                                    <span class="font-bold">2</span>
+                                </div>
+                            </div>
+                            <div class="pt-sm border-t border-outline-variant/30">
+                                <p class="text-[10px] uppercase font-bold text-on-surface-variant mb-sm tracking-wider">
+                                    Flagged Activity</p>
+                                <div class="flex items-center gap-sm bg-error-container/30 p-xs rounded">
+                                    <div
+                                        class="w-6 h-6 rounded-full bg-error text-on-error flex items-center justify-center font-label-sm text-[10px]">
+                                        MK</div>
+                                    <span class="text-[12px] text-on-surface">Connection lost (2m)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Quick Actions -->
+                    <div
+                        class="bg-surface-container-lowest rounded-xl shadow-soft border border-outline-variant/50 p-md">
+                        <h4 class="font-headline-sm text-[14px] text-primary mb-sm">Quick Actions</h4>
+                        <div class="flex flex-col gap-xs">
+                            <button
+                                class="flex items-center gap-sm p-sm rounded hover:bg-surface-container-low transition-colors text-left text-on-surface text-[14px]">
+                                <span class="material-symbols-outlined text-[18px] text-on-surface-variant">key</span>
+                                Manage Passwords
+                            </button>
+                            <button
+                                class="flex items-center gap-sm p-sm rounded hover:bg-surface-container-low transition-colors text-left text-on-surface text-[14px]">
+                                <span
+                                    class="material-symbols-outlined text-[18px] text-on-surface-variant">rule_settings</span>
+                                Global Settings
+                            </button>
+                            <button
+                                class="flex items-center gap-sm p-sm rounded hover:bg-surface-container-low transition-colors text-left text-on-surface text-[14px]">
+                                <span
+                                    class="material-symbols-outlined text-[18px] text-on-surface-variant">history</span>
+                                Audit Logs
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Floating Action Button (Mobile Only) -->
+    <button
+        class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-primary-container text-on-primary-container rounded-2xl shadow-lg flex items-center justify-center z-30 hover:-translate-y-1 transition-transform active:scale-95">
+        <span class="material-symbols-outlined text-[24px]">add</span>
+    </button>
+    
+    <!-- Scripts -->
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        if (menuToggle) {
+            menuToggle.addEventListener('click', function() {
+                if (typeof openMobileSidebar === 'function') {
+                    openMobileSidebar();
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

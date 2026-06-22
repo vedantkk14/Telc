@@ -34,6 +34,10 @@ urlpatterns = [
     path(route="create_admin/", view=create_admin, name="create_admin"),
     path(route="create_teacher/", view=create_teacher, name="create_teacher"),
     path(route="create_student/", view=create_student, name="create_student"),
+    path(route="admin_student_management/", view=admin_student_management, name="admin_student_management"),
+    path(route="admin_teacher_management/", view=admin_teacher_management, name="admin_teacher_management"),
+    path(route="admin_examinations/", view=admin_examinations, name="admin_examinations"),
+    path(route="admin_questionbank/", view=admin_questionbank, name="admin_questionbank"),
     
     #teacher side routes
     path(route="teacher_dashboard/", view=teacher_dashboard, name="teacher_dashboard")
