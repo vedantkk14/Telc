@@ -1,0 +1,346 @@
+{% load static %}
+<!-- Sidebar Styles -->
+<style>
+    /* ── Sidebar transition ── */
+    .sidebar {
+        width: 260px;
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: width, transform;
+    }
+
+    .sidebar.collapsed {
+        width: 72px;
+    }
+
+    /* Hide text labels when collapsed */
+    .sidebar.collapsed .sidebar-label,
+    .sidebar.collapsed .sidebar-profile-info,
+    .sidebar.collapsed .sidebar-version,
+    .sidebar.collapsed .sidebar-logo-text {
+        opacity: 0;
+        width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        transition: opacity 0.2s ease, width 0.2s ease;
+    }
+
+    .sidebar .sidebar-label,
+    .sidebar .sidebar-profile-info,
+    .sidebar .sidebar-version,
+    .sidebar .sidebar-logo-text {
+        opacity: 1;
+        transition: opacity 0.2s ease 0.1s;
+    }
+
+    /* Active border-right indicator shrinks in collapsed */
+    .sidebar.collapsed .nav-active-indicator {
+        border-right-width: 0;
+    }
+
+    /* Toggle button */
+    .sidebar-toggle {
+        position: absolute;
+        top: 24px;
+        right: -14px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 1px solid #c3c6ce;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 60;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
+        transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+
+    .sidebar-toggle:hover {
+        background: #eceef0;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+        transform: scale(1.1);
+    }
+
+    .sidebar-toggle .toggle-icon {
+        font-size: 18px;
+        color: #43474d;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar.collapsed .sidebar-toggle .toggle-icon {
+        transform: rotate(180deg);
+    }
+
+    /* Tooltip for collapsed nav items */
+    .sidebar.collapsed .nav-item {
+        position: relative;
+    }
+
+    .sidebar.collapsed .nav-item:hover .nav-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
+    }
+
+    .nav-tooltip {
+        position: absolute;
+        left: calc(100% + 12px);
+        top: 50%;
+        transform: translateY(-50%) translateX(-8px);
+        background: #2d3133;
+        color: #ffffff;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+        pointer-events: none;
+        z-index: 100;
+    }
+
+    .nav-tooltip::before {
+        content: '';
+        position: absolute;
+        right: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 5px solid transparent;
+        border-right-color: #2d3133;
+    }
+
+    /* Main content margin and width transitions */
+    .main-content {
+        transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Fixed header width transition */
+    .top-header {
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Collapsed state layout adjustments - desktop only */
+    @media (min-width: 768px) {
+        .main-content.sidebar-collapsed {
+            margin-left: 72px !important;
+            width: calc(100% - 72px) !important;
+        }
+
+        .top-header.sidebar-collapsed {
+            width: calc(100% - 72px) !important;
+        }
+    }
+
+    /* Mobile close button */
+    .mobile-close-btn {
+        display: none;
+    }
+
+    /* Mobile overlay */
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(45, 49, 51, 0.4);
+        backdrop-filter: blur(4px);
+        z-index: 45;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Mobile sidebar */
+    @media (max-width: 767px) {
+        .sidebar {
+            transform: translateX(-100%);
+            width: 260px !important;
+            z-index: 50;
+        }
+
+        .sidebar.mobile-open {
+            transform: translateX(0);
+        }
+
+        .sidebar .sidebar-toggle {
+            display: none;
+        }
+
+        .sidebar .sidebar-label,
+        .sidebar .sidebar-profile-info,
+        .sidebar .sidebar-version,
+        .sidebar .sidebar-logo-text {
+            opacity: 1 !important;
+            width: auto !important;
+        }
+
+        .mobile-close-btn {
+            display: flex;
+        }
+    }
+</style>
+
+<!-- Mobile Overlay Backdrop -->
+<div id="sidebarOverlay" class="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+
+<!-- NavigationDrawer / Sidebar -->
+<aside id="sidebar"
+    class="sidebar hidden md:flex flex-col h-full fixed left-0 top-0 bg-surface-container-lowest border-r border-outline-variant shadow-sm z-50">
+
+    <!-- Toggle Button (desktop only) -->
+    <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" title="Toggle sidebar">
+        <span class="material-symbols-outlined toggle-icon">chevron_left</span>
+    </button>
+
+    <!-- Logo + Mobile Close -->
+    <div class="p-lg flex items-center gap-sm">
+        <span class="material-symbols-outlined text-primary" style="font-size: 32px; font-variation-settings: 'FILL' 1;">school</span>
+        <span class="sidebar-logo-text font-headline-md text-headline-md font-bold text-primary flex-1">Telc</span>
+        <!-- Mobile close button -->
+        <button class="mobile-close-btn items-center justify-center w-9 h-9 rounded-full hover:bg-surface-container-high text-on-surface-variant transition-colors active:scale-90"
+            onclick="closeMobileSidebar()" aria-label="Close sidebar">
+            <span class="material-symbols-outlined" style="font-size: 22px;">close</span>
+        </button>
+    </div>
+
+    <!-- Profile -->
+    <div class="px-md pb-md border-b border-outline-variant/30 flex items-center gap-sm">
+        <div class="w-10 h-10 rounded-full bg-secondary-container overflow-hidden flex items-center justify-center shrink-0 text-on-secondary-container font-bold text-sm uppercase">
+            {{ request.user.full_name|first|upper }}
+        </div>
+        <div class="sidebar-profile-info">
+            <p class="font-label-md text-label-md text-primary font-bold">{{ request.user.full_name }}</p>
+            <p class="font-label-sm text-label-sm text-on-surface-variant">Teacher</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 overflow-y-auto py-md px-sm space-y-1">
+        <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 {% if active_page == 'dashboard' %}text-primary font-bold border-r-4 border-primary nav-active-indicator bg-surface-container-low{% else %}text-on-surface-variant hover:bg-surface-container-high{% endif %}"
+            href="{% url 'teacher_dashboard' %}">
+            <span class="material-symbols-outlined" {% if active_page == 'dashboard' %}style="font-variation-settings:'FILL' 1"{% endif %}>dashboard</span>
+            <span class="sidebar-label font-label-md text-label-md">Dashboard</span>
+            <span class="nav-tooltip">Dashboard</span>
+        </a>
+
+        <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 {% if active_page == 'question_bank' %}text-primary font-bold border-r-4 border-primary nav-active-indicator bg-surface-container-low{% else %}text-on-surface-variant hover:bg-surface-container-high{% endif %}"
+            href="{% url 'teacher_questionbank' %}">
+            <span class="material-symbols-outlined" {% if active_page == 'question_bank' %}style="font-variation-settings:'FILL' 1"{% endif %}>account_balance</span>
+            <span class="sidebar-label font-label-md text-label-md">Question Bank</span>
+            <span class="nav-tooltip">Question Bank</span>
+        </a>
+
+        <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 {% if active_page == 'exams' %}text-primary font-bold border-r-4 border-primary nav-active-indicator bg-surface-container-low{% else %}text-on-surface-variant hover:bg-surface-container-high{% endif %}"
+            href="{% url 'teacher_exams' %}">
+            <span class="material-symbols-outlined" {% if active_page == 'exams' %}style="font-variation-settings:'FILL' 1"{% endif %}>assignment</span>
+            <span class="sidebar-label font-label-md text-label-md">Exams</span>
+            <span class="nav-tooltip">Exams</span>
+        </a>
+
+        <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 {% if active_page == 'evaluations' %}text-primary font-bold border-r-4 border-primary nav-active-indicator bg-surface-container-low{% else %}text-on-surface-variant hover:bg-surface-container-high{% endif %}"
+            href="{% url 'teacher_evaluations' %}">
+            <span class="material-symbols-outlined" {% if active_page == 'evaluations' %}style="font-variation-settings:'FILL' 1"{% endif %}>fact_check</span>
+            <span class="sidebar-label font-label-md text-label-md">Evaluations</span>
+            <span class="nav-tooltip">Evaluations</span>
+        </a>
+
+        <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 {% if active_page == 'performance' %}text-primary font-bold border-r-4 border-primary nav-active-indicator bg-surface-container-low{% else %}text-on-surface-variant hover:bg-surface-container-high{% endif %}"
+            href="#">
+            <span class="material-symbols-outlined" {% if active_page == 'performance' %}style="font-variation-settings:'FILL' 1"{% endif %}>trending_up</span>
+            <span class="sidebar-label font-label-md text-label-md">Performance</span>
+            <span class="nav-tooltip">Performance</span>
+        </a>
+
+        <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 {% if active_page == 'messages' %}text-primary font-bold border-r-4 border-primary nav-active-indicator bg-surface-container-low{% else %}text-on-surface-variant hover:bg-surface-container-high{% endif %}"
+            href="#">
+            <span class="material-symbols-outlined" {% if active_page == 'messages' %}style="font-variation-settings:'FILL' 1"{% endif %}>mail</span>
+            <span class="sidebar-label font-label-md text-label-md">Messages</span>
+            <span class="nav-tooltip">Messages</span>
+        </a>
+
+        <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 {% if active_page == 'certificates' %}text-primary font-bold border-r-4 border-primary nav-active-indicator bg-surface-container-low{% else %}text-on-surface-variant hover:bg-surface-container-high{% endif %}"
+            href="#">
+            <span class="material-symbols-outlined" {% if active_page == 'certificates' %}style="font-variation-settings:'FILL' 1"{% endif %}>workspace_premium</span>
+            <span class="sidebar-label font-label-md text-label-md">Certificates</span>
+            <span class="nav-tooltip">Certificates</span>
+        </a>
+
+        <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 {% if active_page == 'settings' %}text-primary font-bold border-r-4 border-primary nav-active-indicator bg-surface-container-low{% else %}text-on-surface-variant hover:bg-surface-container-high{% endif %}"
+            href="#">
+            <span class="material-symbols-outlined" {% if active_page == 'settings' %}style="font-variation-settings:'FILL' 1"{% endif %}>settings</span>
+            <span class="sidebar-label font-label-md text-label-md">Settings</span>
+            <span class="nav-tooltip">Settings</span>
+        </a>
+    </nav>
+
+    <!-- Footer -->
+    <div class="p-md border-t border-outline-variant/30 flex items-center justify-between">
+        <p class="sidebar-version font-label-sm text-label-sm text-on-surface-variant">v1.0.0</p>
+        <a href="{% url 'logout' %}" class="flex items-center gap-xs text-on-surface-variant hover:text-error transition-colors" title="Logout">
+            <span class="material-symbols-outlined" style="font-size: 18px;">logout</span>
+        </a>
+    </div>
+</aside>
+
+<!-- Sidebar JavaScript -->
+<script>
+    let sidebarCollapsed = false;
+
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const header = document.querySelector('.top-header');
+        sidebarCollapsed = !sidebarCollapsed;
+
+        sidebar.classList.toggle('collapsed', sidebarCollapsed);
+        if (mainContent) mainContent.classList.toggle('sidebar-collapsed', sidebarCollapsed);
+        if (header) header.classList.toggle('sidebar-collapsed', sidebarCollapsed);
+
+        localStorage.setItem('teacherSidebarCollapsed', sidebarCollapsed);
+    }
+
+    function openMobileSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        sidebar.classList.add('mobile-open');
+        sidebar.classList.remove('hidden');
+        sidebar.classList.add('flex');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        sidebar.classList.remove('mobile-open');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+            if (!sidebar.classList.contains('mobile-open') && window.innerWidth < 768) {
+                sidebar.classList.add('hidden');
+                sidebar.classList.remove('flex');
+            }
+        }, 300);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const saved = localStorage.getItem('teacherSidebarCollapsed');
+        if (saved === 'true') {
+            sidebarCollapsed = true;
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const header = document.querySelector('.top-header');
+            sidebar.classList.add('collapsed');
+            if (mainContent) mainContent.classList.add('sidebar-collapsed');
+            if (header) header.classList.add('sidebar-collapsed');
+        }
+    });
+</script>

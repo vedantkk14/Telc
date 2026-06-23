@@ -5,9 +5,9 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>LinguaTest Teacher Portal</title>
+    <title>telc — Teacher Dashboard</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&amp;display=swap"
         rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
@@ -76,30 +76,45 @@
                         "full": "9999px"
                     },
                     "spacing": {
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "2xl": "48px",
+                        "3xl": "64px",
                         "base": "4px",
+                        "gutter": "24px",
+                        "sidebar-width": "260px",
                         "container-max": "1440px",
                         "margin-desktop": "32px",
-                        "sidebar-width": "260px",
-                        "gutter": "24px",
                         "margin-mobile": "16px"
                     },
                     "fontFamily": {
-                        "body-sm": ["Plus Jakarta Sans"],
                         "display-lg": ["Plus Jakarta Sans"],
-                        "title-sm": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
                         "headline-md": ["Plus Jakarta Sans"],
-                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "title-sm": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
                         "label-sm": ["Plus Jakarta Sans"],
-                        "label-caps": ["Plus Jakarta Sans"]
+                        "label-caps": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"]
                     },
                     "fontSize": {
-                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
                         "display-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-                        "title-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
                         "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "title-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
                         "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
-                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
-                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }]
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
                     }
                 },
             },
@@ -148,113 +163,53 @@
 </head>
 
 <body class="text-on-surface">
-    <!-- SideNavBar -->
-    <aside
-        class="fixed left-0 top-0 h-full w-[260px] bg-primary flex flex-col gap-2 p-4 border-r border-outline-variant/10 shadow-xl z-50">
-        <div class="mb-8 px-3">
-            <span class="text-headline-md font-headline-md font-bold text-white">LinguaTest</span>
-            <p class="font-label-sm text-label-sm text-on-primary-container">Teacher Portal</p>
-        </div>
-        <nav class="flex flex-col gap-2">
-            <a class="flex items-center gap-3 h-10 px-3 rounded-lg bg-secondary-container/10 text-tertiary-fixed border-l-4 border-tertiary-fixed scale-[0.98] transition-transform duration-150"
-                href="#">
-                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
-                <span class="font-label-sm text-label-sm">Dashboard</span>
-            </a>
-            <a class="flex items-center gap-3 h-10 px-3 text-on-primary-container hover:text-white hover:bg-white/5 transition-all duration-200"
-                href="#">
-                <span class="material-symbols-outlined">account_balance</span>
-                <span class="font-label-sm text-label-sm">Question Bank</span>
-            </a>
-            <a class="flex items-center gap-3 h-10 px-3 text-on-primary-container hover:text-white hover:bg-white/5 transition-all duration-200"
-                href="#">
-                <span class="material-symbols-outlined">add_box</span>
-                <span class="font-label-sm text-label-sm">Create Exam</span>
-            </a>
-            <a class="flex items-center gap-3 h-10 px-3 text-on-primary-container hover:text-white hover:bg-white/5 transition-all duration-200"
-                href="#">
-                <span class="material-symbols-outlined">assignment</span>
-                <span class="font-label-sm text-label-sm">Exams</span>
-            </a>
-            <a class="flex items-center gap-3 h-10 px-3 text-on-primary-container hover:text-white hover:bg-white/5 transition-all duration-200"
-                href="#">
-                <span class="material-symbols-outlined">trending_up</span>
-                <span class="font-label-sm text-label-sm">Performance</span>
-            </a>
-            <a class="flex items-center gap-3 h-10 px-3 text-on-primary-container hover:text-white hover:bg-white/5 transition-all duration-200"
-                href="#">
-                <span class="material-symbols-outlined">fact_check</span>
-                <span class="font-label-sm text-label-sm">Evaluations</span>
-            </a>
-            <a class="flex items-center gap-3 h-10 px-3 text-on-primary-container hover:text-white hover:bg-white/5 transition-all duration-200"
-                href="#">
-                <span class="material-symbols-outlined">workspace_premium</span>
-                <span class="font-label-sm text-label-sm">Certificates</span>
-            </a>
-            <a class="flex items-center gap-3 h-10 px-3 text-on-primary-container hover:text-white hover:bg-white/5 transition-all duration-200"
-                href="#">
-                <span class="material-symbols-outlined">mail</span>
-                <span class="font-label-sm text-label-sm">Messages</span>
-            </a>
-            <a class="flex items-center gap-3 h-10 px-3 text-on-primary-container hover:text-white hover:bg-white/5 transition-all duration-200"
-                href="#">
-                <span class="material-symbols-outlined">settings</span>
-                <span class="font-label-sm text-label-sm">Settings</span>
-            </a>
-            <a class="flex items-center gap-3 h-10 px-3 text-on-primary-container hover:text-red-400 hover:bg-white/5 transition-all duration-200"
-                href="{% url 'logout' %}">
-                <span class="material-symbols-outlined">logout</span>
-                <span class="font-label-sm text-label-sm">Logout</span>
-            </a>
-        </nav>
-        <div class="mt-auto p-4 bg-tertiary-container rounded-xl">
-            <button
-                class="w-full py-2 bg-tertiary-fixed text-on-tertiary-fixed font-bold rounded-lg hover:brightness-110 transition-all">
-                New Exam
+    {% include 'teachers/sidebar.html' with active_page='dashboard' %}
+
+    <!-- Top App Bar -->
+    <header class="bg-surface/80 backdrop-blur-md fixed top-0 right-0 z-40 flex justify-between items-center w-full md:w-[calc(100%-260px)] px-md md:px-lg h-20 shadow-sm md:shadow-none border-b border-surface-variant md:border-none top-header transition-all duration-300">
+        <!-- Mobile: menu toggle + page title -->
+        <div class="flex items-center gap-sm md:hidden">
+            <button onclick="openMobileSidebar()"
+                class="p-2 rounded-full hover:bg-surface-variant transition-colors text-on-surface-variant">
+                <span class="material-symbols-outlined">menu</span>
             </button>
+            <span class="font-headline-md text-headline-md font-bold text-primary">Dashboard</span>
         </div>
-    </aside>
-    <!-- Main Content Area -->
-    <main class="ml-[260px] min-h-screen">
-        <!-- TopNavBar -->
-        <header
-            class="fixed top-0 right-0 w-[calc(100%-260px)] h-16 bg-surface/80 backdrop-blur-md flex justify-between items-center px-8 border-b border-outline-variant/20 shadow-sm z-40">
-            <div
-                class="flex items-center gap-4 bg-surface-container-low px-4 py-2 rounded-full w-96 border border-outline-variant/20 focus-within:ring-2 focus-within:ring-secondary-container transition-all">
-                <span class="material-symbols-outlined text-outline">search</span>
-                <input class="bg-transparent border-none focus:ring-0 text-body-sm w-full outline-none"
-                    placeholder="Search exams, students or reports..." type="text" />
-            </div>
-            <div class="flex items-center gap-6">
-                <button
-                    class="p-2 hover:bg-surface-container-low rounded-full transition-all text-on-surface-variant relative">
-                    <span class="material-symbols-outlined">notifications</span>
-                    <span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
-                </button>
-                <button class="p-2 hover:bg-surface-container-low rounded-full transition-all text-on-surface-variant">
-                    <span class="material-symbols-outlined">help_outline</span>
-                </button>
-                <div class="flex items-center gap-3 pl-4 border-l border-outline-variant/30">
-                    <div class="text-right">
-                        <p class="font-label-caps text-label-caps text-on-surface font-bold">SARAH CONNOR</p>
-                        <p class="text-[10px] text-on-surface-variant">Lead Instructor</p>
-                    </div>
-                    <img class="w-10 h-10 rounded-full border-2 border-secondary-container object-cover"
-                        data-alt="A professional headshot of a female educator with a friendly smile, dressed in business casual attire, set against a clean, soft-focus classroom background. The lighting is bright and warm, reflecting a premium educational SaaS dashboard environment with crisp details and a high-key aesthetic."
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcvux2fQnHDqQX6ZfOtMPeXwJHp4y7_9pdTP0ITvq3X61_Y0LDyTsq7-Fb3xqnB4OjYL4kL6VXBKkX1hlewVZIrlosL0HtWmDxCOxzN7gGIJ1PCGxpgV_QvisQwq87uc5xkqEH4IFlR41bV0Tnexk52eWvEEFLmz0uDOAYI5YLkH_odgZXv94Y20z0aNKkfAP2s5ztVN4WlUEJm6rhPrP0cD5CSSKK_ueAwJPfOB0SGJchiczKScswBB2dlct6djwtv7UJg_LP7ls" />
+        <!-- Desktop: search bar -->
+        <div class="hidden md:flex flex-1 max-w-xl mx-lg relative">
+            <span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+            <input
+                class="w-full pl-xl pr-sm py-sm rounded-lg bg-surface-container-highest border-none focus:ring-2 focus:ring-secondary/10 focus:bg-surface-container-lowest transition-all font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant outline-none"
+                placeholder="Search exams, students or reports..." type="text" />
+        </div>
+        <!-- Right: notifications + avatar -->
+        <div class="flex items-center gap-sm">
+            <button class="relative p-sm text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container-highest">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full border border-surface"></span>
+            </button>
+            <div class="hidden md:flex items-center gap-sm pl-sm border-l border-outline-variant/30">
+                <div class="text-right">
+                    <p class="font-label-sm text-label-sm font-bold text-on-surface uppercase tracking-wide">{{ request.user.full_name }}</p>
+                    <p class="text-[10px] text-on-surface-variant">Teacher</p>
                 </div>
             </div>
-        </header>
-        <!-- Content Body -->
-        <div class="pt-24 pb-12 px-margin-desktop max-w-container-max mx-auto">
+            <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-sm text-label-sm font-bold cursor-pointer hover:opacity-90 transition-opacity ml-sm uppercase">
+                {{ request.user.full_name|first|upper }}
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="mainContent" class="main-content w-full md:w-[calc(100%-260px)] md:ml-sidebar-width pt-24 pb-12 transition-all duration-300">
+        <div class="px-md md:px-lg max-w-container-max mx-auto">
             <div class="grid grid-cols-12 gap-gutter">
                 <!-- Welcome Section (Bento Row 1) -->
                 <section class="col-span-12 lg:col-span-8">
                     <div
                         class="relative overflow-hidden bg-white rounded-xl p-8 border border-outline-variant/10 shadow-sm flex items-center justify-between">
                         <div class="z-10 max-w-lg">
-                            <p class="text-secondary font-label-caps tracking-widest uppercase mb-2">Welcome Back, Sarah
-                            </p>
+                            <p class="text-secondary font-label-caps tracking-widest uppercase mb-2">Welcome Back, {{ request.user.full_name }}</p>
                             <h1 class="font-display-lg text-display-lg text-primary mb-4">Good Morning.</h1>
                             <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
                                 You have <span class="font-bold text-primary">3 exams</span> scheduled for today and

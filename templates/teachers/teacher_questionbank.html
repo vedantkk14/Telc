@@ -1,0 +1,730 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Question Bank - telc Teacher Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#001d36",
+                        "primary-container": "#17324d",
+                        "primary-fixed": "#d1e4ff",
+                        "primary-fixed-dim": "#afc9ea",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#819aba",
+                        "on-primary-fixed": "#001d36",
+                        "on-primary-fixed-variant": "#2f4865",
+                        "secondary": "#395f94",
+                        "secondary-container": "#9ec2fe",
+                        "secondary-fixed": "#d5e3ff",
+                        "secondary-fixed-dim": "#a7c8ff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#284f83",
+                        "on-secondary-fixed": "#001c3b",
+                        "on-secondary-fixed-variant": "#1e477b",
+                        "tertiary": "#00201c",
+                        "tertiary-container": "#003731",
+                        "tertiary-fixed": "#88f5e3",
+                        "tertiary-fixed-dim": "#6bd9c7",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#34a999",
+                        "on-tertiary-fixed": "#00201c",
+                        "on-tertiary-fixed-variant": "#005047",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface": "#f7f9fb",
+                        "surface-dim": "#d8dadc",
+                        "surface-bright": "#f7f9fb",
+                        "surface-variant": "#e0e3e5",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f2f4f6",
+                        "surface-container": "#eceef0",
+                        "surface-container-high": "#e6e8ea",
+                        "surface-container-highest": "#e0e3e5",
+                        "background": "#f7f9fb",
+                        "on-surface": "#191c1e",
+                        "on-surface-variant": "#43474d",
+                        "on-background": "#191c1e",
+                        "outline": "#74777e",
+                        "outline-variant": "#c3c6ce",
+                        "inverse-surface": "#2d3133",
+                        "inverse-on-surface": "#eff1f3",
+                        "inverse-primary": "#afc9ea",
+                        "surface-tint": "#47607e",
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "xs": "4px", "sm": "8px", "md": "16px", "lg": "24px",
+                        "xl": "32px", "2xl": "48px", "3xl": "64px",
+                        "base": "4px", "gutter": "24px", "sidebar-width": "260px",
+                        "container-max": "1280px"
+                    },
+                    fontFamily: {
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                    },
+                    fontSize: {
+                        "display-lg": ["48px", { lineHeight: "60px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "700" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "headline-sm": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "500" }],
+                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "600" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { min-height: 100dvh; font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; }
+
+        .depth-1 { box-shadow: 0 1px 3px rgba(15,23,42,0.06), 0 1px 2px rgba(15,23,42,0.04); }
+        .depth-2 { box-shadow: 0 4px 12px rgba(15,23,42,0.08), 0 2px 4px rgba(15,23,42,0.04); }
+
+        .paper-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .paper-card:hover { transform: translateY(-3px); }
+        .paper-card:hover .card-actions { opacity: 1; }
+        .card-actions { opacity: 0; transition: opacity 0.2s ease; }
+
+        /* Modal */
+        #createModal { transition: opacity 0.2s ease; }
+        #createModal.hidden { pointer-events: none; }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface antialiased">
+
+    {% include 'teachers/sidebar.html' with active_page='question_bank' %}
+
+    <!-- Main Content Wrapper -->
+    <div id="mainContent" class="main-content flex-1 md:ml-[260px] flex flex-col min-h-screen">
+
+        <!-- Top App Bar -->
+        <header class="top-header flex justify-between items-center w-full px-lg h-20 bg-surface/80 backdrop-blur-md sticky top-0 z-40 border-b border-outline-variant/50">
+            <!-- Mobile menu + title -->
+            <div class="flex items-center gap-sm md:hidden">
+                <button class="p-2 rounded-full hover:bg-surface-variant text-on-surface-variant" onclick="openMobileSidebar()">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <span class="font-headline-md text-headline-md font-bold text-primary">Question Bank</span>
+            </div>
+            <!-- Desktop title -->
+            <div class="hidden md:flex items-center gap-md">
+                <div>
+                    <h1 class="font-headline-md text-headline-md font-bold text-primary">Question Bank</h1>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Manage your exam papers and question sets</p>
+                </div>
+            </div>
+            <!-- Right actions -->
+            <div class="flex items-center gap-md">
+                <button onclick="openCreateModal()"
+                    class="hidden md:flex items-center gap-sm px-lg py-sm bg-primary text-on-primary rounded-xl font-label-md hover:bg-primary-container transition-colors depth-1">
+                    <span class="material-symbols-outlined text-[20px]">add</span>
+                    New Question Bank
+                </button>
+                <button class="p-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-full relative">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+                </button>
+                <div class="w-9 h-9 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm uppercase">
+                    {{ request.user.full_name|first|upper }}
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Body -->
+        <main class="flex-1 p-md md:p-xl max-w-container-max mx-auto w-full flex flex-col gap-xl">
+
+            <!-- Mobile create button -->
+            <button onclick="openCreateModal()"
+                class="md:hidden flex items-center justify-center gap-sm w-full py-sm bg-primary text-on-primary rounded-xl font-label-md">
+                <span class="material-symbols-outlined text-[20px]">add</span>
+                New Question Bank
+            </button>
+
+            <!-- KPI Stats -->
+            <section class="grid grid-cols-2 md:grid-cols-4 gap-md">
+                <div class="bg-surface-container-lowest rounded-2xl p-md md:p-lg depth-1 border border-outline-variant/30 flex flex-col justify-between">
+                    <div class="flex items-center gap-xs text-on-surface-variant mb-sm">
+                        <span class="material-symbols-outlined text-[20px] text-secondary">folder_copy</span>
+                        <h3 class="font-label-sm text-label-sm uppercase tracking-wider">Total Papers</h3>
+                    </div>
+                    <div class="text-[36px] font-bold text-primary leading-tight">8</div>
+                </div>
+                <div class="bg-surface-container-lowest rounded-2xl p-md md:p-lg depth-1 border border-outline-variant/30 flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute right-0 top-0 w-12 h-12 bg-tertiary-fixed/20 rounded-bl-full"></div>
+                    <div class="flex items-center gap-xs text-on-surface-variant mb-sm relative z-10">
+                        <span class="material-symbols-outlined text-[20px] text-on-tertiary-container">format_list_numbered</span>
+                        <h3 class="font-label-sm text-label-sm uppercase tracking-wider">Total Questions</h3>
+                    </div>
+                    <div class="text-[36px] font-bold text-primary leading-tight relative z-10">240</div>
+                </div>
+                <div class="bg-surface-container-lowest rounded-2xl p-md md:p-lg depth-1 border border-outline-variant/30 flex flex-col justify-between">
+                    <div class="flex items-center gap-xs text-on-surface-variant mb-sm">
+                        <span class="material-symbols-outlined text-[20px] text-on-tertiary-container">check_circle</span>
+                        <h3 class="font-label-sm text-label-sm uppercase tracking-wider">Active</h3>
+                    </div>
+                    <div class="text-[36px] font-bold text-primary leading-tight">5</div>
+                </div>
+                <div class="bg-surface-container-lowest rounded-2xl p-md md:p-lg depth-1 border border-outline-variant/30 flex flex-col justify-between">
+                    <div class="flex items-center gap-xs text-on-surface-variant mb-sm">
+                        <span class="material-symbols-outlined text-[20px] text-on-primary-container">edit_note</span>
+                        <h3 class="font-label-sm text-label-sm uppercase tracking-wider">Drafts</h3>
+                    </div>
+                    <div class="text-[36px] font-bold text-on-surface-variant leading-tight">3</div>
+                </div>
+            </section>
+
+            <!-- Search + Filter Bar -->
+            <div class="flex flex-col md:flex-row gap-sm items-center bg-surface-container-lowest p-xs rounded-xl border border-outline-variant/50 depth-1">
+                <div class="relative flex-1 w-full">
+                    <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline">search</span>
+                    <input class="w-full pl-3xl pr-md py-sm h-12 bg-transparent border-none focus:ring-0 font-body-md text-on-surface placeholder:text-outline outline-none"
+                        placeholder="Search paper name or level..." type="text" id="searchInput" oninput="filterCards()" />
+                </div>
+                <div class="h-px w-full md:w-px md:h-8 bg-outline-variant/50 hidden md:block"></div>
+                <div class="flex flex-wrap md:flex-nowrap items-center w-full md:w-auto px-md gap-sm py-sm md:py-0">
+                    <select onchange="filterCards()" id="levelFilter"
+                        class="font-label-sm text-label-sm text-on-surface-variant bg-transparent border border-outline-variant/30 rounded-md px-sm py-xs focus:ring-0 focus:border-primary outline-none cursor-pointer">
+                        <option value="">All Levels</option>
+                        <option value="A1">A1</option>
+                        <option value="A2">A2</option>
+                        <option value="B1">B1</option>
+                        <option value="B2">B2</option>
+                        <option value="C1">C1</option>
+                        <option value="C2">C2</option>
+                    </select>
+                    <select onchange="filterCards()" id="statusFilter"
+                        class="font-label-sm text-label-sm text-on-surface-variant bg-transparent border border-outline-variant/30 rounded-md px-sm py-xs focus:ring-0 focus:border-primary outline-none cursor-pointer">
+                        <option value="">All Status</option>
+                        <option value="Active">Active</option>
+                        <option value="Draft">Draft</option>
+                        <option value="Archived">Archived</option>
+                    </select>
+                    <div class="flex items-center gap-xs ml-auto">
+                        <button onclick="setView('grid')" id="btnGrid" title="Grid view"
+                            class="p-sm rounded-lg bg-surface-container-high text-primary transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">grid_view</span>
+                        </button>
+                        <button onclick="setView('list')" id="btnList" title="List view"
+                            class="p-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">view_list</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Papers Grid -->
+            <div id="papersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-lg">
+
+                <!-- Paper 1 -->
+                <article data-name="Paper 1" data-level="B2" data-status="Active"
+                    class="paper-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col">
+                    <div class="h-2 bg-secondary w-full"></div>
+                    <div class="p-lg flex flex-col gap-md flex-1">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-sm">
+                                <div class="w-10 h-10 rounded-xl bg-secondary-fixed flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-on-secondary-fixed-variant" style="font-size:20px">description</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-headline-sm text-headline-sm text-primary">Paper 1</h3>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant">German Language</p>
+                                </div>
+                            </div>
+                            <span class="px-sm py-xs rounded-full text-[11px] font-bold bg-tertiary-fixed/30 text-on-tertiary-container">Active</span>
+                        </div>
+                        <div class="flex items-center gap-sm flex-wrap">
+                            <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-secondary-fixed text-on-secondary-fixed-variant font-bold">B2 Upper</span>
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">quiz</span> 32 Questions
+                            </span>
+                        </div>
+                        <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between">
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">schedule</span> Updated 1d ago
+                            </span>
+                            <div class="card-actions flex items-center gap-xs">
+                                <button title="Preview" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                </button>
+                                <button title="Edit" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">edit</span>
+                                </button>
+                                <button title="Delete" class="p-xs rounded-lg hover:bg-error-container/50 text-error transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Paper 2 -->
+                <article data-name="Paper 2" data-level="A1" data-status="Active"
+                    class="paper-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col">
+                    <div class="h-2 bg-tertiary-fixed w-full"></div>
+                    <div class="p-lg flex flex-col gap-md flex-1">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-sm">
+                                <div class="w-10 h-10 rounded-xl bg-tertiary-fixed/30 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-on-tertiary-container" style="font-size:20px">description</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-headline-sm text-headline-sm text-primary">Paper 2</h3>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant">French Language</p>
+                                </div>
+                            </div>
+                            <span class="px-sm py-xs rounded-full text-[11px] font-bold bg-tertiary-fixed/30 text-on-tertiary-container">Active</span>
+                        </div>
+                        <div class="flex items-center gap-sm flex-wrap">
+                            <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed-variant font-bold">A1 Beginner</span>
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">quiz</span> 20 Questions
+                            </span>
+                        </div>
+                        <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between">
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">schedule</span> Updated 3d ago
+                            </span>
+                            <div class="card-actions flex items-center gap-xs">
+                                <button title="Preview" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                </button>
+                                <button title="Edit" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">edit</span>
+                                </button>
+                                <button title="Delete" class="p-xs rounded-lg hover:bg-error-container/50 text-error transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Paper 3 -->
+                <article data-name="Paper 3" data-level="B1" data-status="Draft"
+                    class="paper-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col">
+                    <div class="h-2 bg-primary-container w-full"></div>
+                    <div class="p-lg flex flex-col gap-md flex-1">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-sm">
+                                <div class="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-on-primary-fixed-variant" style="font-size:20px">description</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-headline-sm text-headline-sm text-primary">Paper 3</h3>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant">Spanish Language</p>
+                                </div>
+                            </div>
+                            <span class="px-sm py-xs rounded-full text-[11px] font-bold bg-surface-variant text-on-surface-variant">Draft</span>
+                        </div>
+                        <div class="flex items-center gap-sm flex-wrap">
+                            <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-secondary-container text-on-secondary-container font-bold">B1 Intermediate</span>
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">quiz</span> 28 Questions
+                            </span>
+                        </div>
+                        <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between">
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">schedule</span> Updated 5d ago
+                            </span>
+                            <div class="card-actions flex items-center gap-xs">
+                                <button title="Preview" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                </button>
+                                <button title="Edit" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">edit</span>
+                                </button>
+                                <button title="Delete" class="p-xs rounded-lg hover:bg-error-container/50 text-error transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Paper 4 -->
+                <article data-name="Paper 4" data-level="A2" data-status="Active"
+                    class="paper-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col">
+                    <div class="h-2 bg-secondary-container w-full"></div>
+                    <div class="p-lg flex flex-col gap-md flex-1">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-sm">
+                                <div class="w-10 h-10 rounded-xl bg-secondary-fixed-dim flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-on-secondary-fixed-variant" style="font-size:20px">description</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-headline-sm text-headline-sm text-primary">Paper 4</h3>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant">Italian Language</p>
+                                </div>
+                            </div>
+                            <span class="px-sm py-xs rounded-full text-[11px] font-bold bg-tertiary-fixed/30 text-on-tertiary-container">Active</span>
+                        </div>
+                        <div class="flex items-center gap-sm flex-wrap">
+                            <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed-variant font-bold">A2 Elementary</span>
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">quiz</span> 25 Questions
+                            </span>
+                        </div>
+                        <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between">
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">schedule</span> Updated today
+                            </span>
+                            <div class="card-actions flex items-center gap-xs">
+                                <button title="Preview" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                </button>
+                                <button title="Edit" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">edit</span>
+                                </button>
+                                <button title="Delete" class="p-xs rounded-lg hover:bg-error-container/50 text-error transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Paper 5 -->
+                <article data-name="Paper 5" data-level="C1" data-status="Draft"
+                    class="paper-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col">
+                    <div class="h-2 bg-error w-full"></div>
+                    <div class="p-lg flex flex-col gap-md flex-1">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-sm">
+                                <div class="w-10 h-10 rounded-xl bg-error-container flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-on-error-container" style="font-size:20px">description</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-headline-sm text-headline-sm text-primary">Paper 5</h3>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant">German Language</p>
+                                </div>
+                            </div>
+                            <span class="px-sm py-xs rounded-full text-[11px] font-bold bg-surface-variant text-on-surface-variant">Draft</span>
+                        </div>
+                        <div class="flex items-center gap-sm flex-wrap">
+                            <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-error-container text-on-error-container font-bold">C1 Advanced</span>
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">quiz</span> 40 Questions
+                            </span>
+                        </div>
+                        <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between">
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">schedule</span> Updated 1w ago
+                            </span>
+                            <div class="card-actions flex items-center gap-xs">
+                                <button title="Preview" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                </button>
+                                <button title="Edit" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">edit</span>
+                                </button>
+                                <button title="Delete" class="p-xs rounded-lg hover:bg-error-container/50 text-error transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Paper 6 -->
+                <article data-name="Paper 6" data-level="B2" data-status="Active"
+                    class="paper-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col">
+                    <div class="h-2 bg-tertiary-container w-full"></div>
+                    <div class="p-lg flex flex-col gap-md flex-1">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-sm">
+                                <div class="w-10 h-10 rounded-xl bg-tertiary-fixed/20 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-on-tertiary-container" style="font-size:20px">description</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-headline-sm text-headline-sm text-primary">Paper 6</h3>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant">French Language</p>
+                                </div>
+                            </div>
+                            <span class="px-sm py-xs rounded-full text-[11px] font-bold bg-tertiary-fixed/30 text-on-tertiary-container">Active</span>
+                        </div>
+                        <div class="flex items-center gap-sm flex-wrap">
+                            <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-secondary-fixed text-on-secondary-fixed-variant font-bold">B2 Upper</span>
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">quiz</span> 35 Questions
+                            </span>
+                        </div>
+                        <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between">
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">schedule</span> Updated 2d ago
+                            </span>
+                            <div class="card-actions flex items-center gap-xs">
+                                <button title="Preview" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                </button>
+                                <button title="Edit" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">edit</span>
+                                </button>
+                                <button title="Delete" class="p-xs rounded-lg hover:bg-error-container/50 text-error transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Paper 7 -->
+                <article data-name="Paper 7" data-level="A1" data-status="Archived"
+                    class="paper-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col opacity-70">
+                    <div class="h-2 bg-outline-variant w-full"></div>
+                    <div class="p-lg flex flex-col gap-md flex-1">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-sm">
+                                <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-on-surface-variant" style="font-size:20px">description</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-headline-sm text-headline-sm text-primary">Paper 7</h3>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant">Spanish Language</p>
+                                </div>
+                            </div>
+                            <span class="px-sm py-xs rounded-full text-[11px] font-bold bg-surface-container text-on-surface-variant">Archived</span>
+                        </div>
+                        <div class="flex items-center gap-sm flex-wrap">
+                            <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-surface-container text-on-surface-variant font-bold">A1 Beginner</span>
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">quiz</span> 18 Questions
+                            </span>
+                        </div>
+                        <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between">
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">schedule</span> Updated 3w ago
+                            </span>
+                            <div class="card-actions flex items-center gap-xs">
+                                <button title="Restore" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">restore</span>
+                                </button>
+                                <button title="Delete" class="p-xs rounded-lg hover:bg-error-container/50 text-error transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Paper 8 -->
+                <article data-name="Paper 8" data-level="B1" data-status="Draft"
+                    class="paper-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col">
+                    <div class="h-2 bg-primary w-full"></div>
+                    <div class="p-lg flex flex-col gap-md flex-1">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-sm">
+                                <div class="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-primary" style="font-size:20px">description</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-headline-sm text-headline-sm text-primary">Paper 8</h3>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant">Italian Language</p>
+                                </div>
+                            </div>
+                            <span class="px-sm py-xs rounded-full text-[11px] font-bold bg-surface-variant text-on-surface-variant">Draft</span>
+                        </div>
+                        <div class="flex items-center gap-sm flex-wrap">
+                            <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-secondary-container text-on-secondary-container font-bold">B1 Intermediate</span>
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">quiz</span> 42 Questions
+                            </span>
+                        </div>
+                        <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between">
+                            <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[15px]">schedule</span> Updated today
+                            </span>
+                            <div class="card-actions flex items-center gap-xs">
+                                <button title="Preview" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                </button>
+                                <button title="Edit" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">edit</span>
+                                </button>
+                                <button title="Delete" class="p-xs rounded-lg hover:bg-error-container/50 text-error transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Add New Paper placeholder card -->
+                <article onclick="openCreateModal()"
+                    class="paper-card bg-surface-container-lowest rounded-2xl border-2 border-dashed border-outline-variant/50 depth-1 overflow-hidden flex flex-col items-center justify-center p-xl gap-md cursor-pointer hover:border-primary hover:bg-surface-container-low transition-colors min-h-[200px]">
+                    <div class="w-14 h-14 rounded-2xl bg-surface-container-high flex items-center justify-center">
+                        <span class="material-symbols-outlined text-on-surface-variant" style="font-size:28px">add</span>
+                    </div>
+                    <div class="text-center">
+                        <p class="font-label-md text-label-md text-primary font-semibold">New Question Bank</p>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Create a new paper</p>
+                    </div>
+                </article>
+
+            </div>
+            <!-- Empty state (hidden by default) -->
+            <div id="emptyState" class="hidden flex-col items-center justify-center py-2xl gap-md text-center">
+                <span class="material-symbols-outlined text-outline-variant" style="font-size:64px">folder_off</span>
+                <p class="font-headline-sm text-headline-sm text-on-surface-variant">No papers found</p>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Try adjusting your search or filters.</p>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ── Create Question Bank Modal ── -->
+    <div id="createModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-md">
+        <div class="absolute inset-0 bg-inverse-surface/40 backdrop-blur-sm" onclick="closeCreateModal()"></div>
+        <div class="relative bg-surface-container-lowest rounded-2xl shadow-2xl w-full max-w-lg depth-2 overflow-hidden">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between px-lg py-md border-b border-outline-variant/30">
+                <div>
+                    <h2 class="font-headline-sm text-headline-sm text-primary">New Question Bank</h2>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Create a new paper for your question bank</p>
+                </div>
+                <button onclick="closeCreateModal()" class="p-sm rounded-full hover:bg-surface-container text-on-surface-variant transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form class="p-lg flex flex-col gap-md">
+                <div class="flex flex-col gap-xs">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Paper Name *</label>
+                    <input type="text" placeholder="e.g. Paper 9"
+                        class="w-full px-md py-sm border border-outline-variant rounded-xl font-body-md text-on-surface bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
+                </div>
+                <div class="grid grid-cols-2 gap-md">
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Language *</label>
+                        <select class="w-full px-md py-sm border border-outline-variant rounded-xl font-body-md text-on-surface bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                            <option value="">Select language</option>
+                            <option>German</option>
+                            <option>French</option>
+                            <option>Spanish</option>
+                            <option>Italian</option>
+                            <option>English</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Level *</label>
+                        <select class="w-full px-md py-sm border border-outline-variant rounded-xl font-body-md text-on-surface bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                            <option value="">Select level</option>
+                            <option>A1 Beginner</option>
+                            <option>A2 Elementary</option>
+                            <option>B1 Intermediate</option>
+                            <option>B2 Upper-Intermediate</option>
+                            <option>C1 Advanced</option>
+                            <option>C2 Proficiency</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-xs">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Description</label>
+                    <textarea rows="3" placeholder="Brief description of this paper..."
+                        class="w-full px-md py-sm border border-outline-variant rounded-xl font-body-md text-on-surface bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none"></textarea>
+                </div>
+            </form>
+            <!-- Modal footer -->
+            <div class="flex items-center justify-end gap-sm px-lg py-md border-t border-outline-variant/30">
+                <button onclick="closeCreateModal()"
+                    class="px-lg py-sm rounded-xl font-label-md text-on-surface-variant hover:bg-surface-container transition-colors border border-outline-variant">
+                    Cancel
+                </button>
+                <button class="px-lg py-sm rounded-xl font-label-md bg-primary text-on-primary hover:bg-primary-container transition-colors flex items-center gap-xs">
+                    <span class="material-symbols-outlined text-[18px]">add</span>
+                    Create Paper
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── Modal ──
+        function openCreateModal() {
+            document.getElementById('createModal').classList.remove('hidden');
+            document.getElementById('createModal').classList.add('flex');
+        }
+        function closeCreateModal() {
+            document.getElementById('createModal').classList.remove('flex');
+            document.getElementById('createModal').classList.add('hidden');
+        }
+
+        // ── View toggle ──
+        function setView(type) {
+            const grid = document.getElementById('papersGrid');
+            const btnGrid = document.getElementById('btnGrid');
+            const btnList = document.getElementById('btnList');
+            if (type === 'list') {
+                grid.classList.remove('grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-3');
+                grid.classList.add('grid-cols-1');
+                btnList.classList.add('bg-surface-container-high', 'text-primary');
+                btnList.classList.remove('text-on-surface-variant');
+                btnGrid.classList.remove('bg-surface-container-high', 'text-primary');
+                btnGrid.classList.add('text-on-surface-variant');
+            } else {
+                grid.classList.add('grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-3');
+                grid.classList.remove('grid-cols-1');
+                btnGrid.classList.add('bg-surface-container-high', 'text-primary');
+                btnGrid.classList.remove('text-on-surface-variant');
+                btnList.classList.remove('bg-surface-container-high', 'text-primary');
+                btnList.classList.add('text-on-surface-variant');
+            }
+        }
+
+        // ── Search + Filter ──
+        function filterCards() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const level = document.getElementById('levelFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            const cards = document.querySelectorAll('#papersGrid article[data-name]');
+            let visible = 0;
+
+            cards.forEach(card => {
+                const name = card.dataset.name.toLowerCase();
+                const cardLevel = card.dataset.level;
+                const cardStatus = card.dataset.status;
+                const matchSearch = !search || name.includes(search);
+                const matchLevel = !level || cardLevel === level;
+                const matchStatus = !status || cardStatus === status;
+                const show = matchSearch && matchLevel && matchStatus;
+                card.classList.toggle('hidden', !show);
+                if (show) visible++;
+            });
+
+            const empty = document.getElementById('emptyState');
+            empty.classList.toggle('hidden', visible > 0);
+            empty.classList.toggle('flex', visible === 0);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,916 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Exams - telc Teacher Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#001d36", "primary-container": "#17324d", "primary-fixed": "#d1e4ff",
+                        "primary-fixed-dim": "#afc9ea", "on-primary": "#ffffff", "on-primary-container": "#819aba",
+                        "on-primary-fixed": "#001d36", "on-primary-fixed-variant": "#2f4865",
+                        "secondary": "#395f94", "secondary-container": "#9ec2fe", "secondary-fixed": "#d5e3ff",
+                        "secondary-fixed-dim": "#a7c8ff", "on-secondary": "#ffffff", "on-secondary-container": "#284f83",
+                        "on-secondary-fixed": "#001c3b", "on-secondary-fixed-variant": "#1e477b",
+                        "tertiary": "#00201c", "tertiary-container": "#003731", "tertiary-fixed": "#88f5e3",
+                        "tertiary-fixed-dim": "#6bd9c7", "on-tertiary": "#ffffff", "on-tertiary-container": "#34a999",
+                        "on-tertiary-fixed": "#00201c", "on-tertiary-fixed-variant": "#005047",
+                        "error": "#ba1a1a", "error-container": "#ffdad6", "on-error": "#ffffff", "on-error-container": "#93000a",
+                        "surface": "#f7f9fb", "surface-dim": "#d8dadc", "surface-bright": "#f7f9fb",
+                        "surface-variant": "#e0e3e5", "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f2f4f6", "surface-container": "#eceef0",
+                        "surface-container-high": "#e6e8ea", "surface-container-highest": "#e0e3e5",
+                        "background": "#f7f9fb", "on-surface": "#191c1e", "on-surface-variant": "#43474d",
+                        "on-background": "#191c1e", "outline": "#74777e", "outline-variant": "#c3c6ce",
+                        "inverse-surface": "#2d3133", "inverse-on-surface": "#eff1f3", "inverse-primary": "#afc9ea",
+                        "surface-tint": "#47607e",
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                    spacing: {
+                        "xs": "4px", "sm": "8px", "md": "16px", "lg": "24px", "xl": "32px",
+                        "2xl": "48px", "3xl": "64px", "base": "4px", "gutter": "24px",
+                        "sidebar-width": "260px", "container-max": "1280px"
+                    },
+                    fontFamily: {
+                        "display-lg": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"],
+                    },
+                    fontSize: {
+                        "display-lg": ["48px", { lineHeight: "60px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "700" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "headline-sm": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "500" }],
+                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "600" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+        body { min-height: 100dvh; font-family: 'Plus Jakarta Sans','Inter',sans-serif; }
+        .depth-1 { box-shadow: 0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04); }
+        .depth-2 { box-shadow: 0 4px 12px rgba(15,23,42,.08),0 2px 4px rgba(15,23,42,.04); }
+        .exam-card { transition: transform .2s ease, box-shadow .2s ease; }
+        .exam-card:hover { transform: translateY(-2px); }
+
+        /* Stepper */
+        .step-line { flex: 1; height: 2px; background: #c3c6ce; }
+        .step-line.done { background: #001d36; }
+
+        /* Tab active */
+        .tab-btn.active { background: #fff; color: #001d36; font-weight: 700; box-shadow: 0 1px 3px rgba(15,23,42,.08); }
+
+        /* Modal overlay */
+        #examModal { transition: opacity .2s; }
+
+        /* QB import panel slide */
+        #qbPanel { transition: all .3s ease; }
+
+        /* Stepper in modal */
+        .modal-step { transition: all .2s; }
+        .modal-step.active .step-num { background: #001d36; color: #fff; }
+        .modal-step.done .step-num { background: #34a999; color: #fff; }
+        .step-num { width:28px;height:28px;border-radius:50%;border:2px solid #c3c6ce;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#74777e;background:#fff;flex-shrink:0; }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface antialiased">
+
+{% include 'teachers/sidebar.html' with active_page='exams' %}
+
+<!-- Top App Bar -->
+<header class="bg-surface/80 backdrop-blur-md fixed top-0 right-0 z-40 flex justify-between items-center w-full md:w-[calc(100%-260px)] px-md md:px-lg h-20 shadow-sm md:shadow-none border-b border-surface-variant md:border-none top-header transition-all duration-300">
+    <div class="flex items-center gap-sm md:hidden">
+        <button onclick="openMobileSidebar()" class="p-2 rounded-full hover:bg-surface-variant text-on-surface-variant">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+        <span class="font-headline-md text-headline-md font-bold text-primary">Exams</span>
+    </div>
+    <div class="hidden md:flex flex-1 max-w-xl mx-lg relative">
+        <span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+        <input class="w-full pl-xl pr-sm py-sm rounded-lg bg-surface-container-highest border-none focus:ring-2 focus:ring-secondary/10 focus:bg-surface-container-lowest transition-all font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant outline-none"
+            placeholder="Search exams by title or level..." type="text" id="searchInput" oninput="filterExams()" />
+    </div>
+    <div class="flex items-center gap-sm">
+        <button class="relative p-sm text-on-surface-variant hover:text-primary rounded-full hover:bg-surface-container-highest">
+            <span class="material-symbols-outlined">notifications</span>
+            <span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full border border-surface"></span>
+        </button>
+        <div class="hidden md:flex items-center gap-sm pl-sm border-l border-outline-variant/30">
+            <div class="text-right">
+                <p class="font-label-sm text-label-sm font-bold text-on-surface uppercase">{{ request.user.full_name }}</p>
+                <p class="text-[10px] text-on-surface-variant">Teacher</p>
+            </div>
+        </div>
+        <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-sm text-label-sm font-bold ml-sm uppercase">
+            {{ request.user.full_name|first|upper }}
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main id="mainContent" class="main-content w-full md:w-[calc(100%-260px)] md:ml-sidebar-width pt-24 pb-12 transition-all duration-300">
+<div class="px-md md:px-lg max-w-container-max mx-auto flex flex-col gap-xl">
+
+    <!-- Page heading + CTA -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-md">
+        <div>
+            <h1 class="font-headline-md text-headline-md font-bold text-primary">Exams</h1>
+            <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Create exam papers, import from your question bank, and publish to admin for verification.</p>
+        </div>
+        <button onclick="openModal(1)"
+            class="flex items-center gap-sm px-lg py-sm bg-primary text-on-primary rounded-xl font-label-md hover:bg-primary-container transition-colors depth-1 self-start md:self-auto shrink-0">
+            <span class="material-symbols-outlined text-[20px]">add</span>
+            Create Exam
+        </button>
+    </div>
+
+    <!-- Workflow Steps Banner -->
+    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 px-lg py-md depth-1">
+        <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-md">Exam Workflow</p>
+        <div class="flex items-center gap-xs overflow-x-auto pb-xs">
+            <!-- Step 1 -->
+            <div class="flex items-center gap-sm shrink-0">
+                <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-sm">1</div>
+                <div>
+                    <p class="font-label-md text-label-md text-primary font-bold">Create Exam</p>
+                    <p class="text-[11px] text-on-surface-variant">Fill details & add questions</p>
+                </div>
+            </div>
+            <div class="step-line done shrink-0 w-8 md:w-16"></div>
+            <!-- Step 2 -->
+            <div class="flex items-center gap-sm shrink-0">
+                <div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold text-sm">2</div>
+                <div>
+                    <p class="font-label-md text-label-md text-secondary font-bold">Import / Add Questions</p>
+                    <p class="text-[11px] text-on-surface-variant">From QB or manually</p>
+                </div>
+            </div>
+            <div class="step-line done shrink-0 w-8 md:w-16"></div>
+            <!-- Step 3 -->
+            <div class="flex items-center gap-sm shrink-0">
+                <div class="w-8 h-8 rounded-full bg-tertiary-fixed/40 flex items-center justify-center text-on-tertiary-container font-bold text-sm">3</div>
+                <div>
+                    <p class="font-label-md text-label-md text-on-tertiary-container font-bold">Publish to Admin</p>
+                    <p class="text-[11px] text-on-surface-variant">Send for verification</p>
+                </div>
+            </div>
+            <div class="step-line shrink-0 w-8 md:w-16"></div>
+            <!-- Step 4 -->
+            <div class="flex items-center gap-sm shrink-0">
+                <div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant font-bold text-sm">4</div>
+                <div>
+                    <p class="font-label-md text-label-md text-on-surface-variant font-bold">Admin Verifies</p>
+                    <p class="text-[11px] text-on-surface-variant">Review & approve</p>
+                </div>
+            </div>
+            <div class="step-line shrink-0 w-8 md:w-16"></div>
+            <!-- Step 5 -->
+            <div class="flex items-center gap-sm shrink-0">
+                <div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant font-bold text-sm">5</div>
+                <div>
+                    <p class="font-label-md text-label-md text-on-surface-variant font-bold">Published</p>
+                    <p class="text-[11px] text-on-surface-variant">Live for students</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KPI Stats -->
+    <section class="grid grid-cols-2 md:grid-cols-5 gap-md">
+        <div class="bg-surface-container-lowest rounded-2xl p-md depth-1 border border-outline-variant/30 flex flex-col gap-xs">
+            <div class="flex items-center gap-xs text-on-surface-variant">
+                <span class="material-symbols-outlined text-[18px] text-secondary">assignment</span>
+                <span class="font-label-sm text-label-sm uppercase tracking-wider">Total</span>
+            </div>
+            <span class="text-[32px] font-bold text-primary leading-tight">8</span>
+        </div>
+        <div class="bg-surface-container-lowest rounded-2xl p-md depth-1 border border-outline-variant/30 flex flex-col gap-xs">
+            <div class="flex items-center gap-xs text-on-surface-variant">
+                <span class="material-symbols-outlined text-[18px]">edit_note</span>
+                <span class="font-label-sm text-label-sm uppercase tracking-wider">Draft</span>
+            </div>
+            <span class="text-[32px] font-bold text-on-surface-variant leading-tight">3</span>
+        </div>
+        <div class="bg-surface-container-lowest rounded-2xl p-md depth-1 border border-outline-variant/30 flex flex-col gap-xs">
+            <div class="flex items-center gap-xs text-on-surface-variant">
+                <span class="material-symbols-outlined text-[18px] text-on-secondary-container">send</span>
+                <span class="font-label-sm text-label-sm uppercase tracking-wider">Sent to Admin</span>
+            </div>
+            <span class="text-[32px] font-bold text-secondary leading-tight">2</span>
+        </div>
+        <div class="bg-surface-container-lowest rounded-2xl p-md depth-1 border border-outline-variant/30 flex flex-col gap-xs">
+            <div class="flex items-center gap-xs text-on-surface-variant">
+                <span class="material-symbols-outlined text-[18px] text-on-tertiary-container">verified</span>
+                <span class="font-label-sm text-label-sm uppercase tracking-wider">Verified</span>
+            </div>
+            <span class="text-[32px] font-bold text-on-tertiary-container leading-tight">1</span>
+        </div>
+        <div class="bg-surface-container-lowest rounded-2xl p-md depth-1 border border-outline-variant/30 flex flex-col gap-xs">
+            <div class="flex items-center gap-xs text-on-surface-variant">
+                <span class="material-symbols-outlined text-[18px] text-primary">public</span>
+                <span class="font-label-sm text-label-sm uppercase tracking-wider">Published</span>
+            </div>
+            <span class="text-[32px] font-bold text-primary leading-tight">2</span>
+        </div>
+    </section>
+
+    <!-- Filter Tabs + Search -->
+    <div class="flex flex-col sm:flex-row gap-sm items-start sm:items-center justify-between">
+        <div class="flex gap-xs bg-surface-container-low p-xs rounded-xl border border-outline-variant/30">
+            <button onclick="setTab(this,'all')" data-tab="all" class="tab-btn active px-md py-sm rounded-lg font-label-md text-label-md transition-all text-on-surface-variant text-sm">All (8)</button>
+            <button onclick="setTab(this,'Draft')" data-tab="Draft" class="tab-btn px-md py-sm rounded-lg font-label-md text-label-md transition-all text-on-surface-variant text-sm hover:bg-surface-container">Draft (3)</button>
+            <button onclick="setTab(this,'Sent to Admin')" data-tab="Sent to Admin" class="tab-btn px-md py-sm rounded-lg font-label-md text-label-md transition-all text-on-surface-variant text-sm hover:bg-surface-container">Sent (2)</button>
+            <button onclick="setTab(this,'Verified')" data-tab="Verified" class="tab-btn px-md py-sm rounded-lg font-label-md text-label-md transition-all text-on-surface-variant text-sm hover:bg-surface-container">Verified (1)</button>
+            <button onclick="setTab(this,'Published')" data-tab="Published" class="tab-btn px-md py-sm rounded-lg font-label-md text-label-md transition-all text-on-surface-variant text-sm hover:bg-surface-container">Published (2)</button>
+        </div>
+        <select id="levelFilter" onchange="filterExams()"
+            class="px-md py-sm border border-outline-variant/50 rounded-xl font-label-md text-label-md text-on-surface-variant bg-surface-container-lowest focus:outline-none focus:border-primary cursor-pointer text-sm">
+            <option value="">All Levels</option>
+            <option>A1</option><option>A2</option><option>B1</option>
+            <option>B2</option><option>C1</option><option>C2</option>
+        </select>
+    </div>
+
+    <!-- Exam Cards Grid -->
+    <div id="examsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-lg">
+
+        <!-- ── Exam Card: Draft ── -->
+        <article data-status="Draft" data-level="B2"
+            class="exam-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col">
+            <div class="h-1.5 bg-outline-variant w-full"></div>
+            <div class="p-lg flex flex-col gap-md flex-1">
+                <div class="flex items-start justify-between gap-sm">
+                    <h3 class="font-headline-sm text-headline-sm text-primary leading-snug">German B2 Mid-Term 2024</h3>
+                    <span class="shrink-0 px-sm py-xs rounded-full text-[11px] font-bold bg-surface-container text-on-surface-variant">Draft</span>
+                </div>
+                <div class="flex flex-wrap gap-sm">
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-secondary-fixed text-on-secondary-fixed-variant font-bold">B2 Upper</span>
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-surface-container text-on-surface-variant">German</span>
+                </div>
+                <div class="grid grid-cols-3 gap-sm text-center">
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">35</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Questions</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">90</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Minutes</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">48</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Students</p>
+                    </div>
+                </div>
+                <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between gap-sm">
+                    <div class="flex gap-xs">
+                        <button title="Preview" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+                        <button title="Edit" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+                        <button title="Delete" class="p-xs rounded-lg hover:bg-error-container/50 text-error"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+                    </div>
+                    <button onclick="publishToAdmin(this)" class="flex items-center gap-xs px-md py-sm bg-primary text-on-primary rounded-xl font-label-md text-[12px] hover:bg-primary-container transition-colors">
+                        <span class="material-symbols-outlined text-[16px]">send</span> Publish to Admin
+                    </button>
+                </div>
+            </div>
+        </article>
+
+        <!-- ── Exam Card: Draft ── -->
+        <article data-status="Draft" data-level="A1"
+            class="exam-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col">
+            <div class="h-1.5 bg-outline-variant w-full"></div>
+            <div class="p-lg flex flex-col gap-md flex-1">
+                <div class="flex items-start justify-between gap-sm">
+                    <h3 class="font-headline-sm text-headline-sm text-primary leading-snug">French A1 Vocabulary Quiz</h3>
+                    <span class="shrink-0 px-sm py-xs rounded-full text-[11px] font-bold bg-surface-container text-on-surface-variant">Draft</span>
+                </div>
+                <div class="flex flex-wrap gap-sm">
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed-variant font-bold">A1 Beginner</span>
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-surface-container text-on-surface-variant">French</span>
+                </div>
+                <div class="grid grid-cols-3 gap-sm text-center">
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">20</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Questions</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">30</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Minutes</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">124</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Students</p>
+                    </div>
+                </div>
+                <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between gap-sm">
+                    <div class="flex gap-xs">
+                        <button title="Preview" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+                        <button title="Edit" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+                        <button title="Delete" class="p-xs rounded-lg hover:bg-error-container/50 text-error"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+                    </div>
+                    <button onclick="publishToAdmin(this)" class="flex items-center gap-xs px-md py-sm bg-primary text-on-primary rounded-xl font-label-md text-[12px] hover:bg-primary-container transition-colors">
+                        <span class="material-symbols-outlined text-[16px]">send</span> Publish to Admin
+                    </button>
+                </div>
+            </div>
+        </article>
+
+        <!-- ── Exam Card: Draft ── -->
+        <article data-status="Draft" data-level="C1"
+            class="exam-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col">
+            <div class="h-1.5 bg-outline-variant w-full"></div>
+            <div class="p-lg flex flex-col gap-md flex-1">
+                <div class="flex items-start justify-between gap-sm">
+                    <h3 class="font-headline-sm text-headline-sm text-primary leading-snug">Spanish C1 Literature Essay</h3>
+                    <span class="shrink-0 px-sm py-xs rounded-full text-[11px] font-bold bg-surface-container text-on-surface-variant">Draft</span>
+                </div>
+                <div class="flex flex-wrap gap-sm">
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-error-container text-on-error-container font-bold">C1 Advanced</span>
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-surface-container text-on-surface-variant">Spanish</span>
+                </div>
+                <div class="grid grid-cols-3 gap-sm text-center">
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">12</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Questions</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">120</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Minutes</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">18</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Students</p>
+                    </div>
+                </div>
+                <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between gap-sm">
+                    <div class="flex gap-xs">
+                        <button title="Preview" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+                        <button title="Edit" class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+                        <button title="Delete" class="p-xs rounded-lg hover:bg-error-container/50 text-error"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+                    </div>
+                    <button onclick="publishToAdmin(this)" class="flex items-center gap-xs px-md py-sm bg-primary text-on-primary rounded-xl font-label-md text-[12px] hover:bg-primary-container transition-colors">
+                        <span class="material-symbols-outlined text-[16px]">send</span> Publish to Admin
+                    </button>
+                </div>
+            </div>
+        </article>
+
+        <!-- ── Exam Card: Sent to Admin ── -->
+        <article data-status="Sent to Admin" data-level="B1"
+            class="exam-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col">
+            <div class="h-1.5 bg-secondary w-full"></div>
+            <div class="p-lg flex flex-col gap-md flex-1">
+                <div class="flex items-start justify-between gap-sm">
+                    <h3 class="font-headline-sm text-headline-sm text-primary leading-snug">Italian B1 Grammar Test</h3>
+                    <span class="shrink-0 px-sm py-xs rounded-full text-[11px] font-bold bg-secondary-fixed text-on-secondary-container flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-[12px]">schedule</span> Sent to Admin
+                    </span>
+                </div>
+                <div class="flex flex-wrap gap-sm">
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-secondary-container text-on-secondary-container font-bold">B1 Intermediate</span>
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-surface-container text-on-surface-variant">Italian</span>
+                </div>
+                <div class="grid grid-cols-3 gap-sm text-center">
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">28</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Questions</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">60</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Minutes</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">62</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Students</p>
+                    </div>
+                </div>
+                <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between gap-sm">
+                    <p class="text-[11px] text-on-surface-variant flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-[14px]">schedule</span> Awaiting admin review
+                    </p>
+                    <button class="flex items-center gap-xs px-md py-sm border border-outline-variant rounded-xl font-label-md text-[12px] text-on-surface-variant hover:bg-surface-container transition-colors">
+                        <span class="material-symbols-outlined text-[16px]">undo</span> Withdraw
+                    </button>
+                </div>
+            </div>
+        </article>
+
+        <!-- ── Exam Card: Sent to Admin ── -->
+        <article data-status="Sent to Admin" data-level="A2"
+            class="exam-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col">
+            <div class="h-1.5 bg-secondary w-full"></div>
+            <div class="p-lg flex flex-col gap-md flex-1">
+                <div class="flex items-start justify-between gap-sm">
+                    <h3 class="font-headline-sm text-headline-sm text-primary leading-snug">German A2 Reading Comprehension</h3>
+                    <span class="shrink-0 px-sm py-xs rounded-full text-[11px] font-bold bg-secondary-fixed text-on-secondary-container flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-[12px]">schedule</span> Sent to Admin
+                    </span>
+                </div>
+                <div class="flex flex-wrap gap-sm">
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed-variant font-bold">A2 Elementary</span>
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-surface-container text-on-surface-variant">German</span>
+                </div>
+                <div class="grid grid-cols-3 gap-sm text-center">
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">22</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Questions</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">45</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Minutes</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">88</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Students</p>
+                    </div>
+                </div>
+                <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between gap-sm">
+                    <p class="text-[11px] text-on-surface-variant flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-[14px]">schedule</span> Awaiting admin review
+                    </p>
+                    <button class="flex items-center gap-xs px-md py-sm border border-outline-variant rounded-xl font-label-md text-[12px] text-on-surface-variant hover:bg-surface-container transition-colors">
+                        <span class="material-symbols-outlined text-[16px]">undo</span> Withdraw
+                    </button>
+                </div>
+            </div>
+        </article>
+
+        <!-- ── Exam Card: Verified ── -->
+        <article data-status="Verified" data-level="B2"
+            class="exam-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col">
+            <div class="h-1.5 bg-tertiary-fixed w-full"></div>
+            <div class="p-lg flex flex-col gap-md flex-1">
+                <div class="flex items-start justify-between gap-sm">
+                    <h3 class="font-headline-sm text-headline-sm text-primary leading-snug">German B2 Listening Skills</h3>
+                    <span class="shrink-0 px-sm py-xs rounded-full text-[11px] font-bold bg-tertiary-fixed/30 text-on-tertiary-container flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-[12px]">verified</span> Verified
+                    </span>
+                </div>
+                <div class="flex flex-wrap gap-sm">
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-secondary-fixed text-on-secondary-fixed-variant font-bold">B2 Upper</span>
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-surface-container text-on-surface-variant">German</span>
+                </div>
+                <div class="grid grid-cols-3 gap-sm text-center">
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">30</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Questions</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">75</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Minutes</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">54</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Students</p>
+                    </div>
+                </div>
+                <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between gap-sm">
+                    <p class="text-[11px] text-on-tertiary-container flex items-center gap-xs font-semibold">
+                        <span class="material-symbols-outlined text-[14px]">check_circle</span> Admin approved — awaiting publish
+                    </p>
+                    <button class="p-xs rounded-lg hover:bg-surface-container text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+                </div>
+            </div>
+        </article>
+
+        <!-- ── Exam Card: Published ── -->
+        <article data-status="Published" data-level="A1"
+            class="exam-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col">
+            <div class="h-1.5 bg-primary w-full"></div>
+            <div class="p-lg flex flex-col gap-md flex-1">
+                <div class="flex items-start justify-between gap-sm">
+                    <h3 class="font-headline-sm text-headline-sm text-primary leading-snug">German A1 Final Assessment</h3>
+                    <span class="shrink-0 px-sm py-xs rounded-full text-[11px] font-bold bg-primary-fixed text-primary flex items-center gap-xs">
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> Live
+                    </span>
+                </div>
+                <div class="flex flex-wrap gap-sm">
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed-variant font-bold">A1 Beginner</span>
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-surface-container text-on-surface-variant">German</span>
+                </div>
+                <div class="grid grid-cols-3 gap-sm text-center">
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">25</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Questions</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">60</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Minutes</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">210</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Enrolled</p>
+                    </div>
+                </div>
+                <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between gap-sm">
+                    <p class="text-[11px] text-primary flex items-center gap-xs font-semibold">
+                        <span class="material-symbols-outlined text-[14px]">public</span> Published to students
+                    </p>
+                    <button class="flex items-center gap-xs px-md py-sm border border-primary text-primary rounded-xl font-label-md text-[12px] hover:bg-primary-fixed/30 transition-colors">
+                        <span class="material-symbols-outlined text-[16px]">bar_chart</span> View Results
+                    </button>
+                </div>
+            </div>
+        </article>
+
+        <!-- ── Exam Card: Published ── -->
+        <article data-status="Published" data-level="B1"
+            class="exam-card bg-surface-container-lowest rounded-2xl border border-outline-variant/30 depth-1 overflow-hidden flex flex-col">
+            <div class="h-1.5 bg-primary w-full"></div>
+            <div class="p-lg flex flex-col gap-md flex-1">
+                <div class="flex items-start justify-between gap-sm">
+                    <h3 class="font-headline-sm text-headline-sm text-primary leading-snug">Italian B1 Speaking Evaluation</h3>
+                    <span class="shrink-0 px-sm py-xs rounded-full text-[11px] font-bold bg-primary-fixed text-primary flex items-center gap-xs">
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> Live
+                    </span>
+                </div>
+                <div class="flex flex-wrap gap-sm">
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-secondary-container text-on-secondary-container font-bold">B1 Intermediate</span>
+                    <span class="px-sm py-xs rounded-md font-label-sm text-label-sm bg-surface-container text-on-surface-variant">Italian</span>
+                </div>
+                <div class="grid grid-cols-3 gap-sm text-center">
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">15</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Questions</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">40</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Minutes</p>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-sm">
+                        <p class="text-[18px] font-bold text-primary">76</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Enrolled</p>
+                    </div>
+                </div>
+                <div class="mt-auto pt-md border-t border-outline-variant/20 flex items-center justify-between gap-sm">
+                    <p class="text-[11px] text-primary flex items-center gap-xs font-semibold">
+                        <span class="material-symbols-outlined text-[14px]">public</span> Published to students
+                    </p>
+                    <button class="flex items-center gap-xs px-md py-sm border border-primary text-primary rounded-xl font-label-md text-[12px] hover:bg-primary-fixed/30 transition-colors">
+                        <span class="material-symbols-outlined text-[16px]">bar_chart</span> View Results
+                    </button>
+                </div>
+            </div>
+        </article>
+
+    </div><!-- /examsGrid -->
+
+    <!-- Empty state -->
+    <div id="emptyState" class="hidden flex-col items-center justify-center py-2xl gap-md text-center">
+        <span class="material-symbols-outlined text-outline-variant" style="font-size:64px">assignment_late</span>
+        <p class="font-headline-sm text-headline-sm text-on-surface-variant">No exams found</p>
+        <p class="font-body-sm text-body-sm text-on-surface-variant">Try changing your filters or create a new exam.</p>
+        <button onclick="openModal(1)" class="flex items-center gap-sm px-lg py-sm bg-primary text-on-primary rounded-xl font-label-md hover:bg-primary-container transition-colors mt-sm">
+            <span class="material-symbols-outlined text-[18px]">add</span> Create Exam
+        </button>
+    </div>
+
+</div>
+</main>
+
+<!-- ════════════════════════════════════════════════════
+     CREATE EXAM MODAL  (2-step)
+════════════════════════════════════════════════════ -->
+<div id="examModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-md">
+    <div class="absolute inset-0 bg-inverse-surface/40 backdrop-blur-sm" onclick="closeModal()"></div>
+    <div class="relative bg-surface-container-lowest rounded-2xl shadow-2xl w-full max-w-2xl depth-2 overflow-hidden flex flex-col max-h-[90vh]">
+
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between px-lg py-md border-b border-outline-variant/30 shrink-0">
+            <div>
+                <h2 class="font-headline-sm text-headline-sm text-primary">Create New Exam</h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Fill in exam details and add your questions</p>
+            </div>
+            <button onclick="closeModal()" class="p-sm rounded-full hover:bg-surface-container text-on-surface-variant">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <!-- Step Indicator -->
+        <div class="flex items-center gap-md px-lg py-md border-b border-outline-variant/20 shrink-0 bg-surface-container-low">
+            <div id="step1Indicator" class="modal-step active flex items-center gap-sm">
+                <div class="step-num">1</div>
+                <span class="font-label-md text-label-md text-primary font-semibold hidden sm:block">Exam Details</span>
+            </div>
+            <div class="flex-1 h-0.5 bg-outline-variant/50 max-w-[60px]"></div>
+            <div id="step2Indicator" class="modal-step flex items-center gap-sm">
+                <div class="step-num">2</div>
+                <span class="font-label-md text-label-md text-on-surface-variant hidden sm:block">Add Questions</span>
+            </div>
+        </div>
+
+        <!-- Step 1: Exam Details -->
+        <div id="modalStep1" class="flex-1 overflow-y-auto p-lg flex flex-col gap-md">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
+                <div class="sm:col-span-2 flex flex-col gap-xs">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Exam Title *</label>
+                    <input type="text" placeholder="e.g. German B2 Final Assessment 2024"
+                        class="w-full px-md py-sm border border-outline-variant rounded-xl font-body-md text-on-surface bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
+                </div>
+                <div class="flex flex-col gap-xs">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Language *</label>
+                    <select class="w-full px-md py-sm border border-outline-variant rounded-xl font-body-md text-on-surface bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                        <option value="">Select language</option>
+                        <option>German</option><option>French</option><option>Spanish</option>
+                        <option>Italian</option><option>English</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-xs">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Level *</label>
+                    <select class="w-full px-md py-sm border border-outline-variant rounded-xl font-body-md text-on-surface bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all">
+                        <option value="">Select level</option>
+                        <option>A1 Beginner</option><option>A2 Elementary</option>
+                        <option>B1 Intermediate</option><option>B2 Upper-Intermediate</option>
+                        <option>C1 Advanced</option><option>C2 Proficiency</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-xs">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Duration (minutes) *</label>
+                    <input type="number" placeholder="e.g. 90" min="15" max="300"
+                        class="w-full px-md py-sm border border-outline-variant rounded-xl font-body-md text-on-surface bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
+                </div>
+                <div class="flex flex-col gap-xs">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Exam Date</label>
+                    <input type="date"
+                        class="w-full px-md py-sm border border-outline-variant rounded-xl font-body-md text-on-surface bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
+                </div>
+                <div class="sm:col-span-2 flex flex-col gap-xs">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Instructions / Description</label>
+                    <textarea rows="3" placeholder="Add instructions or notes for this exam..."
+                        class="w-full px-md py-sm border border-outline-variant rounded-xl font-body-md text-on-surface bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none"></textarea>
+                </div>
+                <!-- Save to QB checkbox -->
+                <div class="sm:col-span-2 flex items-center gap-sm p-md bg-tertiary-fixed/10 border border-tertiary-fixed/30 rounded-xl">
+                    <input type="checkbox" id="saveToQB" checked class="w-4 h-4 rounded accent-primary cursor-pointer" />
+                    <label for="saveToQB" class="font-label-md text-label-md text-on-tertiary-container cursor-pointer">
+                        <span class="font-bold">Also save to Question Bank</span> — This exam paper will be stored in your question bank for future reuse.
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Add Questions -->
+        <div id="modalStep2" class="hidden flex-1 overflow-y-auto p-lg flex flex-col gap-md">
+            <!-- Source toggle -->
+            <div class="flex gap-sm">
+                <button onclick="setQSource('import')" id="btnImport"
+                    class="flex-1 flex items-center justify-center gap-sm py-md rounded-xl border-2 border-primary bg-primary-fixed/30 text-primary font-label-md font-semibold transition-all">
+                    <span class="material-symbols-outlined text-[20px]">download</span>
+                    Import from Question Bank
+                </button>
+                <button onclick="setQSource('manual')" id="btnManual"
+                    class="flex-1 flex items-center justify-center gap-sm py-md rounded-xl border-2 border-outline-variant text-on-surface-variant font-label-md font-semibold hover:border-primary transition-all">
+                    <span class="material-symbols-outlined text-[20px]">edit</span>
+                    Add Manually
+                </button>
+            </div>
+
+            <!-- Import from QB Panel -->
+            <div id="qbImportPanel" class="flex flex-col gap-md">
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Select papers from your question bank to import questions into this exam:</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-sm">
+                    {% for i in "12345678" %}
+                    <label class="flex items-center gap-sm p-md border border-outline-variant/50 rounded-xl cursor-pointer hover:border-primary hover:bg-surface-container-low transition-all has-[:checked]:border-primary has-[:checked]:bg-primary-fixed/20">
+                        <input type="checkbox" class="accent-primary w-4 h-4 rounded" />
+                        <div class="flex-1 min-w-0">
+                            <p class="font-label-md text-label-md text-primary font-bold">Paper {{ i }}</p>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant text-[12px] truncate">Language — Level • Questions</p>
+                        </div>
+                        <span class="shrink-0 px-sm py-xs rounded-md font-label-sm text-label-sm bg-surface-container text-on-surface-variant text-[10px]">30 Qs</span>
+                    </label>
+                    {% endfor %}
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant text-[12px]">
+                    <span class="material-symbols-outlined text-[14px] align-middle">info</span>
+                    Selecting a paper imports all its questions. You can remove individual questions after import.
+                </p>
+            </div>
+
+            <!-- Manual Add Panel -->
+            <div id="manualPanel" class="hidden flex flex-col gap-md">
+                <div class="flex flex-col gap-xs">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Question Text *</label>
+                    <textarea rows="3" placeholder="Type your question here..."
+                        class="w-full px-md py-sm border border-outline-variant rounded-xl font-body-md text-on-surface bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-md">
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Question Type</label>
+                        <select class="w-full px-md py-sm border border-outline-variant rounded-xl font-body-md text-on-surface bg-surface-container-lowest focus:outline-none focus:border-primary transition-all">
+                            <option>Multiple Choice</option><option>True / False</option>
+                            <option>Fill in the Blank</option><option>Short Answer</option><option>Essay</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Marks</label>
+                        <input type="number" placeholder="e.g. 2" min="1"
+                            class="w-full px-md py-sm border border-outline-variant rounded-xl font-body-md text-on-surface bg-surface-container-lowest focus:outline-none focus:border-primary transition-all" />
+                    </div>
+                </div>
+                <button class="flex items-center gap-sm px-md py-sm border border-dashed border-primary text-primary rounded-xl font-label-md hover:bg-primary-fixed/20 transition-colors self-start">
+                    <span class="material-symbols-outlined text-[18px]">add</span> Add Question
+                </button>
+                <!-- Added questions placeholder -->
+                <div class="bg-surface-container-low rounded-xl p-md text-center text-on-surface-variant font-body-sm text-body-sm">
+                    No questions added yet. Use the form above to add questions.
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="flex items-center justify-between px-lg py-md border-t border-outline-variant/30 shrink-0">
+            <button id="btnBack" onclick="goBack()" class="hidden px-lg py-sm rounded-xl font-label-md text-on-surface-variant hover:bg-surface-container transition-colors border border-outline-variant">
+                ← Back
+            </button>
+            <div class="flex gap-sm ml-auto">
+                <button onclick="closeModal()" class="px-lg py-sm rounded-xl font-label-md text-on-surface-variant hover:bg-surface-container transition-colors border border-outline-variant">
+                    Cancel
+                </button>
+                <button id="btnNext" onclick="nextStep()"
+                    class="flex items-center gap-xs px-lg py-sm rounded-xl font-label-md bg-primary text-on-primary hover:bg-primary-container transition-colors">
+                    Next: Add Questions <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </button>
+                <button id="btnSaveDraft" onclick="saveDraft()" class="hidden px-lg py-sm rounded-xl font-label-md border border-primary text-primary hover:bg-primary-fixed/20 transition-colors">
+                    Save Draft
+                </button>
+                <button id="btnPublish" onclick="publishExam()" class="hidden flex items-center gap-xs px-lg py-sm rounded-xl font-label-md bg-primary text-on-primary hover:bg-primary-container transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">send</span> Publish to Admin
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentStep = 1;
+    let currentTab = 'all';
+
+    // ── Modal ──────────────────────────────────────────
+    function openModal(step) {
+        currentStep = step || 1;
+        document.getElementById('examModal').classList.remove('hidden');
+        document.getElementById('examModal').classList.add('flex');
+        renderStep();
+    }
+
+    function closeModal() {
+        document.getElementById('examModal').classList.add('hidden');
+        document.getElementById('examModal').classList.remove('flex');
+        currentStep = 1;
+        renderStep();
+    }
+
+    function nextStep() {
+        currentStep = 2;
+        renderStep();
+    }
+
+    function goBack() {
+        currentStep = 1;
+        renderStep();
+    }
+
+    function renderStep() {
+        const s1 = document.getElementById('modalStep1');
+        const s2 = document.getElementById('modalStep2');
+        const ind1 = document.getElementById('step1Indicator');
+        const ind2 = document.getElementById('step2Indicator');
+        const btnNext = document.getElementById('btnNext');
+        const btnBack = document.getElementById('btnBack');
+        const btnSave = document.getElementById('btnSaveDraft');
+        const btnPub  = document.getElementById('btnPublish');
+
+        if (currentStep === 1) {
+            s1.classList.remove('hidden'); s2.classList.add('hidden');
+            ind1.classList.add('active'); ind1.classList.remove('done');
+            ind2.classList.remove('active', 'done');
+            btnNext.classList.remove('hidden'); btnBack.classList.add('hidden');
+            btnSave.classList.add('hidden'); btnPub.classList.add('hidden');
+            // Update step2 indicator label
+            ind2.querySelector('span').className = 'font-label-md text-label-md text-on-surface-variant hidden sm:block';
+        } else {
+            s1.classList.add('hidden'); s2.classList.remove('hidden');
+            ind1.classList.remove('active'); ind1.classList.add('done');
+            ind2.classList.add('active');
+            btnNext.classList.add('hidden'); btnBack.classList.remove('hidden');
+            btnSave.classList.remove('hidden'); btnPub.classList.remove('hidden');
+            ind2.querySelector('span').className = 'font-label-md text-label-md text-primary font-semibold hidden sm:block';
+        }
+    }
+
+    // ── Question source toggle ────────────────────────
+    function setQSource(type) {
+        const imp = document.getElementById('qbImportPanel');
+        const man = document.getElementById('manualPanel');
+        const bImp = document.getElementById('btnImport');
+        const bMan = document.getElementById('btnManual');
+
+        if (type === 'import') {
+            imp.classList.remove('hidden'); man.classList.add('hidden');
+            bImp.classList.add('border-primary', 'bg-primary-fixed/30', 'text-primary');
+            bImp.classList.remove('border-outline-variant', 'text-on-surface-variant');
+            bMan.classList.remove('border-primary', 'bg-primary-fixed/30', 'text-primary');
+            bMan.classList.add('border-outline-variant', 'text-on-surface-variant');
+        } else {
+            man.classList.remove('hidden'); imp.classList.add('hidden');
+            bMan.classList.add('border-primary', 'bg-primary-fixed/30', 'text-primary');
+            bMan.classList.remove('border-outline-variant', 'text-on-surface-variant');
+            bImp.classList.remove('border-primary', 'bg-primary-fixed/30', 'text-primary');
+            bImp.classList.add('border-outline-variant', 'text-on-surface-variant');
+        }
+    }
+
+    // ── Save / Publish actions ────────────────────────
+    function saveDraft() {
+        closeModal();
+        showToast('Draft saved! Your exam is in the Question Bank.', 'success');
+    }
+
+    function publishExam() {
+        closeModal();
+        showToast('Exam sent to admin for verification!', 'info');
+    }
+
+    function publishToAdmin(btn) {
+        const card = btn.closest('article');
+        const statusBadge = card.querySelector('[data-status], span[class*="rounded-full"]');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span> Sending...';
+        setTimeout(() => {
+            card.querySelector('.h-1\\.5').className = 'h-1.5 bg-secondary w-full';
+            btn.closest('.flex.items-center.justify-between').innerHTML = `
+                <p class="text-[11px] text-on-surface-variant flex items-center gap-xs">
+                    <span class="material-symbols-outlined text-[14px]">schedule</span> Awaiting admin review
+                </p>
+                <button class="flex items-center gap-xs px-md py-sm border border-outline-variant rounded-xl font-label-md text-[12px] text-on-surface-variant hover:bg-surface-container transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">undo</span> Withdraw
+                </button>`;
+            card.dataset.status = 'Sent to Admin';
+            showToast('Exam sent to admin for verification!', 'info');
+        }, 1000);
+    }
+
+    // ── Tab filter ────────────────────────────────────
+    function setTab(btn, tab) {
+        currentTab = tab;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        filterExams();
+    }
+
+    // ── Combined filter ───────────────────────────────
+    function filterExams() {
+        const search = (document.getElementById('searchInput')?.value || '').toLowerCase();
+        const level  = document.getElementById('levelFilter').value;
+        const cards  = document.querySelectorAll('#examsGrid article[data-status]');
+        let visible  = 0;
+
+        cards.forEach(card => {
+            const title      = card.querySelector('h3').textContent.toLowerCase();
+            const cardStatus = card.dataset.status;
+            const cardLevel  = card.dataset.level;
+            const matchTab    = currentTab === 'all' || cardStatus === currentTab;
+            const matchSearch = !search || title.includes(search);
+            const matchLevel  = !level  || cardLevel === level;
+            const show = matchTab && matchSearch && matchLevel;
+            card.classList.toggle('hidden', !show);
+            if (show) visible++;
+        });
+
+        const empty = document.getElementById('emptyState');
+        empty.classList.toggle('hidden', visible > 0);
+        empty.classList.toggle('flex', visible === 0);
+    }
+
+    // ── Toast ─────────────────────────────────────────
+    function showToast(msg, type) {
+        const colors = { success: '#34a999', info: '#395f94', error: '#ba1a1a' };
+        const icons  = { success: 'check_circle', info: 'info', error: 'cancel' };
+        const t = document.createElement('div');
+        t.style.cssText = `position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;align-items:center;gap:12px;background:#fff;border-left:4px solid ${colors[type]};border-radius:12px;padding:14px 18px;box-shadow:0 4px 24px rgba(0,0,0,.13);min-width:280px;animation:slideUp .3s ease;font-family:inherit;`;
+        t.innerHTML = `<span class="material-symbols-outlined" style="color:${colors[type]};font-size:20px">${icons[type]}</span><span style="font-size:13px;color:#191c1e;flex:1">${msg}</span>`;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 4000);
+    }
+
+    const style = document.createElement('style');
+    style.textContent = '@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}';
+    document.head.appendChild(style);
+</script>
+</body>
+</html>

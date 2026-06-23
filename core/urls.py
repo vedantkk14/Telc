@@ -44,5 +44,8 @@ urlpatterns = [
     path(route="admin_notifications/", view=admin_notifications, name="admin_notifications"),
     
     #teacher side routes
-    path(route="teacher_dashboard/", view=teacher_dashboard, name="teacher_dashboard")
+    path(route="teacher_dashboard/", view=teacher_dashboard, name="teacher_dashboard"),
+    path(route="teacher_questionbank/", view=teacher_questionbank, name="teacher_questionbank"),
+    path(route="teacher_exams/", view=teacher_exams, name="teacher_exams"),
+    path(route="teacher_evaluations/", view=teacher_evaluations, name="teacher_evaluations"),
 ]
