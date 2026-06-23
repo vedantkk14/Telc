@@ -253,14 +253,14 @@
         </a>
 
         <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 {% if active_page == 'performance' %}text-primary font-bold border-r-4 border-primary nav-active-indicator bg-surface-container-low{% else %}text-on-surface-variant hover:bg-surface-container-high{% endif %}"
-            href="#">
+            href="{% url 'teacher_performance_eval' %}">
             <span class="material-symbols-outlined" {% if active_page == 'performance' %}style="font-variation-settings:'FILL' 1"{% endif %}>trending_up</span>
             <span class="sidebar-label font-label-md text-label-md">Performance</span>
             <span class="nav-tooltip">Performance</span>
         </a>
 
         <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg transition-colors duration-200 cursor-pointer active:scale-95 {% if active_page == 'messages' %}text-primary font-bold border-r-4 border-primary nav-active-indicator bg-surface-container-low{% else %}text-on-surface-variant hover:bg-surface-container-high{% endif %}"
-            href="#">
+            href="{% url 'teacher_messages' %}">
             <span class="material-symbols-outlined" {% if active_page == 'messages' %}style="font-variation-settings:'FILL' 1"{% endif %}>mail</span>
             <span class="sidebar-label font-label-md text-label-md">Messages</span>
             <span class="nav-tooltip">Messages</span>

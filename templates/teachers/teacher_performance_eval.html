@@ -1,1 +1,1229 @@
-<!-- this -->
+{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Performance Tracking - telc Teacher Portal</title>
+    <meta name="description"
+        content="Track and analyze student performance across all exams in the telc Teacher Portal." />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#001d36", "primary-container": "#17324d", "primary-fixed": "#d1e4ff",
+                        "primary-fixed-dim": "#afc9ea", "on-primary": "#ffffff", "on-primary-container": "#819aba",
+                        "on-primary-fixed": "#001d36", "on-primary-fixed-variant": "#2f4865",
+                        "secondary": "#395f94", "secondary-container": "#9ec2fe", "secondary-fixed": "#d5e3ff",
+                        "secondary-fixed-dim": "#a7c8ff", "on-secondary": "#ffffff", "on-secondary-container": "#284f83",
+                        "on-secondary-fixed": "#001c3b", "on-secondary-fixed-variant": "#1e477b",
+                        "tertiary": "#00201c", "tertiary-container": "#003731", "tertiary-fixed": "#88f5e3",
+                        "tertiary-fixed-dim": "#6bd9c7", "on-tertiary": "#ffffff", "on-tertiary-container": "#34a999",
+                        "on-tertiary-fixed": "#00201c", "on-tertiary-fixed-variant": "#005047",
+                        "error": "#ba1a1a", "error-container": "#ffdad6", "on-error": "#ffffff", "on-error-container": "#93000a",
+                        "surface": "#f7f9fb", "surface-dim": "#d8dadc", "surface-bright": "#f7f9fb",
+                        "surface-variant": "#e0e3e5", "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f2f4f6", "surface-container": "#eceef0",
+                        "surface-container-high": "#e6e8ea", "surface-container-highest": "#e0e3e5",
+                        "background": "#f7f9fb", "on-surface": "#191c1e", "on-surface-variant": "#43474d",
+                        "on-background": "#191c1e", "outline": "#74777e", "outline-variant": "#c3c6ce",
+                        "inverse-surface": "#2d3133", "inverse-on-surface": "#eff1f3", "inverse-primary": "#afc9ea",
+                        "surface-tint": "#47607e",
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                    spacing: {
+                        "xs": "4px", "sm": "8px", "md": "16px", "lg": "24px", "xl": "32px",
+                        "2xl": "48px", "3xl": "64px", "base": "4px", "gutter": "24px",
+                        "sidebar-width": "260px", "container-max": "1280px"
+                    },
+                    fontFamily: {
+                        "display-lg": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"],
+                    },
+                    fontSize: {
+                        "display-lg": ["48px", { lineHeight: "60px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "700" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "headline-sm": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "500" }],
+                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "600" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            min-height: 100dvh;
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        }
+
+        .depth-1 {
+            box-shadow: 0 1px 3px rgba(15, 23, 42, .06), 0 1px 2px rgba(15, 23, 42, .04);
+        }
+
+        .depth-2 {
+            box-shadow: 0 4px 12px rgba(15, 23, 42, .08), 0 2px 4px rgba(15, 23, 42, .04);
+        }
+
+        .kpi-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(15, 23, 42, .10), 0 2px 6px rgba(15, 23, 42, .06);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c3c6ce;
+            border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #74777e;
+        }
+
+        .perf-row {
+            transition: background-color .15s ease;
+        }
+
+        .perf-row:hover {
+            background-color: rgba(209, 228, 255, .12);
+        }
+
+        .progress-fill {
+            transition: width .6s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        .row-checkbox {
+            accent-color: #001d36;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        #sendScoreModal {
+            transition: opacity .2s;
+        }
+
+        #answerSheetModal {
+            transition: opacity .2s;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface antialiased">
+
+    {% include 'teachers/sidebar.html' with active_page='performance' %}
+
+    <!-- Top App Bar -->
+    <header
+        class="bg-surface/80 backdrop-blur-md fixed top-0 right-0 z-40 flex justify-between items-center w-full md:w-[calc(100%-260px)] px-md md:px-lg h-20 shadow-sm md:shadow-none border-b border-surface-variant md:border-none top-header transition-all duration-300">
+        <div class="flex items-center gap-sm md:hidden">
+            <button onclick="openMobileSidebar()"
+                class="p-2 rounded-full hover:bg-surface-variant text-on-surface-variant" id="mobileMenuBtn">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <span class="font-headline-md text-headline-md font-bold text-primary">Performance</span>
+        </div>
+        <div class="hidden md:flex flex-1 max-w-xl mx-lg relative">
+            <span
+                class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+            <input
+                class="w-full pl-xl pr-sm py-sm rounded-lg bg-surface-container-highest border-none focus:ring-2 focus:ring-secondary/10 focus:bg-surface-container-lowest transition-all font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant outline-none"
+                placeholder="Search exams, students or reports..." type="text" id="globalSearchInput"
+                onkeyup="handleGlobalSearch(event)" />
+        </div>
+        <div class="flex items-center gap-sm">
+            <button
+                class="relative p-sm text-on-surface-variant hover:text-primary rounded-full hover:bg-surface-container-highest"
+                id="notificationBtn">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full border border-surface"></span>
+            </button>
+            <div class="hidden md:flex items-center gap-sm pl-sm border-l border-outline-variant/30">
+                <div class="text-right">
+                    <p class="font-label-sm text-label-sm font-bold text-on-surface uppercase">{{ request.user.full_name }}</p>
+                    <p class="text-[10px] text-on-surface-variant">Teacher</p>
+                </div>
+            </div>
+            <div
+                class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-sm text-label-sm font-bold ml-sm uppercase">
+                {{ request.user.full_name|first|upper }}
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="mainContent"
+        class="main-content w-full md:w-[calc(100%-260px)] md:ml-sidebar-width pt-24 pb-12 transition-all duration-300">
+        <div class="px-md md:px-lg max-w-container-max mx-auto flex flex-col gap-xl">
+
+            <!-- Page Header + Filters -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-md">
+                <div>
+                    <h1 class="font-headline-md text-headline-md font-bold text-primary">Performance</h1>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Track and analyze student
+                        performance across all exams.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-sm">
+                    <select id="examFilterSelect" onchange="applyFilters()"
+                        class="px-md py-sm border border-outline-variant/50 rounded-xl font-label-md text-label-md text-on-surface-variant bg-surface-container-lowest focus:outline-none focus:border-primary cursor-pointer text-sm">
+                        <option value="">All Exams</option>
+                        <option value="German A1">German A1</option>
+                        <option value="German B2">German B2</option>
+                    </select>
+                    <select id="classFilterSelect" onchange="applyFilters()"
+                        class="px-md py-sm border border-outline-variant/50 rounded-xl font-label-md text-label-md text-on-surface-variant bg-surface-container-lowest focus:outline-none focus:border-primary cursor-pointer text-sm">
+                        <option value="">All Classes</option>
+                        <option value="Class A">Class A</option>
+                        <option value="Class B">Class B</option>
+                    </select>
+                    <button id="dateRangeBtn" onclick="showToast('Date range picker opened')"
+                        class="flex items-center gap-xs px-md py-sm border border-outline-variant/50 rounded-xl bg-surface-container-lowest font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors text-sm">
+                        <span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                        <span>May 1 - May 31, 2025</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- KPI Cards -->
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md">
+                <!-- KPI 1: Average Score -->
+                <div
+                    class="kpi-card bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/20 shadow-sm flex flex-col justify-between h-36">
+                    <div class="flex justify-between items-start">
+                        <div class="p-2 bg-primary-fixed rounded-lg text-primary">
+                            <span class="material-symbols-outlined" style="font-size: 20px;">assignment_turned_in</span>
+                        </div>
+                        <span
+                            class="flex items-center text-on-tertiary-container font-label-sm text-label-sm bg-tertiary-fixed/30 px-sm py-[2px] rounded-full">
+                            <span class="material-symbols-outlined" style="font-size: 14px;">arrow_upward</span>
+                            <span class="ml-xs">+5.6%</span>
+                        </span>
+                    </div>
+                    <div class="mt-2">
+                        <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">AVG
+                            SCORE</p>
+                        <p class="font-headline-md text-headline-md text-primary font-bold mt-xs" id="avgScoreKpi">78.4%
+                        </p>
+                    </div>
+                    <div class="flex items-end h-8 gap-[3px] mt-2">
+                        <div class="flex-1 bg-secondary-container h-[40%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-secondary-container h-[55%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-secondary-container h-[50%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-secondary-container h-[65%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-secondary h-[80%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-secondary-container h-[70%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-secondary-container h-[60%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-secondary-container h-[75%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-secondary-container h-[65%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-secondary-container h-[85%] rounded-t-sm"></div>
+                    </div>
+                </div>
+                <!-- KPI 2: Students Assessed -->
+                <div
+                    class="kpi-card bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/20 shadow-sm flex flex-col justify-between h-36">
+                    <div class="flex justify-between items-start">
+                        <div class="p-2 bg-tertiary-fixed rounded-lg text-on-tertiary-fixed-variant">
+                            <span class="material-symbols-outlined" style="font-size: 20px;">group</span>
+                        </div>
+                        <span
+                            class="flex items-center text-on-tertiary-container font-label-sm text-label-sm bg-tertiary-fixed/30 px-sm py-[2px] rounded-full">
+                            <span class="material-symbols-outlined" style="font-size: 14px;">arrow_upward</span>
+                            <span class="ml-xs">+12%</span>
+                        </span>
+                    </div>
+                    <div class="mt-2">
+                        <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">STUDENTS
+                            ASSESSED</p>
+                        <p class="font-headline-md text-headline-md text-primary font-bold mt-xs"
+                            id="studentsAssessedKpi">842</p>
+                    </div>
+                    <div class="flex items-end h-8 gap-[3px] mt-2">
+                        <div class="flex-1 bg-tertiary-fixed h-[30%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-tertiary-fixed h-[45%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-tertiary-fixed h-[40%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-tertiary-fixed h-[55%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-tertiary-fixed-dim h-[75%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-tertiary-fixed h-[65%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-tertiary-fixed h-[50%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-tertiary-fixed h-[60%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-tertiary-fixed h-[70%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-tertiary-fixed-dim h-[90%] rounded-t-sm"></div>
+                    </div>
+                </div>
+                <!-- KPI 3: Papers Evaluated -->
+                <div
+                    class="kpi-card bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/20 shadow-sm flex flex-col justify-between h-36">
+                    <div class="flex justify-between items-start">
+                        <div class="p-2 bg-error-container rounded-lg text-on-error-container">
+                            <span class="material-symbols-outlined" style="font-size: 20px;">fact_check</span>
+                        </div>
+                        <span
+                            class="flex items-center text-error font-label-sm text-label-sm bg-error-container px-sm py-[2px] rounded-full">
+                            <span class="material-symbols-outlined" style="font-size: 14px;">arrow_downward</span>
+                            <span class="ml-xs">-3%</span>
+                        </span>
+                    </div>
+                    <div class="mt-2">
+                        <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">PAPERS
+                            EVALUATED</p>
+                        <p class="font-headline-md text-headline-md text-primary font-bold mt-xs"
+                            id="papersEvaluatedKpi">1,245</p>
+                    </div>
+                    <div class="flex items-end h-8 gap-[3px] mt-2">
+                        <div class="flex-1 bg-error/40 h-[75%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-error/40 h-[70%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-error/40 h-[65%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-error/40 h-[60%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-error h-[50%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-error/40 h-[55%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-error/40 h-[48%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-error/40 h-[45%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-error/40 h-[40%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-error h-[35%] rounded-t-sm"></div>
+                    </div>
+                </div>
+                <!-- KPI 4: Pass Rate -->
+                <div
+                    class="kpi-card bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/20 shadow-sm flex flex-col justify-between h-36">
+                    <div class="flex justify-between items-start">
+                        <div class="p-2 bg-[#fef3c7] rounded-lg text-[#d97706]">
+                            <span class="material-symbols-outlined" style="font-size: 20px;">workspace_premium</span>
+                        </div>
+                        <span
+                            class="flex items-center text-on-tertiary-container font-label-sm text-label-sm bg-tertiary-fixed/30 px-sm py-[2px] rounded-full">
+                            <span class="material-symbols-outlined" style="font-size: 14px;">arrow_upward</span>
+                            <span class="ml-xs">+7.2%</span>
+                        </span>
+                    </div>
+                    <div class="mt-2">
+                        <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">PASS
+                            RATE</p>
+                        <p class="font-headline-md text-headline-md text-primary font-bold mt-xs" id="passRateKpi">86.2%
+                        </p>
+                    </div>
+                    <div class="flex items-end h-8 gap-[3px] mt-2">
+                        <div class="flex-1 bg-amber-400/40 h-[65%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-amber-400/40 h-[70%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-amber-400/40 h-[68%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-amber-400/40 h-[75%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-amber-500 h-[82%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-amber-400/40 h-[80%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-amber-400/40 h-[78%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-amber-400/40 h-[83%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-amber-400/40 h-[81%] rounded-t-sm"></div>
+                        <div class="flex-1 bg-amber-500 h-[86%] rounded-t-sm"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Bento Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+
+                <!-- LEFT COLUMN (8 cols) -->
+                <div class="col-span-12 lg:col-span-8 flex flex-col gap-lg">
+
+                    <!-- Student Performance Overview Table -->
+                    <section
+                        class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col"
+                        id="perfTableSection">
+                        <div
+                            class="p-lg border-b border-outline-variant/20 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-md">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary"
+                                    style="font-size: 24px;">assessment</span>
+                                <h2 class="font-headline-sm text-headline-sm text-primary font-bold">Student Performance
+                                    Overview</h2>
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-sm w-full sm:w-auto">
+                                <div class="relative flex-1 sm:w-64">
+                                    <span
+                                        class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant"
+                                        style="font-size: 18px;">search</span>
+                                    <input id="tableSearchInput" onkeyup="handleTableSearch()"
+                                        class="w-full pl-xl pr-sm py-sm rounded-lg bg-surface-container-low border border-outline-variant/30 focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-sm text-body-sm text-on-surface outline-none"
+                                        placeholder="Search students..." type="text" />
+                                </div>
+                                <button onclick="toggleTableSort()" id="sortBtn"
+                                    class="px-md py-sm rounded-lg bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:bg-surface-container-high transition-colors flex items-center justify-center gap-xs font-label-sm">
+                                    <span class="material-symbols-outlined" style="font-size: 18px;">sort</span>
+                                    <span>Sort Score</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Data Table -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse" id="perfTable">
+                                <thead>
+                                    <tr class="bg-surface-bright border-b border-outline-variant/20">
+                                        <th class="py-sm px-lg w-10">
+                                            <input type="checkbox" id="selectAllCheckbox" class="row-checkbox"
+                                                onchange="toggleSelectAll(this)" title="Select all" />
+                                        </th>
+                                        <th
+                                            class="py-sm px-lg font-label-sm text-label-sm text-on-surface-variant font-semibold uppercase tracking-wider">
+                                            Student Name</th>
+                                        <th
+                                            class="py-sm px-lg font-label-sm text-label-sm text-on-surface-variant font-semibold uppercase tracking-wider">
+                                            Exam</th>
+                                        <th
+                                            class="py-sm px-lg font-label-sm text-label-sm text-on-surface-variant font-semibold uppercase tracking-wider">
+                                            Paper</th>
+                                        <th
+                                            class="py-sm px-lg font-label-sm text-label-sm text-on-surface-variant font-semibold uppercase tracking-wider">
+                                            Score</th>
+                                        <th
+                                            class="py-sm px-lg font-label-sm text-label-sm text-on-surface-variant font-semibold uppercase tracking-wider">
+                                            Status</th>
+                                        <th
+                                            class="py-sm px-lg font-label-sm text-label-sm text-on-surface-variant font-semibold uppercase tracking-wider text-right">
+                                            Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="studentTableBody" class="divide-y divide-outline-variant/10"></tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination Footer -->
+                        <div
+                            class="p-md border-t border-outline-variant/20 flex flex-col sm:flex-row justify-between items-center gap-md text-on-surface-variant font-body-sm text-body-sm">
+                            <div class="flex items-center gap-sm">
+                                <select id="pageSizeSelect" onchange="handlePageSizeChange()"
+                                    class="px-md py-1 border border-outline-variant/30 rounded-lg bg-surface-container-low font-label-sm text-label-sm text-on-surface-variant cursor-pointer">
+                                    <option value="5">5 per page</option>
+                                    <option value="10" selected>10 per page</option>
+                                    <option value="25">25 per page</option>
+                                </select>
+                                <span id="paginationInfo">Showing 1 to 5 of 842 students</span>
+                            </div>
+                            <div class="flex gap-1" id="paginationControls"></div>
+                        </div>
+                    </section>
+
+                    <!-- Recent Evaluations Timeline -->
+                    <section
+                        class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 p-lg flex flex-col">
+                        <div class="flex justify-between items-center mb-lg">
+                            <h2
+                                class="font-headline-sm text-headline-sm text-primary font-bold flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary"
+                                    style="font-size: 24px;">assignment_turned_in</span>
+                                Recent Evaluations
+                            </h2>
+                            <button onclick="showToast('Loading full history...')"
+                                class="text-secondary hover:text-primary font-label-md text-label-md transition-colors"
+                                id="viewAllEvaluationsBtn">View all</button>
+                        </div>
+                        <div class="relative">
+                            <div class="absolute left-6 top-2 bottom-2 w-[2px] bg-surface-container-high"></div>
+                            <div class="space-y-lg relative">
+                                <!-- Timeline Item 1 -->
+                                <div class="flex gap-md items-start group">
+                                    <div
+                                        class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container border-4 border-surface-container-lowest flex items-center justify-center font-bold text-sm shrink-0 shadow-sm relative z-10">
+                                        PS</div>
+                                    <div
+                                        class="flex-1 bg-surface-container-low rounded-xl p-md flex flex-col sm:flex-row sm:items-center justify-between gap-sm border border-outline-variant/10 group-hover:border-secondary/30 transition-all">
+                                        <div>
+                                            <p class="font-label-md text-label-md text-primary font-bold">Priya Sharma —
+                                                Writing (Paper 3)</p>
+                                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Evaluated
+                                                by you</p>
+                                        </div>
+                                        <div class="flex items-center gap-md shrink-0 sm:text-right">
+                                            <div>
+                                                <p class="font-label-md text-label-md text-primary font-bold">85 / 100
+                                                </p>
+                                                <p class="font-label-sm text-label-sm text-outline mt-xs">2 hours ago
+                                                </p>
+                                            </div>
+                                            <button onclick="openAnswerSheetModal('2')"
+                                                class="p-2 hover:bg-surface-container-high rounded-full text-secondary transition-colors"
+                                                title="Review">
+                                                <span class="material-symbols-outlined"
+                                                    style="font-size: 20px;">visibility</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Timeline Item 2 -->
+                                <div class="flex gap-md items-start group">
+                                    <div
+                                        class="w-12 h-12 rounded-full bg-[#fce7f3] text-[#db2777] border-4 border-surface-container-lowest flex items-center justify-center font-bold text-sm shrink-0 shadow-sm relative z-10">
+                                        RK</div>
+                                    <div
+                                        class="flex-1 bg-surface-container-low rounded-xl p-md flex flex-col sm:flex-row sm:items-center justify-between gap-sm border border-outline-variant/10 group-hover:border-secondary/30 transition-all">
+                                        <div>
+                                            <p class="font-label-md text-label-md text-primary font-bold">Rohit Kumar —
+                                                Reading (Paper 1)</p>
+                                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Evaluated
+                                                by you</p>
+                                        </div>
+                                        <div class="flex items-center gap-md shrink-0 sm:text-right">
+                                            <div>
+                                                <p class="font-label-md text-label-md text-primary font-bold">70 / 100
+                                                </p>
+                                                <p class="font-label-sm text-label-sm text-outline mt-xs">3 hours ago
+                                                </p>
+                                            </div>
+                                            <button onclick="openAnswerSheetModal('3')"
+                                                class="p-2 hover:bg-surface-container-high rounded-full text-secondary transition-colors"
+                                                title="Review">
+                                                <span class="material-symbols-outlined"
+                                                    style="font-size: 20px;">visibility</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- RIGHT COLUMN (4 cols) -->
+                <div class="col-span-12 lg:col-span-4 flex flex-col gap-lg">
+
+                    <!-- Top Performers -->
+                    <section
+                        class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 p-lg flex flex-col">
+                        <div class="flex justify-between items-center mb-lg">
+                            <h2
+                                class="font-headline-sm text-headline-sm text-primary font-bold flex items-center gap-2">
+                                <span class="material-symbols-outlined text-amber-500"
+                                    style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+                                Top Performers
+                            </h2>
+                            <button onclick="showToast('Loading full roster...')"
+                                class="text-secondary hover:text-primary font-label-md text-label-md transition-colors"
+                                id="viewAllPerformersBtn">View all</button>
+                        </div>
+                        <div class="flex flex-col gap-sm" id="topPerformersContainer">
+                            <div
+                                class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-xl transition-colors">
+                                <div class="flex items-center gap-md">
+                                    <span
+                                        class="w-6 h-6 flex items-center justify-center font-bold font-headline-sm text-amber-600 bg-amber-50 rounded-full border border-amber-200 text-sm">1</span>
+                                    <div>
+                                        <p class="font-label-md text-label-md text-primary font-bold">Ananya Singh</p>
+                                        <p class="text-[11px] text-on-surface-variant">Score: 92/100</p>
+                                    </div>
+                                </div>
+                                <span
+                                    class="px-sm py-[2px] bg-tertiary-fixed/30 text-tertiary font-bold text-label-sm rounded-full">92%</span>
+                            </div>
+                            <div
+                                class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-xl transition-colors">
+                                <div class="flex items-center gap-md">
+                                    <span
+                                        class="w-6 h-6 flex items-center justify-center font-bold font-headline-sm text-slate-500 bg-slate-50 rounded-full border border-slate-200 text-sm">2</span>
+                                    <div>
+                                        <p class="font-label-md text-label-md text-primary font-bold">Arjun Reddy</p>
+                                        <p class="text-[11px] text-on-surface-variant">Score: 86/100</p>
+                                    </div>
+                                </div>
+                                <span
+                                    class="px-sm py-[2px] bg-primary-fixed/50 text-primary font-bold text-label-sm rounded-full">86%</span>
+                            </div>
+                            <div
+                                class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-xl transition-colors">
+                                <div class="flex items-center gap-md">
+                                    <span
+                                        class="w-6 h-6 flex items-center justify-center font-bold font-headline-sm text-amber-800 bg-[#fffbeb] rounded-full border border-amber-300 text-sm">3</span>
+                                    <div>
+                                        <p class="font-label-md text-label-md text-primary font-bold">Priya Sharma</p>
+                                        <p class="text-[11px] text-on-surface-variant">Score: 72/100</p>
+                                    </div>
+                                </div>
+                                <span
+                                    class="px-sm py-[2px] bg-secondary-fixed/50 text-secondary font-bold text-label-sm rounded-full">72%</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Performance by Paper (Donut Chart) -->
+                    <section
+                        class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 p-lg flex flex-col">
+                        <h2
+                            class="font-headline-sm text-headline-sm text-primary font-bold flex items-center gap-2 mb-lg">
+                            <span class="material-symbols-outlined text-primary"
+                                style="font-size: 24px;">donut_large</span>
+                            Performance by Paper
+                        </h2>
+                        <div class="flex items-center justify-between gap-md py-md">
+                            <div class="relative w-32 h-32 shrink-0">
+                                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 42 42">
+                                    <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#f1f5f9"
+                                        stroke-width="5"></circle>
+                                    <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#395f94"
+                                        stroke-width="5" stroke-dasharray="30 70" stroke-dashoffset="0"></circle>
+                                    <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#34a999"
+                                        stroke-width="5" stroke-dasharray="25 75" stroke-dashoffset="-30"></circle>
+                                    <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#eab308"
+                                        stroke-width="5" stroke-dasharray="20 80" stroke-dashoffset="-55"></circle>
+                                    <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#ba1a1a"
+                                        stroke-width="5" stroke-dasharray="25 75" stroke-dashoffset="-75"></circle>
+                                </svg>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                    <span class="text-headline-sm font-bold text-primary"
+                                        id="donutCentralVal">78.4%</span>
+                                    <span
+                                        class="text-[9px] text-on-surface-variant uppercase font-semibold">Average</span>
+                                </div>
+                            </div>
+                            <div class="flex-1 flex flex-col gap-xs font-body-sm text-[13px]">
+                                <div class="flex items-center justify-between">
+                                    <span class="flex items-center gap-xs text-on-surface-variant font-medium"><span
+                                            class="w-3 h-3 rounded-full bg-secondary shrink-0"></span> Reading (Paper
+                                        1)</span>
+                                    <span class="font-bold text-primary">85%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="flex items-center gap-xs text-on-surface-variant font-medium"><span
+                                            class="w-3 h-3 rounded-full bg-tertiary-fixed-dim shrink-0"></span>
+                                        Listening (Paper 2)</span>
+                                    <span class="font-bold text-primary">78%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="flex items-center gap-xs text-on-surface-variant font-medium"><span
+                                            class="w-3 h-3 rounded-full bg-yellow-500 shrink-0"></span> Writing (Paper
+                                        3)</span>
+                                    <span class="font-bold text-primary">72%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="flex items-center gap-xs text-on-surface-variant font-medium"><span
+                                            class="w-3 h-3 rounded-full bg-error shrink-0"></span> Speaking (Paper
+                                        4)</span>
+                                    <span class="font-bold text-primary">80%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Quick Actions -->
+                    <section
+                        class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 p-lg flex flex-col">
+                        <h2
+                            class="font-headline-sm text-headline-sm text-primary font-bold flex items-center gap-2 mb-lg">
+                            <span class="material-symbols-outlined text-primary"
+                                style="font-size: 24px;">offline_bolt</span>
+                            Quick Actions
+                        </h2>
+                        <div class="flex flex-col gap-sm">
+                            <button onclick="openSendScoreModal()"
+                                class="w-full flex items-center gap-md p-md bg-surface-container-low hover:bg-surface-container-high active:scale-[0.98] border border-outline-variant/10 rounded-xl text-left transition-all group"
+                                id="actionSendScores">
+                                <div
+                                    class="p-2 bg-primary-fixed rounded-lg text-primary group-hover:scale-105 transition-transform">
+                                    <span class="material-symbols-outlined" style="font-size: 20px;">send</span>
+                                </div>
+                                <div>
+                                    <p class="font-label-md text-label-md text-primary font-bold">Send scores to
+                                        selected students</p>
+                                    <p class="text-[11px] text-on-surface-variant mt-xs">Share results via email</p>
+                                </div>
+                            </button>
+                            <button onclick="simulateGenerateReport()"
+                                class="w-full flex items-center gap-md p-md bg-surface-container-low hover:bg-surface-container-high active:scale-[0.98] border border-outline-variant/10 rounded-xl text-left transition-all group"
+                                id="actionGenerateReport">
+                                <div
+                                    class="p-2 bg-tertiary-fixed rounded-lg text-on-tertiary-fixed-variant group-hover:scale-105 transition-transform">
+                                    <span class="material-symbols-outlined" style="font-size: 20px;">analytics</span>
+                                </div>
+                                <div>
+                                    <p class="font-label-md text-label-md text-primary font-bold">Generate performance
+                                        report</p>
+                                    <p class="text-[11px] text-on-surface-variant mt-xs">Download detailed analytics</p>
+                                </div>
+                            </button>
+                            <button onclick="showToast('Parent meeting scheduler opening...')"
+                                class="w-full flex items-center gap-md p-md bg-surface-container-low hover:bg-surface-container-high active:scale-[0.98] border border-outline-variant/10 rounded-xl text-left transition-all group"
+                                id="actionScheduleMeeting">
+                                <div
+                                    class="p-2 bg-[#fef3c7] rounded-lg text-[#d97706] group-hover:scale-105 transition-transform">
+                                    <span class="material-symbols-outlined" style="font-size: 20px;">groups</span>
+                                </div>
+                                <div>
+                                    <p class="font-label-md text-label-md text-primary font-bold">Schedule parent
+                                        meeting</p>
+                                    <p class="text-[11px] text-on-surface-variant mt-xs">Discuss student progress</p>
+                                </div>
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL: SEND SCORE -->
+    <div id="sendScoreModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-md">
+        <div class="absolute inset-0 bg-inverse-surface/40 backdrop-blur-sm" onclick="closeSendScoreModal()"></div>
+        <div
+            class="relative bg-surface-container-lowest rounded-2xl shadow-2xl w-full max-w-lg depth-2 overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="flex items-center justify-between px-lg py-md border-b border-outline-variant/30 shrink-0">
+                <div>
+                    <h2 class="font-headline-sm text-headline-sm text-primary">Send Scores</h2>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Send results to selected students
+                        via email</p>
+                </div>
+                <button onclick="closeSendScoreModal()"
+                    class="p-sm rounded-full hover:bg-surface-container text-on-surface-variant">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-lg flex flex-col gap-md custom-scrollbar">
+                <div class="bg-primary-fixed/20 border border-primary-fixed rounded-xl p-md flex items-start gap-sm">
+                    <span class="material-symbols-outlined text-primary shrink-0" style="font-size: 20px;">info</span>
+                    <p class="font-body-sm text-body-sm text-primary">Scores will be sent to all selected students'
+                        registered email addresses with their individual scores, status, and teacher remarks.</p>
+                </div>
+                <div id="sendScoreStudentList" class="flex flex-col gap-sm"></div>
+                <div class="flex flex-col gap-xs">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Custom
+                        Message (Optional)</label>
+                    <textarea id="sendScoreMessage" rows="3"
+                        placeholder="Add a personal message to include with the scores..."
+                        class="w-full px-md py-sm border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-xl outline-none text-primary font-body-sm"></textarea>
+                </div>
+            </div>
+            <div class="px-lg py-md border-t border-outline-variant/30 flex justify-end gap-sm shrink-0">
+                <button onclick="closeSendScoreModal()"
+                    class="px-lg py-sm border border-outline-variant text-on-surface-variant rounded-xl font-label-md hover:bg-surface-container transition-colors">Cancel</button>
+                <button onclick="confirmSendScores()"
+                    class="flex items-center gap-xs px-lg py-sm bg-primary text-on-primary rounded-xl font-label-md hover:bg-primary-container transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">send</span> Send Scores
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: VIEW ANSWER SHEET -->
+    <div id="answerSheetModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-md">
+        <div class="absolute inset-0 bg-inverse-surface/40 backdrop-blur-sm" onclick="closeAnswerSheetModal()"></div>
+        <div
+            class="relative bg-surface-container-lowest rounded-2xl shadow-2xl w-full max-w-5xl depth-2 overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Modal Header -->
+            <div
+                class="flex items-center justify-between px-lg py-md border-b border-outline-variant/30 shrink-0 bg-surface-container-low">
+                <div class="flex items-center gap-md">
+                    <div id="modalAvatar"
+                        class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm"></div>
+                    <div>
+                        <h2 class="font-headline-sm text-headline-sm text-primary font-bold" id="modalStudentName">
+                            Student Answer Sheet</h2>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant" id="modalStudentReg">STU000</p>
+                    </div>
+                </div>
+                <button onclick="closeAnswerSheetModal()"
+                    class="p-sm rounded-full hover:bg-surface-container-high text-on-surface-variant transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div class="flex-grow overflow-y-auto p-lg custom-scrollbar">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+                    <!-- Left: Answer Sheet (8 cols) -->
+                    <div class="lg:col-span-8 flex flex-col gap-lg">
+                        <div
+                            class="bg-surface-container-low p-md rounded-xl border border-outline-variant/10 grid grid-cols-2 sm:grid-cols-4 gap-md text-sm">
+                            <div>
+                                <p class="text-on-surface-variant font-label-sm text-label-sm uppercase">Exam</p>
+                                <p class="font-bold text-primary mt-xs" id="modalExamName">German A1</p>
+                            </div>
+                            <div>
+                                <p class="text-on-surface-variant font-label-sm text-label-sm uppercase">Date Assessed
+                                </p>
+                                <p class="font-bold text-primary mt-xs" id="modalExamDate">May 20, 2025</p>
+                            </div>
+                            <div>
+                                <p class="text-on-surface-variant font-label-sm text-label-sm uppercase">Paper</p>
+                                <p class="font-bold text-primary mt-xs" id="modalExamPaper">Reading (Paper 1)</p>
+                            </div>
+                            <div>
+                                <p class="text-on-surface-variant font-label-sm text-label-sm uppercase">Max Score</p>
+                                <p class="font-bold text-primary mt-xs">100 Marks</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-md">
+                            <h3
+                                class="font-headline-sm text-headline-sm text-primary font-bold flex items-center gap-xs">
+                                <span class="material-symbols-outlined">quiz</span> Answer Script & Evaluation Breakdown
+                            </h3>
+                            <!-- Objective Section -->
+                            <div
+                                class="bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-md flex flex-col gap-sm">
+                                <div class="flex justify-between items-center pb-sm border-b border-outline-variant/10">
+                                    <h4
+                                        class="font-label-md text-label-md text-primary font-bold flex items-center gap-xs">
+                                        <span class="material-symbols-outlined text-tertiary">check_circle</span> Part
+                                        A: Objective Assessment (Auto-Graded)
+                                    </h4>
+                                    <span class="font-bold text-primary" id="modalObjScore">50 / 50 Marks</span>
+                                </div>
+                                <div class="space-y-sm text-sm pt-xs">
+                                    <div
+                                        class="p-sm bg-surface-container-low rounded-lg border border-outline-variant/10">
+                                        <p class="font-semibold text-primary">Question 1 (Vocabulary Matching)</p>
+                                        <p class="text-on-surface-variant mt-xs">Match "Brot" to its correct meaning.
+                                        </p>
+                                        <p
+                                            class="text-tertiary font-bold flex items-center gap-xs mt-sm bg-tertiary/5 p-xs rounded">
+                                            <span class="material-symbols-outlined" style="font-size:16px;">check</span>
+                                            Student Answer: "Bread" (Correct, +10 points)
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="p-sm bg-surface-container-low rounded-lg border border-outline-variant/10">
+                                        <p class="font-semibold text-primary">Question 2 (Sentence Completion)</p>
+                                        <p class="text-on-surface-variant mt-xs">Complete: Ich ______ aus Berlin.</p>
+                                        <p
+                                            class="text-tertiary font-bold flex items-center gap-xs mt-sm bg-tertiary/5 p-xs rounded">
+                                            <span class="material-symbols-outlined" style="font-size:16px;">check</span>
+                                            Student Answer: "komme" (Correct, +10 points)
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="p-sm bg-surface-container-low rounded-lg border border-outline-variant/10">
+                                        <p class="font-semibold text-primary">Question 3 (Article Selection)</p>
+                                        <p class="text-on-surface-variant mt-xs">Choose the correct article: ___ Hund
+                                            ist braun.</p>
+                                        <p
+                                            class="text-error font-bold flex items-center gap-xs mt-sm bg-error/5 p-xs rounded">
+                                            <span class="material-symbols-outlined" style="font-size:16px;">close</span>
+                                            Student Answer: "Das" (Incorrect — Correct: "Der", 0 points)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Subjective Section -->
+                            <div
+                                class="bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-md flex flex-col gap-sm">
+                                <div class="flex justify-between items-center pb-sm border-b border-outline-variant/10">
+                                    <h4
+                                        class="font-label-md text-label-md text-primary font-bold flex items-center gap-xs">
+                                        <span class="material-symbols-outlined text-secondary">edit_note</span> Part B:
+                                        Subjective Evaluation (Teacher Graded)
+                                    </h4>
+                                    <span class="font-bold text-primary">Max 50 Marks</span>
+                                </div>
+                                <div class="space-y-md text-sm pt-xs">
+                                    <div
+                                        class="p-sm bg-surface-container-low rounded-lg border border-outline-variant/10">
+                                        <p class="font-semibold text-primary">Prompt: Free-form Paragraph Writing</p>
+                                        <p class="text-on-surface-variant mt-xs">Write a brief email to a friend about
+                                            your last vacation. Write at least 4 sentences in German.</p>
+                                        <div
+                                            class="mt-md p-md bg-surface-container-lowest border border-outline-variant/30 rounded-lg font-mono text-primary leading-relaxed">
+                                            Liebe Julia, ich hoffe, es geht dir gut. Letzte Woche war ich in Berlin. Es
+                                            war wunderbar und sehr interessant. Das Wetter war gut. Ich habe viele
+                                            Museen besucht. Wir müssen uns bald treffen!
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-md pt-sm">
+                                        <div class="flex flex-col gap-xs">
+                                            <label for="evalSubjectiveInput"
+                                                class="font-label-sm text-label-sm text-on-surface-variant uppercase font-bold">Assign
+                                                Subjective Score (Max 50) *</label>
+                                            <input type="number" id="evalSubjectiveInput" min="0" max="50"
+                                                oninput="updateEvaluationTotals()"
+                                                class="w-full px-md py-sm border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-xl outline-none font-bold text-primary" />
+                                        </div>
+                                        <div class="flex flex-col gap-xs sm:col-span-2">
+                                            <label for="evalRemarksInput"
+                                                class="font-label-sm text-label-sm text-on-surface-variant uppercase font-bold">Teacher
+                                                Feedback & Remarks *</label>
+                                            <textarea id="evalRemarksInput" rows="3"
+                                                placeholder="Enter custom feedback..."
+                                                class="w-full px-md py-sm border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-xl outline-none text-primary"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right: Score Summary (4 cols) -->
+                    <div class="lg:col-span-4 flex flex-col gap-md">
+                        <div
+                            class="bg-surface-container-low border border-outline-variant/20 rounded-xl p-lg flex flex-col gap-md sticky top-0">
+                            <h3
+                                class="font-label-md text-label-md text-primary font-bold uppercase tracking-wider border-b border-outline-variant/20 pb-sm">
+                                Score Summary</h3>
+                            <div class="space-y-sm text-sm">
+                                <div class="flex justify-between"><span class="text-on-surface-variant">Objective
+                                        Score:</span><span class="font-bold text-primary" id="summaryObjScore">50 /
+                                        50</span></div>
+                                <div class="flex justify-between"><span class="text-on-surface-variant">Subjective
+                                        Score:</span><span class="font-bold text-primary" id="summarySubjScore">36 /
+                                        50</span></div>
+                                <div class="border-t border-dashed border-outline-variant/30 my-sm"></div>
+                                <div class="flex justify-between items-baseline"><span
+                                        class="text-on-surface-variant font-semibold">Total Final Score:</span><span
+                                        class="text-headline-sm font-bold text-primary" id="summaryTotalScore">86 /
+                                        100</span></div>
+                                <div class="flex justify-between items-center mt-xs"><span
+                                        class="text-on-surface-variant font-semibold">Percentage:</span><span
+                                        class="text-headline-md font-bold text-secondary"
+                                        id="summaryPercentage">86.0%</span></div>
+                            </div>
+                            <div class="mt-sm">
+                                <div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+                                    <div class="progress-fill h-full bg-secondary rounded-full" id="summaryProgressBar"
+                                        style="width: 86%"></div>
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-center justify-between border-t border-outline-variant/20 pt-md mt-sm">
+                                <span class="font-label-sm text-label-sm uppercase text-on-surface-variant">Evaluation
+                                    Status:</span>
+                                <span class="px-md py-1 rounded-full font-bold text-label-sm"
+                                    id="summaryStatusBadge">Pass</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-sm mt-md">
+                            <button onclick="handlePublishResult()"
+                                class="w-full flex items-center justify-center gap-xs px-lg py-sm bg-primary text-on-primary rounded-xl font-label-md hover:bg-primary-container active:scale-[0.98] transition-all cursor-pointer">
+                                <span class="material-symbols-outlined">publish</span> Publish Result
+                            </button>
+                            <button onclick="handleSendEmail()"
+                                class="w-full flex items-center justify-center gap-xs px-lg py-sm border border-outline text-primary rounded-xl font-label-md hover:bg-surface-container-low active:scale-[0.98] transition-all cursor-pointer">
+                                <span class="material-symbols-outlined">mail</span> Send Result Email
+                            </button>
+                            <button onclick="saveEvaluationChanges()"
+                                class="w-full flex items-center justify-center gap-xs px-lg py-sm bg-tertiary text-on-tertiary rounded-xl font-label-md hover:bg-tertiary-container active:scale-[0.98] transition-all cursor-pointer">
+                                <span class="material-symbols-outlined">save</span> Save and Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed bottom-lg right-lg z-[60] flex flex-col gap-sm pointer-events-none"></div>
+
+    <!-- Django Template Hook -->
+    <div class="hidden" aria-hidden="true">
+        {% for student in students %}
+        <div><span>{{ student.name }}</span><span>{{ student.exam }}</span><span>{{ student.score }}</span></div>
+        {% endfor %}
+    </div>
+
+    <!-- Controller Scripts -->
+    <script>
+        // Student Data
+        let students = [
+            {% if students %}
+        {% for student in students %}
+        {
+            id: "{{ student.id|escapejs }}", name: "{{ student.name|escapejs }}", regNumber: "{{ student.reg_number|escapejs }}",
+                exam: "{{ student.exam|escapejs }}", date: "{{ student.date|escapejs }}", paper: "{{ student.paper|escapejs }}",
+                    score: {{ student.score|default:0 }}, percentage: {{ student.percentage|default:0 }}, status: "{{ student.status|escapejs }}",
+                        initials: "{{ student.initials|escapejs }}", avatarColor: "{{ student.avatar_color|escapejs }}",
+                            objectiveScore: {{ student.objective_score|default:50 }}, subjectiveScore: {{ student.subjective_score|default:36 }},
+            remarks: "{{ student.remarks|escapejs }}", class: "{{ student.class|escapejs }}"
+        } {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+        {% else %}
+        { id: "1", name: "Arjun Reddy", regNumber: "STU2025001", exam: "German A1", date: "May 20, 2025", paper: "Reading (Paper 1)", score: 86, percentage: 86, status: "Pass", initials: "AR", avatarColor: "bg-tertiary-fixed text-tertiary-container", objectiveScore: 50, subjectiveScore: 36, remarks: "Outstanding comprehension. Addressed all reading points correctly with minor formatting issues.", class: "Class A" },
+        { id: "2", name: "Priya Sharma", regNumber: "STU2025002", exam: "German A1", date: "May 20, 2025", paper: "Listening (Paper 2)", score: 72, percentage: 72, status: "Pass", initials: "PS", avatarColor: "bg-secondary-container text-on-secondary-container", objectiveScore: 40, subjectiveScore: 32, remarks: "Good listening comprehension. Missed some nuances in the second recording.", class: "Class A" },
+        { id: "3", name: "Rohit Kumar", regNumber: "STU2025003", exam: "German A1", date: "May 20, 2025", paper: "Writing (Paper 3)", score: 65, percentage: 65, status: "Pass", initials: "RK", avatarColor: "bg-[#fce7f3] text-[#db2777]", objectiveScore: 30, subjectiveScore: 35, remarks: "Writing structure is solid, but grammar and spelling need improvement.", class: "Class B" },
+        { id: "4", name: "Ananya Singh", regNumber: "STU2025004", exam: "German A1", date: "May 20, 2025", paper: "Reading (Paper 1)", score: 92, percentage: 92, status: "Pass", initials: "AS", avatarColor: "bg-primary-fixed text-primary", objectiveScore: 50, subjectiveScore: 42, remarks: "Perfect reading score. Highly articulate responses.", class: "Class A" },
+        { id: "5", name: "Mohit Patel", regNumber: "STU2025005", exam: "German A1", date: "May 20, 2025", paper: "Listening (Paper 2)", score: 58, percentage: 58, status: "Fail", initials: "MP", avatarColor: "bg-[#fef3c7] text-[#d97706]", objectiveScore: 30, subjectiveScore: 28, remarks: "Struggled with fast speech comprehension. Failed to meet the minimum threshold.", class: "Class B" },
+        { id: "6", name: "Sneha Iyer", regNumber: "STU2025006", exam: "German B2", date: "May 18, 2025", paper: "Writing (Paper 3)", score: 78, percentage: 78, status: "Pass", initials: "SI", avatarColor: "bg-secondary-fixed text-on-secondary-fixed-variant", objectiveScore: 38, subjectiveScore: 40, remarks: "Good essay structure, minor grammatical issues.", class: "Class A" },
+        { id: "7", name: "Vikram Desai", regNumber: "STU2025007", exam: "German B2", date: "May 18, 2025", paper: "Speaking (Paper 4)", score: 81, percentage: 81, status: "Pass", initials: "VD", avatarColor: "bg-tertiary-fixed text-on-tertiary-fixed-variant", objectiveScore: 41, subjectiveScore: 40, remarks: "Excellent pronunciation and fluency.", class: "Class B" },
+        { id: "8", name: "Kavya Nair", regNumber: "STU2025008", exam: "German A1", date: "May 20, 2025", paper: "Speaking (Paper 4)", score: 88, percentage: 88, status: "Pass", initials: "KN", avatarColor: "bg-[#ede9fe] text-[#7c3aed]", objectiveScore: 45, subjectiveScore: 43, remarks: "Highly confident speaker. Very natural conversation flow.", class: "Class A" },
+        { id: "9", name: "Aditya Mehra", regNumber: "STU2025009", exam: "German B2", date: "May 18, 2025", paper: "Reading (Paper 1)", score: 54, percentage: 54, status: "Fail", initials: "AM", avatarColor: "bg-error-container text-on-error-container", objectiveScore: 28, subjectiveScore: 26, remarks: "Below threshold. Needs significant improvement in reading comprehension.", class: "Class B" },
+        { id: "10", name: "Riya Gupta", regNumber: "STU2025010", exam: "German A1", date: "May 20, 2025", paper: "Listening (Paper 2)", score: 74, percentage: 74, status: "Pass", initials: "RG", avatarColor: "bg-[#fce7f3] text-[#db2777]", objectiveScore: 38, subjectiveScore: 36, remarks: "Good overall performance with room for improvement.", class: "Class A" }
+        {% endif %}
+    ];
+
+        // State
+        let filteredStudents = [...students];
+        let currentSortedAsc = null;
+        let currentPage = 1;
+        let pageSize = 10;
+        let activeStudentId = null;
+        let selectedStudentIds = new Set();
+
+        document.addEventListener('DOMContentLoaded', () => { renderTable(); });
+
+        // Toast
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'flex items-center gap-sm px-md py-sm bg-inverse-surface text-inverse-on-surface rounded-xl shadow-lg border border-outline-variant/30 text-sm font-label-md transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto';
+            const icon = document.createElement('span');
+            icon.className = 'material-symbols-outlined text-[20px]';
+            if (type === 'success') { icon.innerText = 'check_circle'; icon.className += ' text-tertiary-fixed-dim'; }
+            else if (type === 'error') { icon.innerText = 'error'; icon.className += ' text-error'; }
+            else { icon.innerText = 'info'; }
+            const text = document.createElement('span');
+            text.innerText = message;
+            toast.appendChild(icon); toast.appendChild(text); container.appendChild(toast);
+            setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 50);
+            setTimeout(() => { toast.classList.add('opacity-0'); setTimeout(() => { toast.remove(); }, 300); }, 3000);
+        }
+
+        // Filters
+        function applyFilters() {
+            const exam = document.getElementById('examFilterSelect').value;
+            const cls = document.getElementById('classFilterSelect').value;
+            filteredStudents = students.filter(s => (!exam || s.exam === exam) && (!cls || s.class === cls));
+            currentPage = 1; renderTable();
+        }
+
+        function handleTableSearch() {
+            const q = document.getElementById('tableSearchInput').value.toLowerCase();
+            applyFilters();
+            filteredStudents = filteredStudents.filter(s => s.name.toLowerCase().includes(q) || s.regNumber.toLowerCase().includes(q) || s.exam.toLowerCase().includes(q) || s.paper.toLowerCase().includes(q));
+            currentPage = 1; renderTable();
+        }
+
+        function handleGlobalSearch(event) {
+            if (event.key === 'Enter') {
+                const q = document.getElementById('globalSearchInput').value;
+                document.getElementById('tableSearchInput').value = q;
+                handleTableSearch(); showToast(`Searched for: ${q}`);
+            }
+        }
+
+        // Sort
+        function toggleTableSort() {
+            const btn = document.getElementById('sortBtn');
+            if (currentSortedAsc === null || currentSortedAsc === false) {
+                filteredStudents.sort((a, b) => a.score - b.score); currentSortedAsc = true;
+                btn.classList.add('bg-primary-fixed', 'text-primary');
+                btn.querySelector('span').innerText = 'arrow_upward'; showToast("Sorted Ascending");
+            } else {
+                filteredStudents.sort((a, b) => b.score - a.score); currentSortedAsc = false;
+                btn.classList.add('bg-primary-fixed', 'text-primary');
+                btn.querySelector('span').innerText = 'arrow_downward'; showToast("Sorted Descending");
+            }
+            renderTable();
+        }
+
+        function handlePageSizeChange() { pageSize = parseInt(document.getElementById('pageSizeSelect').value); currentPage = 1; renderTable(); }
+
+        // Select All / Row Checkboxes
+        function toggleSelectAll(cb) {
+            document.querySelectorAll('.student-row-checkbox').forEach(c => { c.checked = cb.checked; const id = c.dataset.studentId; if (cb.checked) selectedStudentIds.add(id); else selectedStudentIds.delete(id); });
+        }
+        function toggleStudentSelection(cb) {
+            const id = cb.dataset.studentId;
+            if (cb.checked) selectedStudentIds.add(id); else selectedStudentIds.delete(id);
+            const all = document.querySelectorAll('.student-row-checkbox');
+            document.getElementById('selectAllCheckbox').checked = [...all].every(c => c.checked);
+        }
+
+        // Render Table
+        function renderTable() {
+            const tbody = document.getElementById('studentTableBody');
+            tbody.innerHTML = '';
+            const total = filteredStudents.length;
+            const totalPages = Math.ceil(total / pageSize) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            const start = (currentPage - 1) * pageSize;
+            const end = Math.min(start + pageSize, total);
+            const items = filteredStudents.slice(start, end);
+
+            if (items.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="py-xl text-center text-on-surface-variant font-body-md"><div class="flex flex-col items-center gap-sm py-lg"><span class="material-symbols-outlined text-outline-variant" style="font-size:48px">search_off</span><p class="font-headline-sm text-headline-sm text-on-surface-variant">No records found</p><p class="font-body-sm text-body-sm text-on-surface-variant">Try adjusting your search or filter criteria.</p></div></td></tr>';
+            } else {
+                items.forEach(s => {
+                    let stCls = s.status === 'Pass' ? 'bg-[#ecfdf5] text-[#10b981]' : s.status === 'Fail' ? 'bg-[#fef2f2] text-[#ef4444]' : 'bg-surface-container-high text-on-surface-variant';
+                    let scCls = s.percentage >= 85 ? 'text-tertiary' : s.percentage >= 60 ? 'text-secondary' : 'text-error';
+                    const chk = selectedStudentIds.has(s.id) ? 'checked' : '';
+                    const row = document.createElement('tr');
+                    row.className = 'perf-row border-b border-outline-variant/10';
+                    row.innerHTML = `
+                    <td class="py-md px-lg"><input type="checkbox" class="row-checkbox student-row-checkbox" data-student-id="${s.id}" ${chk} onchange="toggleStudentSelection(this)" /></td>
+                    <td class="py-md px-lg"><div class="flex items-center gap-sm"><div class="w-8 h-8 rounded-full ${s.avatarColor} flex items-center justify-center font-label-sm text-label-sm font-bold shrink-0">${s.initials}</div><div><p class="font-label-md text-label-md text-primary font-bold">${s.name}</p><p class="font-body-sm text-body-sm text-on-surface-variant">${s.regNumber}</p></div></div></td>
+                    <td class="py-md px-lg"><p class="font-label-md text-label-md text-primary">${s.exam}</p><p class="text-[11px] text-on-surface-variant">${s.date}</p></td>
+                    <td class="py-md px-lg font-body-sm text-body-sm text-on-surface-variant">${s.paper}</td>
+                    <td class="py-md px-lg"><div class="flex items-center gap-sm"><span class="font-label-md text-label-md text-primary font-bold">${s.score} / 100</span><span class="font-label-sm text-label-sm font-semibold ${scCls} bg-surface-container-low px-sm py-[2px] rounded-full">${s.percentage}%</span></div></td>
+                    <td class="py-md px-lg"><span class="px-sm py-1 rounded-full font-label-sm text-label-sm font-bold ${stCls}">${s.status}</span></td>
+                    <td class="py-md px-lg text-right"><div class="flex items-center justify-end gap-xs">
+                        <button onclick="openAnswerSheetModal('${s.id}')" class="p-1.5 hover:bg-surface-container-high rounded-lg text-on-surface-variant hover:text-primary transition-all active:scale-95" title="View Answer Sheet"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+                        <button onclick="openAnswerSheetModal('${s.id}')" class="p-1.5 hover:bg-surface-container-high rounded-lg text-on-surface-variant hover:text-primary transition-all active:scale-95" title="Evaluate"><span class="material-symbols-outlined text-[20px]">description</span></button>
+                        <button onclick="quickPublishResult('${s.id}')" class="p-1.5 hover:bg-surface-container-high rounded-lg text-on-surface-variant hover:text-tertiary transition-all active:scale-95" title="Publish Result"><span class="material-symbols-outlined text-[20px]">publish</span></button>
+                        <button onclick="quickSendResult('${s.id}')" class="p-1.5 hover:bg-surface-container-high rounded-lg text-on-surface-variant hover:text-secondary transition-all active:scale-95" title="Send Score"><span class="material-symbols-outlined text-[20px]">send</span></button>
+                    </div></td>`;
+                    tbody.appendChild(row);
+                });
+            }
+
+            document.getElementById('paginationInfo').innerText = `Showing ${total === 0 ? 0 : start + 1} to ${end} of ${total} students`;
+            const ctrl = document.getElementById('paginationControls'); ctrl.innerHTML = '';
+
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'w-8 h-8 rounded flex items-center justify-center hover:bg-surface-container-high disabled:opacity-30 disabled:pointer-events-none transition-colors';
+            prevBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px">chevron_left</span>';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => { currentPage--; renderTable(); };
+            ctrl.appendChild(prevBtn);
+
+            const maxVis = 5;
+            let sp = Math.max(1, currentPage - Math.floor(maxVis / 2));
+            let ep = Math.min(totalPages, sp + maxVis - 1);
+            if (ep - sp < maxVis - 1) sp = Math.max(1, ep - maxVis + 1);
+
+            if (sp > 1) { ctrl.appendChild(mkPageBtn(1)); if (sp > 2) { const d = document.createElement('span'); d.className = 'w-8 h-8 flex items-center justify-center text-on-surface-variant text-sm'; d.innerText = '…'; ctrl.appendChild(d); } }
+            for (let i = sp; i <= ep; i++) ctrl.appendChild(mkPageBtn(i));
+            if (ep < totalPages) { if (ep < totalPages - 1) { const d = document.createElement('span'); d.className = 'w-8 h-8 flex items-center justify-center text-on-surface-variant text-sm'; d.innerText = '…'; ctrl.appendChild(d); } ctrl.appendChild(mkPageBtn(totalPages)); }
+
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'w-8 h-8 rounded flex items-center justify-center hover:bg-surface-container-high disabled:opacity-30 disabled:pointer-events-none transition-colors';
+            nextBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px">chevron_right</span>';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => { currentPage++; renderTable(); };
+            ctrl.appendChild(nextBtn);
+        }
+
+        function mkPageBtn(n) {
+            const b = document.createElement('button');
+            b.className = `w-8 h-8 rounded flex items-center justify-center font-label-sm text-label-sm transition-colors ${currentPage === n ? 'bg-primary text-on-primary font-bold shadow-sm' : 'hover:bg-surface-container-high text-on-surface-variant'}`;
+            b.innerText = n; b.onclick = () => { currentPage = n; renderTable(); }; return b;
+        }
+
+        // Answer Sheet Modal
+        function openAnswerSheetModal(id) {
+            const s = students.find(x => x.id === id); if (!s) return;
+            activeStudentId = id;
+            const av = document.getElementById('modalAvatar');
+            av.className = `w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${s.avatarColor}`; av.innerText = s.initials;
+            document.getElementById('modalStudentName').innerText = s.name;
+            document.getElementById('modalStudentReg').innerText = s.regNumber;
+            document.getElementById('modalExamName').innerText = s.exam;
+            document.getElementById('modalExamDate').innerText = s.date;
+            document.getElementById('modalExamPaper').innerText = s.paper;
+            document.getElementById('modalObjScore').innerText = `${s.objectiveScore} / 50 Marks`;
+            document.getElementById('summaryObjScore').innerText = `${s.objectiveScore} / 50`;
+            document.getElementById('evalSubjectiveInput').value = s.subjectiveScore;
+            document.getElementById('evalRemarksInput').value = s.remarks;
+            updateEvaluationTotals();
+            const m = document.getElementById('answerSheetModal');
+            m.classList.remove('hidden'); m.classList.add('flex'); document.body.style.overflow = 'hidden';
+        }
+
+        function closeAnswerSheetModal() {
+            const m = document.getElementById('answerSheetModal');
+            m.classList.add('hidden'); m.classList.remove('flex'); document.body.style.overflow = ''; activeStudentId = null;
+        }
+
+        function updateEvaluationTotals() {
+            const obj = parseInt(document.getElementById('summaryObjScore').innerText.split(' ')[0]);
+            let subj = parseInt(document.getElementById('evalSubjectiveInput').value);
+            if (isNaN(subj) || subj < 0) subj = 0; else if (subj > 50) { subj = 50; document.getElementById('evalSubjectiveInput').value = 50; }
+            const total = obj + subj; const pct = total;
+            document.getElementById('summarySubjScore').innerText = `${subj} / 50`;
+            document.getElementById('summaryTotalScore').innerText = `${total} / 100`;
+            document.getElementById('summaryPercentage').innerText = `${pct.toFixed(1)}%`;
+            document.getElementById('summaryProgressBar').style.width = `${pct}%`;
+            const bar = document.getElementById('summaryProgressBar');
+            bar.classList.remove('bg-secondary', 'bg-tertiary', 'bg-error');
+            if (pct >= 85) bar.classList.add('bg-tertiary'); else if (pct >= 60) bar.classList.add('bg-secondary'); else bar.classList.add('bg-error');
+            const badge = document.getElementById('summaryStatusBadge');
+            if (pct >= 60) { badge.innerText = 'Pass'; badge.className = 'px-md py-1 rounded-full font-bold text-label-sm bg-[#ecfdf5] text-[#10b981]'; }
+            else { badge.innerText = 'Fail'; badge.className = 'px-md py-1 rounded-full font-bold text-label-sm bg-[#fef2f2] text-[#ef4444]'; }
+        }
+
+        function saveEvaluationChanges() {
+            if (!activeStudentId) return;
+            const s = students.find(x => x.id === activeStudentId); if (!s) return;
+            s.subjectiveScore = parseInt(document.getElementById('evalSubjectiveInput').value) || 0;
+            s.remarks = document.getElementById('evalRemarksInput').value;
+            s.score = s.objectiveScore + s.subjectiveScore; s.percentage = s.score;
+            s.status = s.percentage >= 60 ? 'Pass' : 'Fail';
+            renderTable(); recalculateKpiDashboard(); showToast(`Evaluation saved for ${s.name}`); closeAnswerSheetModal();
+        }
+
+        function handlePublishResult() {
+            if (!activeStudentId) return;
+            const s = students.find(x => x.id === activeStudentId);
+            if (s) { s.status = (s.objectiveScore + (parseInt(document.getElementById('evalSubjectiveInput').value) || 0)) >= 60 ? 'Pass' : 'Fail'; showToast(`Result published for ${s.name}!`); }
+            saveEvaluationChanges();
+        }
+
+        function handleSendEmail() {
+            if (!activeStudentId) return;
+            const s = students.find(x => x.id === activeStudentId);
+            if (s) showToast(`Email report card dispatched to ${s.name} (${s.regNumber})`);
+        }
+
+        function quickPublishResult(id) { const s = students.find(x => x.id === id); if (s) showToast(`Result published for ${s.name}`); }
+        function quickSendResult(id) { const s = students.find(x => x.id === id); if (s) showToast(`Score emailed to ${s.name} (${s.regNumber})`); }
+
+        function recalculateKpiDashboard() {
+            const n = students.length;
+            const avg = students.reduce((a, c) => a + c.score, 0) / n;
+            const passed = students.filter(s => s.status === 'Pass').length;
+            const passRate = (passed / n) * 100;
+            document.getElementById('avgScoreKpi').innerText = `${avg.toFixed(1)}%`;
+            document.getElementById('passRateKpi').innerText = `${passRate.toFixed(1)}%`;
+            document.getElementById('donutCentralVal').innerText = `${avg.toFixed(1)}%`;
+        }
+
+        // Send Score Modal
+        function openSendScoreModal() {
+            const sel = selectedStudentIds.size > 0 ? students.filter(s => selectedStudentIds.has(s.id)) : students;
+            const container = document.getElementById('sendScoreStudentList'); container.innerHTML = '';
+            sel.forEach(s => {
+                let stCls = s.status === 'Pass' ? 'bg-[#ecfdf5] text-[#10b981]' : 'bg-[#fef2f2] text-[#ef4444]';
+                container.innerHTML += `<div class="flex items-center justify-between p-sm bg-surface-container-low rounded-xl border border-outline-variant/10"><div class="flex items-center gap-sm"><div class="w-8 h-8 rounded-full ${s.avatarColor} flex items-center justify-center font-label-sm text-label-sm font-bold shrink-0">${s.initials}</div><div><p class="font-label-md text-label-md text-primary font-bold">${s.name}</p><p class="text-[11px] text-on-surface-variant">${s.exam} · ${s.paper}</p></div></div><div class="flex items-center gap-sm"><span class="font-bold text-primary text-sm">${s.score}/100</span><span class="px-sm py-[2px] rounded-full font-label-sm text-label-sm font-bold ${stCls}">${s.status}</span></div></div>`;
+            });
+            const m = document.getElementById('sendScoreModal');
+            m.classList.remove('hidden'); m.classList.add('flex'); document.body.style.overflow = 'hidden';
+        }
+
+        function closeSendScoreModal() {
+            const m = document.getElementById('sendScoreModal');
+            m.classList.add('hidden'); m.classList.remove('flex'); document.body.style.overflow = '';
+        }
+
+        function confirmSendScores() {
+            const count = selectedStudentIds.size > 0 ? selectedStudentIds.size : students.length;
+            closeSendScoreModal(); showToast(`Scores successfully sent to ${count} student${count !== 1 ? 's' : ''} via email!`);
+        }
+
+        function simulateGenerateReport() {
+            let csv = "data:text/csv;charset=utf-8,Student Name,Reg Number,Exam,Paper,Score,Percentage,Status\r\n";
+            students.forEach(s => { csv += `"${s.name}","${s.regNumber}","${s.exam}","${s.paper}",${s.score},${s.percentage}%,"${s.status}"\r\n`; });
+            const link = document.createElement("a"); link.setAttribute("href", encodeURI(csv)); link.setAttribute("download", "performance_report.csv");
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+            showToast("Performance report downloaded successfully!");
+        }
+    </script>
+</body>
+
+</html>

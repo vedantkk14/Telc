@@ -48,4 +48,7 @@ urlpatterns = [
     path(route="teacher_questionbank/", view=teacher_questionbank, name="teacher_questionbank"),
     path(route="teacher_exams/", view=teacher_exams, name="teacher_exams"),
     path(route="teacher_evaluations/", view=teacher_evaluations, name="teacher_evaluations"),
+    path(route="teacher_performance_eval/", view=teacher_performance_eval, name="teacher_performance_eval"),
+    path(route="teacher_messages/", view=teacher_messages, name="teacher_messages"),
 ]
+

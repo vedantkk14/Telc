@@ -1,1 +1,855 @@
-<!-- do this and  -->
+{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Announcements - telc Teacher Portal</title>
+    <meta name="description" content="View official administrative announcements and evaluation schedules in the telc Teacher Portal." />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#001d36", "primary-container": "#17324d", "primary-fixed": "#d1e4ff",
+                        "primary-fixed-dim": "#afc9ea", "on-primary": "#ffffff", "on-primary-container": "#819aba",
+                        "on-primary-fixed": "#001d36", "on-primary-fixed-variant": "#2f4865",
+                        "secondary": "#395f94", "secondary-container": "#9ec2fe", "secondary-fixed": "#d5e3ff",
+                        "secondary-fixed-dim": "#a7c8ff", "on-secondary": "#ffffff", "on-secondary-container": "#284f83",
+                        "on-secondary-fixed": "#001c3b", "on-secondary-fixed-variant": "#1e477b",
+                        "tertiary": "#00201c", "tertiary-container": "#003731", "tertiary-fixed": "#88f5e3",
+                        "tertiary-fixed-dim": "#6bd9c7", "on-tertiary": "#ffffff", "on-tertiary-container": "#34a999",
+                        "on-tertiary-fixed": "#00201c", "on-tertiary-fixed-variant": "#005047",
+                        "error": "#ba1a1a", "error-container": "#ffdad6", "on-error": "#ffffff", "on-error-container": "#93000a",
+                        "surface": "#f7f9fb", "surface-dim": "#d8dadc", "surface-bright": "#f7f9fb",
+                        "surface-variant": "#e0e3e5", "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f2f4f6", "surface-container": "#eceef0",
+                        "surface-container-high": "#e6e8ea", "surface-container-highest": "#e0e3e5",
+                        "background": "#f7f9fb", "on-surface": "#191c1e", "on-surface-variant": "#43474d",
+                        "on-background": "#191c1e", "outline": "#74777e", "outline-variant": "#c3c6ce",
+                        "inverse-surface": "#2d3133", "inverse-on-surface": "#eff1f3", "inverse-primary": "#afc9ea",
+                        "surface-tint": "#47607e",
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                    spacing: {
+                        "xs": "4px", "sm": "8px", "md": "16px", "lg": "24px", "xl": "32px",
+                        "2xl": "48px", "3xl": "64px", "base": "4px", "gutter": "24px",
+                        "sidebar-width": "260px", "container-max": "1280px"
+                    },
+                    fontFamily: {
+                        "display-lg": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"],
+                    },
+                    fontSize: {
+                        "display-lg": ["48px", { lineHeight: "60px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "700" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "headline-sm": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "500" }],
+                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "600" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            height: 100vh;
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c3c6ce;
+            border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #74777e;
+        }
+
+        .announcement-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .announcement-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        @media (min-width: 768px) {
+            .main-content:not(.sidebar-collapsed) {
+                margin-left: 260px !important;
+                width: calc(100% - 260px) !important;
+            }
+            .top-header:not(.sidebar-collapsed) {
+                width: calc(100% - 260px) !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface antialiased flex flex-col h-screen overflow-hidden">
+
+    {% include 'teachers/sidebar.html' with active_page='messages' %}
+
+    <!-- Top App Bar -->
+    <header
+        class="bg-surface/80 backdrop-blur-md fixed top-0 right-0 z-40 flex justify-between items-center w-full md:w-[calc(100%-260px)] px-md md:px-lg h-20 shadow-sm md:shadow-none border-b border-surface-variant md:border-none top-header transition-all duration-300">
+        <div class="flex items-center gap-sm md:hidden">
+            <button onclick="openMobileSidebar()"
+                class="p-2 rounded-full hover:bg-surface-variant text-on-surface-variant" id="mobileMenuBtn">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <span class="font-headline-md text-headline-md font-bold text-primary">Announcements</span>
+        </div>
+        <div class="hidden md:flex flex-1 max-w-xl mx-lg relative">
+            <span
+                class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+            <input
+                class="w-full pl-xl pr-sm py-sm rounded-lg bg-surface-container-highest border-none focus:ring-2 focus:ring-secondary/10 focus:bg-surface-container-lowest transition-all font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant outline-none"
+                placeholder="Search announcements, tags or files..." type="text" id="globalSearchInput"
+                onkeyup="handleGlobalSearch(event)" />
+        </div>
+        <div class="flex items-center gap-sm">
+            <button
+                class="relative p-sm text-on-surface-variant hover:text-primary rounded-full hover:bg-surface-container-highest"
+                id="notificationBtn">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full border border-surface"></span>
+            </button>
+            <div class="hidden md:flex items-center gap-sm pl-sm border-l border-outline-variant/30">
+                <div class="text-right">
+                    <p class="font-label-sm text-label-sm font-bold text-on-surface uppercase">{{ request.user.full_name }}</p>
+                    <p class="text-[10px] text-on-surface-variant">Teacher</p>
+                </div>
+            </div>
+            <div
+                class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-sm text-label-sm font-bold ml-sm uppercase">
+                {{ request.user.full_name|first|upper }}
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Panel -->
+    <main id="mainContent"
+        class="main-content w-full md:w-[calc(100%-260px)] md:ml-sidebar-width pt-20 h-screen transition-all duration-300 flex overflow-hidden">
+        
+        <!-- Announcements Layout -->
+        <div class="flex flex-1 overflow-hidden h-full">
+            
+            <!-- Left Pane: Categories & Filter options -->
+            <div id="filterPane" class="hidden md:flex w-64 lg:w-72 shrink-0 border-r border-outline-variant/20 flex-col bg-surface-container-lowest h-full relative z-20">
+                <div class="h-16 flex items-center px-md border-b border-outline-variant/10 shrink-0">
+                    <span class="material-symbols-outlined text-primary mr-sm text-[22px]">campaign</span>
+                    <h2 class="font-headline-sm text-headline-sm font-bold text-primary">Announcements</h2>
+                </div>
+
+                <!-- Metrics Overview -->
+                <div class="p-md grid grid-cols-2 gap-sm border-b border-outline-variant/10 shrink-0">
+                    <div class="bg-primary/5 p-sm rounded-xl text-center">
+                        <span id="unreadCountBadge" class="block text-headline-md font-bold text-primary">0</span>
+                        <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Unread</span>
+                    </div>
+                    <div class="bg-surface-container-low p-sm rounded-xl text-center">
+                        <span id="pinnedCountBadge" class="block text-headline-md font-bold text-primary">0</span>
+                        <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Pinned</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Sidebar Filters -->
+                <div class="flex-1 overflow-y-auto custom-scrollbar p-sm space-y-1">
+                    <button id="filter-all" onclick="setAnnouncementsFilter('all')" class="w-full flex items-center justify-between px-md py-sm rounded-xl font-label-md transition-all text-sm font-bold bg-primary/10 text-primary">
+                        <div class="flex items-center gap-sm">
+                            <span class="material-symbols-outlined text-[20px]">drafts</span>
+                            <span>All Bulletins</span>
+                        </div>
+                        <span id="filterCount-all" class="text-xs font-semibold px-2 py-0.5 rounded-full bg-outline-variant/30 text-primary">0</span>
+                    </button>
+                    <button id="filter-schedule" onclick="setAnnouncementsFilter('schedule')" class="w-full flex items-center justify-between px-md py-sm rounded-xl font-label-md transition-all text-sm text-on-surface-variant hover:bg-surface-container-low">
+                        <div class="flex items-center gap-sm">
+                            <span class="material-symbols-outlined text-[20px] text-secondary">calendar_today</span>
+                            <span>Exam Schedules</span>
+                        </div>
+                        <span id="filterCount-schedule" class="text-xs font-semibold px-2 py-0.5 rounded-full bg-outline-variant/30 text-on-surface-variant">0</span>
+                    </button>
+                    <button id="filter-evaluation" onclick="setAnnouncementsFilter('evaluation')" class="w-full flex items-center justify-between px-md py-sm rounded-xl font-label-md transition-all text-sm text-on-surface-variant hover:bg-surface-container-low">
+                        <div class="flex items-center gap-sm">
+                            <span class="material-symbols-outlined text-[20px] text-on-tertiary-fixed-variant">fact_check</span>
+                            <span>Evaluations</span>
+                        </div>
+                        <span id="filterCount-evaluation" class="text-xs font-semibold px-2 py-0.5 rounded-full bg-outline-variant/30 text-on-surface-variant">0</span>
+                    </button>
+                    <button id="filter-system" onclick="setAnnouncementsFilter('system')" class="w-full flex items-center justify-between px-md py-sm rounded-xl font-label-md transition-all text-sm text-on-surface-variant hover:bg-surface-container-low">
+                        <div class="flex items-center gap-sm">
+                            <span class="material-symbols-outlined text-[20px] text-error">warning</span>
+                            <span>Alerts & Updates</span>
+                        </div>
+                        <span id="filterCount-system" class="text-xs font-semibold px-2 py-0.5 rounded-full bg-outline-variant/30 text-on-surface-variant">0</span>
+                    </button>
+                </div>
+
+                <!-- Simulation Trigger Tool Box -->
+                <div class="p-md border-t border-outline-variant/10 bg-surface-container-low/50 shrink-0">
+                    <button onclick="simulateNewAnnouncement()" class="w-full py-2 bg-secondary text-on-secondary rounded-xl hover:bg-secondary-container hover:text-on-secondary-container transition-all flex items-center justify-center gap-xs font-label-sm text-xs font-bold active:scale-95 shadow-sm">
+                        <span class="material-symbols-outlined text-[16px]">add_alert</span> Test Incoming Alert
+                    </button>
+                </div>
+            </div>
+
+            <!-- Center Pane: Feed List -->
+            <div id="feedPane" class="flex-1 min-w-0 flex flex-col h-full bg-surface-container-low relative">
+                
+                <!-- Search & Actions Top Bar -->
+                <div class="h-16 flex items-center justify-between px-md border-b border-outline-variant/10 bg-surface-container-lowest shrink-0 shadow-sm z-10">
+                    <!-- Mobile view menu layout -->
+                    <div class="flex items-center gap-xs md:hidden">
+                        <span class="material-symbols-outlined text-primary text-[20px]">campaign</span>
+                        <span class="font-bold text-primary text-sm">Bulletins</span>
+                    </div>
+
+                    <!-- Left: Filters Chips for Mobile view -->
+                    <div class="flex md:hidden gap-xs items-center overflow-x-auto max-w-[200px] shrink-0 custom-scrollbar py-1">
+                        <button onclick="openMobileFiltersModal()" class="p-1 text-on-surface-variant hover:bg-surface-container-high rounded-lg shrink-0">
+                            <span class="material-symbols-outlined text-[20px]">filter_list</span>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-sm justify-end flex-1">
+                        <div class="relative max-w-xs hidden md:block">
+                            <span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+                            <input id="bulletinSearchInput" onkeyup="filterBulletins()"
+                                class="pl-xl pr-sm py-1.5 rounded-lg bg-surface-container-low border-none focus:ring-1 focus:ring-primary text-xs placeholder:text-on-surface-variant outline-none w-48 focus:w-64 transition-all"
+                                placeholder="Filter results..." type="text" />
+                        </div>
+                        <button onclick="markAllAsRead()" class="flex items-center gap-xs px-md py-1.5 border border-outline text-primary rounded-lg font-label-sm text-xs hover:bg-surface-container-low transition-all shrink-0">
+                            <span class="material-symbols-outlined text-[16px]">done_all</span> Mark read
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bulletins Feed Scroll Area -->
+                <div id="bulletinsContainer" class="flex-1 overflow-y-auto custom-scrollbar p-md flex flex-col gap-sm">
+                    <!-- Dynamic announcements content -->
+                </div>
+            </div>
+
+            <!-- Right Pane: Announcement Detail Slide-over -->
+            <div id="detailsPane" class="hidden w-80 lg:w-96 shrink-0 border-l border-outline-variant/20 flex-col bg-surface-container-lowest h-full transition-all duration-300 relative z-10">
+                <div class="h-16 flex items-center justify-between px-md border-b border-outline-variant/10 shrink-0">
+                    <span class="text-sm font-bold text-primary">Announcement Details</span>
+                    <button onclick="toggleDetailsPanel(false)" class="p-1 rounded-full hover:bg-surface-container-high text-on-surface-variant shrink-0" title="Close">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                
+                <div id="detailsContent" class="flex-1 overflow-y-auto custom-scrollbar p-md flex flex-col gap-lg">
+                    <!-- Dynamic insertion on click -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Mobile Filters Bottom Sheet Modal -->
+    <div id="mobileFiltersModal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm items-end justify-center">
+        <div class="bg-surface-container-lowest w-full max-w-md rounded-t-2xl p-md flex flex-col gap-md animate-in slide-in-from-bottom duration-200">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-primary text-md">Filter Announcements</h3>
+                <button onclick="closeMobileFiltersModal()" class="p-1 rounded-full hover:bg-surface-container-low text-on-surface-variant">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="flex flex-col gap-xs">
+                <button onclick="setAnnouncementsFilter('all'); closeMobileFiltersModal();" class="flex items-center gap-sm px-md py-sm rounded-xl hover:bg-surface-container-low text-left">
+                    <span class="material-symbols-outlined text-primary">drafts</span>
+                    <span class="text-sm font-medium">All Bulletins</span>
+                </button>
+                <button onclick="setAnnouncementsFilter('schedule'); closeMobileFiltersModal();" class="flex items-center gap-sm px-md py-sm rounded-xl hover:bg-surface-container-low text-left">
+                    <span class="material-symbols-outlined text-secondary">calendar_today</span>
+                    <span class="text-sm font-medium">Exam Schedules</span>
+                </button>
+                <button onclick="setAnnouncementsFilter('evaluation'); closeMobileFiltersModal();" class="flex items-center gap-sm px-md py-sm rounded-xl hover:bg-surface-container-low text-left">
+                    <span class="material-symbols-outlined text-on-tertiary-fixed-variant">fact_check</span>
+                    <span class="text-sm font-medium">Evaluations</span>
+                </button>
+                <button onclick="setAnnouncementsFilter('system'); closeMobileFiltersModal();" class="flex items-center gap-sm px-md py-sm rounded-xl hover:bg-surface-container-low text-left">
+                    <span class="material-symbols-outlined text-error">warning</span>
+                    <span class="text-sm font-medium">Alerts & Updates</span>
+                </button>
+            </div>
+            <div class="border-t border-outline-variant/10 pt-sm">
+                <button onclick="simulateNewAnnouncement(); closeMobileFiltersModal();" class="w-full py-2.5 bg-secondary text-on-secondary rounded-xl font-label-md text-xs font-bold text-center">
+                    Simulate Incoming Announcement
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed bottom-lg right-lg z-[60] flex flex-col gap-sm pointer-events-none"></div>
+
+    <!-- JS Logic -->
+    <script>
+        // Set up the static announcements list
+        let announcements = [
+            {
+                id: "ann_1",
+                title: "German A1 Speaking Exam Schedule Released - May 2025",
+                sender: "Shrivardhan Kanaki",
+                senderRole: "Super Admin",
+                senderInitials: "SK",
+                senderAvatarColor: "bg-tertiary-fixed text-on-tertiary-fixed-variant",
+                time: "Today, 10:15 AM",
+                date: "Today",
+                category: "schedule",
+                categoryDisplay: "Exam Schedule",
+                categoryColor: "bg-secondary-container text-on-secondary-container border-secondary/20",
+                text: "The speaking evaluation slots and room distributions for the German A1 examination have been finalized. Please locate your assigned batch, coordinate with the invigilators, and review the candidates checklist. The speaking examination sheets should be filled in synchronously during evaluation.",
+                linkText: "View Exams Schedule",
+                linkUrl: "{% url 'teacher_exams' %}",
+                pinned: true,
+                read: false,
+                attachments: [
+                    { name: "German_A1_Speaking_Slots.pdf", size: "1.2 MB", type: "pdf" },
+                    { name: "Invigilation_Guidelines.docx", size: "250 KB", type: "docx" }
+                ]
+            },
+            {
+                id: "ann_2",
+                title: "Urgent: Grade Submission Deadline for German B2 Papers",
+                sender: "Shrivardhan Kanaki",
+                senderRole: "Super Admin",
+                senderInitials: "SK",
+                senderAvatarColor: "bg-tertiary-fixed text-on-tertiary-fixed-variant",
+                time: "Today, 8:30 AM",
+                date: "Today",
+                category: "evaluation",
+                categoryDisplay: "Evaluation Alert",
+                categoryColor: "bg-[#fef3c7] text-[#d97706] border-[#f59e0b]/20",
+                text: "This is a reminder that the portal locking for all German B2 Listening (Paper 2) grades will take place tomorrow at 5:00 PM. Teachers are requested to complete grading, fill out subjective marks, and submit comments. Re-entry will not be allowed once portal is locked.",
+                linkText: "Open Evaluations Page",
+                linkUrl: "{% url 'teacher_evaluations' %}",
+                pinned: true,
+                read: false,
+                attachments: [
+                    { name: "B2_Evaluation_Deadlines.pdf", size: "480 KB", type: "pdf" }
+                ]
+            },
+            {
+                id: "ann_3",
+                title: "Updated Subjective Grading Rubrics Document",
+                sender: "Shrivardhan Kanaki",
+                senderRole: "Super Admin",
+                senderInitials: "SK",
+                senderAvatarColor: "bg-tertiary-fixed text-on-tertiary-fixed-variant",
+                time: "Yesterday, 3:00 PM",
+                date: "Yesterday",
+                category: "system",
+                categoryDisplay: "System Update",
+                categoryColor: "bg-primary-fixed text-primary border-primary/20",
+                text: "The European assessment criteria document has been refreshed. All teachers evaluating the subjective written assignments must refer to the revised version (v2025.2) to maintain alignment and scoring uniformity across all batches.",
+                linkText: "Open Question Bank",
+                linkUrl: "{% url 'teacher_questionbank' %}",
+                pinned: false,
+                read: true,
+                attachments: [
+                    { name: "telc_Subjective_Rubric_v2025.pdf", size: "2.1 MB", type: "pdf" }
+                ]
+            },
+            {
+                id: "ann_4",
+                title: "Candidate Mohit Patel (STU2025005) - Re-evaluation Request",
+                sender: "Shrivardhan Kanaki",
+                senderRole: "Super Admin",
+                senderInitials: "SK",
+                senderAvatarColor: "bg-tertiary-fixed text-on-tertiary-fixed-variant",
+                time: "June 22, 2025",
+                date: "Older",
+                category: "evaluation",
+                categoryDisplay: "Re-evaluation Request",
+                categoryColor: "bg-[#ecfdf5] text-[#10b981] border-[#10b981]/20",
+                text: "Candidate STU2025005 (Mohit Patel) has submitted a re-evaluation request for the German A1 Listening Paper. Please inspect the recorded subjective invigilator scorecard, crosscheck against performance marks, and save changes inside the evaluation sheet.",
+                linkText: "Open Performance Tracking",
+                linkUrl: "{% url 'teacher_performance_eval' %}",
+                pinned: false,
+                read: true,
+                attachments: []
+            }
+        ];
+
+        // Global State Variables
+        let currentFilter = 'all';
+        let currentSearchQuery = '';
+        let activeAnnouncementId = null;
+
+        // Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            renderBulletins();
+            updateSidebarCounts();
+        });
+
+        // Toast Helper
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'flex items-center gap-sm px-md py-sm bg-inverse-surface text-inverse-on-surface rounded-xl shadow-lg border border-outline-variant/30 text-sm font-label-md transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto shrink-0';
+            
+            const icon = document.createElement('span');
+            icon.className = 'material-symbols-outlined text-[20px]';
+            if (type === 'success') {
+                icon.innerText = 'check_circle';
+                icon.className += ' text-tertiary-fixed-dim';
+            } else if (type === 'error') {
+                icon.innerText = 'error';
+                icon.className += ' text-error';
+            } else {
+                icon.innerText = 'info';
+            }
+            
+            const text = document.createElement('span');
+            text.innerText = message;
+            
+            toast.appendChild(icon);
+            toast.appendChild(text);
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 50);
+            
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                setTimeout(() => { toast.remove(); }, 300);
+            }, 3000);
+        }
+
+        // Render Announcements/Bulletins Feed
+        function renderBulletins() {
+            const container = document.getElementById('bulletinsContainer');
+            container.innerHTML = '';
+
+            // Apply filter & search
+            let filtered = announcements.filter(a => {
+                const matchSearch = a.title.toLowerCase().includes(currentSearchQuery.toLowerCase()) || 
+                                    a.text.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
+                                    a.categoryDisplay.toLowerCase().includes(currentSearchQuery.toLowerCase());
+                
+                const matchCategory = currentFilter === 'all' || a.category === currentFilter;
+
+                return matchSearch && matchCategory;
+            });
+
+            // Sort: Pinned first, then chronological (reverse order of id or date)
+            filtered.sort((a, b) => {
+                if (a.pinned && !b.pinned) return -1;
+                if (!a.pinned && b.pinned) return 1;
+                return 0;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center p-3xl text-center text-on-surface-variant flex-1 bg-surface-container-lowest rounded-2xl border border-outline-variant/10 shadow-sm mt-sm">
+                        <span class="material-symbols-outlined text-[64px] text-outline">inbox</span>
+                        <h3 class="font-headline-sm text-headline-sm font-bold text-primary mt-sm">No bulletins match filter</h3>
+                        <p class="font-body-sm text-body-sm mt-xs max-w-sm">There are no administrative updates available in this category.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(a => {
+                const isActive = a.id === activeAnnouncementId;
+                const card = document.createElement('div');
+                card.onclick = () => selectAnnouncement(a.id);
+                card.className = `announcement-card p-md rounded-2xl border bg-surface-container-lowest cursor-pointer relative flex flex-col gap-sm ${
+                    isActive ? 'border-primary ring-2 ring-primary/20 shadow-md' : 'border-outline-variant/20 shadow-sm'
+                }`;
+
+                // Unread glow styling
+                const unreadIndicator = !a.read ? `<span class="w-2.5 h-2.5 bg-secondary rounded-full inline-block shrink-0 shadow-sm" title="Unread Alert"></span>` : '';
+
+                // Attachment Pill indicator
+                const attachmentsIndicator = a.attachments && a.attachments.length > 0
+                    ? `<span class="flex items-center gap-xs text-[11px] text-on-surface-variant bg-surface-container-low px-sm py-[2px] rounded-full font-medium shrink-0">
+                         <span class="material-symbols-outlined text-[14px]">attachment</span>
+                         <span>${a.attachments.length} attachment${a.attachments.length !== 1 ? 's' : ''}</span>
+                       </span>`
+                    : '';
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-sm">
+                        <div class="flex items-center gap-sm flex-1 min-w-0">
+                            <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${a.senderAvatarColor}">
+                                ${a.senderInitials}
+                            </div>
+                            <div class="truncate">
+                                <h4 class="text-sm font-bold text-primary truncate leading-tight">${a.title}</h4>
+                                <p class="text-[10px] text-on-surface-variant mt-[2px] font-medium">${a.senderRole} · ${a.time}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-xs shrink-0">
+                            ${a.pinned ? '<span class="material-symbols-outlined text-[16px] text-[#db2777] font-bold" title="Pinned Alert">push_pin</span>' : ''}
+                            ${unreadIndicator}
+                        </div>
+                    </div>
+                    
+                    <p class="text-xs text-on-surface-variant font-medium font-body-sm leading-relaxed line-clamp-2 pl-sm border-l-2 border-outline-variant/30">
+                        ${a.text}
+                    </p>
+
+                    <div class="flex items-center justify-between border-t border-outline-variant/10 pt-xs mt-xs">
+                        <span class="px-sm py-[2px] rounded-full border text-[10px] font-bold ${a.categoryColor}">
+                            ${a.categoryDisplay}
+                        </span>
+                        <div class="flex items-center gap-sm">
+                            ${attachmentsIndicator}
+                            <span class="text-primary hover:text-secondary font-bold text-[11px] flex items-center gap-xs transition-colors font-label-md">
+                                Read details <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                            </span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Handle Selecting Bulletin Details
+        function selectAnnouncement(id) {
+            activeAnnouncementId = id;
+            
+            // Mark as read
+            const alert = announcements.find(a => a.id === id);
+            if (alert) {
+                alert.read = true;
+            }
+
+            renderBulletins();
+            updateSidebarCounts();
+            toggleDetailsPanel(true);
+            drawBulletinDetails();
+        }
+
+        // Draw Bulletin Details in Right Panel
+        function drawBulletinDetails() {
+            const container = document.getElementById('detailsContent');
+            container.innerHTML = '';
+
+            const alert = announcements.find(a => a.id === activeAnnouncementId);
+            if (!alert) return;
+
+            // Pin button state
+            const pinIcon = alert.pinned ? 'remove_moderator' : 'push_pin';
+            const pinLabel = alert.pinned ? 'Unpin Bulletin' : 'Pin Bulletin';
+
+            // Draw attachments
+            let attachmentsHTML = '';
+            if (alert.attachments && alert.attachments.length > 0) {
+                attachmentsHTML = '<div class="flex flex-col gap-xs mt-sm">';
+                alert.attachments.forEach(f => {
+                    let fileIcon = 'insert_drive_file';
+                    let iconColor = 'text-primary';
+                    if (f.type === 'pdf') { fileIcon = 'picture_as_pdf'; iconColor = 'text-[#ef4444]'; }
+                    if (f.type === 'docx') { fileIcon = 'description'; iconColor = 'text-[#3b82f6]'; }
+
+                    attachmentsHTML += `
+                        <div onclick="simulateDownload('${f.name}')" class="flex items-center gap-sm p-sm rounded-xl hover:bg-surface-container-low border border-outline-variant/20 bg-surface-container-lowest cursor-pointer transition-colors">
+                            <span class="material-symbols-outlined text-[24px] ${iconColor} shrink-0">${fileIcon}</span>
+                            <div class="min-w-0 flex-1">
+                                <p class="text-xs font-bold text-primary truncate leading-tight">${f.name}</p>
+                                <p class="text-[9px] text-on-surface-variant font-medium mt-[1px]">${f.size}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                attachmentsHTML += '</div>';
+            } else {
+                attachmentsHTML = '<p class="text-xs text-on-surface-variant mt-xs italic font-medium">No attachments attached</p>';
+            }
+
+            container.innerHTML = `
+                <!-- Category Accent Line -->
+                <div class="flex flex-col gap-md">
+                    <div class="flex items-center gap-sm">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${alert.senderAvatarColor}">
+                            ${alert.senderInitials}
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-primary leading-tight">${alert.sender}</h4>
+                            <p class="text-[10px] text-on-surface-variant mt-[2px] font-semibold">${alert.senderRole} · ${alert.time}</p>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-outline-variant/10 pt-md">
+                        <span class="px-sm py-1 rounded-full border text-[10px] font-bold ${alert.categoryColor}">
+                            ${alert.categoryDisplay}
+                        </span>
+                        <h3 class="font-headline-sm text-headline-sm font-bold text-primary mt-sm leading-snug">${alert.title}</h3>
+                    </div>
+
+                    <!-- Long Description Body -->
+                    <p class="text-sm font-body-sm font-medium text-on-surface-variant leading-relaxed pl-sm border-l-2 border-outline-variant/40 mt-xs">
+                        ${alert.text}
+                    </p>
+
+                    <!-- Link Action Shortcut Button -->
+                    <div class="mt-xs">
+                        <a href="${alert.linkUrl}" class="w-full flex items-center justify-center gap-xs px-lg py-sm bg-primary text-on-primary rounded-xl font-label-md hover:bg-primary-container active:scale-[0.98] transition-all shadow-sm">
+                            <span class="material-symbols-outlined text-[18px]">launch</span>
+                            <span>${alert.linkText}</span>
+                        </a>
+                    </div>
+
+                    <!-- Shared Files attachments section -->
+                    <div class="border-t border-outline-variant/10 pt-md mt-sm">
+                        <h4 class="font-bold text-sm text-primary mb-xs flex items-center gap-xs">
+                            <span class="material-symbols-outlined text-[18px]">folder_open</span> Shared Files
+                        </h4>
+                        ${attachmentsHTML}
+                    </div>
+
+                    <!-- Bulletin Fast Options -->
+                    <div class="border-t border-outline-variant/10 pt-md flex gap-sm mt-sm">
+                        <button onclick="toggleBulletinPin('${alert.id}')" class="flex items-center justify-center gap-xs px-md py-sm border border-outline text-primary hover:bg-surface-container-low rounded-xl font-label-sm text-xs font-bold flex-1 transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">push_pin</span>
+                            <span>${alert.pinned ? 'Unpin' : 'Pin alert'}</span>
+                        </button>
+                        <button onclick="deleteBulletin('${alert.id}')" class="flex items-center justify-center gap-xs px-md py-sm border border-error/50 text-error hover:bg-error-container hover:text-on-error-container hover:border-transparent rounded-xl font-label-sm text-xs font-bold flex-1 transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                            <span>Remove</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Toggle Right Details pane
+        function toggleDetailsPanel(forceShow = null) {
+            const panel = document.getElementById('detailsPane');
+            if (forceShow === true) {
+                panel.classList.remove('hidden');
+                panel.classList.add('flex');
+            } else if (forceShow === false) {
+                panel.classList.add('hidden');
+                panel.classList.remove('flex');
+            } else {
+                if (panel.classList.contains('hidden')) {
+                    panel.classList.remove('hidden');
+                    panel.classList.add('flex');
+                } else {
+                    panel.classList.add('hidden');
+                    panel.classList.remove('flex');
+                }
+            }
+        }
+
+        // Update Filters selection
+        function setAnnouncementsFilter(category) {
+            currentFilter = category;
+            
+            // Highlight selected tab in the sidebar
+            ['all', 'schedule', 'evaluation', 'system'].forEach(c => {
+                const btn = document.getElementById(`filter-${c}`);
+                if (c === category) {
+                    btn.className = 'w-full flex items-center justify-between px-md py-sm rounded-xl font-label-md transition-all text-sm font-bold bg-primary/10 text-primary';
+                } else {
+                    btn.className = 'w-full flex items-center justify-between px-md py-sm rounded-xl font-label-md transition-all text-sm text-on-surface-variant hover:bg-surface-container-low';
+                }
+            });
+
+            // Re-render feed list
+            renderBulletins();
+
+            // Toggle details panel close if active item is no longer showing
+            toggleDetailsPanel(false);
+            activeAnnouncementId = null;
+        }
+
+        // Toggle Pin Status
+        function toggleBulletinPin(id) {
+            const alert = announcements.find(a => a.id === id);
+            if (!alert) return;
+
+            alert.pinned = !alert.pinned;
+            showToast(alert.pinned ? "Announcement pinned to top" : "Announcement unpinned");
+            
+            renderBulletins();
+            updateSidebarCounts();
+            if (activeAnnouncementId === id) drawBulletinDetails();
+        }
+
+        // Delete bulletin from view
+        function deleteBulletin(id) {
+            const idx = announcements.findIndex(a => a.id === id);
+            if (idx === -1) return;
+
+            announcements.splice(idx, 1);
+            showToast("Announcement removed from view", "error");
+
+            toggleDetailsPanel(false);
+            activeAnnouncementId = null;
+            renderBulletins();
+            updateSidebarCounts();
+        }
+
+        // Mark all bulletins as read
+        function markAllAsRead() {
+            announcements.forEach(a => a.read = true);
+            showToast("All announcements marked as read");
+            renderBulletins();
+            updateSidebarCounts();
+        }
+
+        // Update badge counts and values
+        function updateSidebarCounts() {
+            const unread = announcements.filter(a => !a.read).length;
+            const pinned = announcements.filter(a => a.pinned).length;
+
+            document.getElementById('unreadCountBadge').innerText = unread;
+            document.getElementById('pinnedCountBadge').innerText = pinned;
+
+            // Notification Bell overlay dot indicator in header
+            const bellDot = document.querySelector('#notificationBtn span.absolute');
+            if (bellDot) {
+                if (unread > 0) {
+                    bellDot.classList.remove('hidden');
+                } else {
+                    bellDot.classList.add('hidden');
+                }
+            }
+
+            // Filter item counts
+            document.getElementById('filterCount-all').innerText = announcements.length;
+            document.getElementById('filterCount-schedule').innerText = announcements.filter(a => a.category === 'schedule').length;
+            document.getElementById('filterCount-evaluation').innerText = announcements.filter(a => a.category === 'evaluation').length;
+            document.getElementById('filterCount-system').innerText = announcements.filter(a => a.category === 'system').length;
+        }
+
+        // Search announcements
+        function filterBulletins() {
+            currentSearchQuery = document.getElementById('bulletinSearchInput').value;
+            renderBulletins();
+        }
+
+        function handleGlobalSearch(event) {
+            currentSearchQuery = document.getElementById('globalSearchInput').value;
+            // Mirror keyword in inner search if visible
+            const bulletSearch = document.getElementById('bulletinSearchInput');
+            if (bulletSearch) {
+                bulletSearch.value = currentSearchQuery;
+            }
+            renderBulletins();
+        }
+
+        // Download attachment simulator
+        function simulateDownload(filename) {
+            showToast(`Downloading file: ${filename}...`);
+            setTimeout(() => {
+                showToast(`${filename} download complete!`);
+            }, 1000);
+        }
+
+        // Mobile dialog open/close
+        function openMobileFiltersModal() {
+            const modal = document.getElementById('mobileFiltersModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeMobileFiltersModal() {
+            const modal = document.getElementById('mobileFiltersModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Simulated Incoming Announcement trigger helper
+        const mockAnnUpdates = [
+            {
+                title: "Schedule Revision: Class B Speaking invigilators",
+                text: "The speaking invigilator roster has been revised due to room availability overlaps in batch B2. Dr. Oswald will invigilate Room 4 instead of Prof. Marcus. Please check your dashboard guidelines and download slot map.",
+                category: "schedule",
+                categoryDisplay: "Schedule Revision",
+                categoryColor: "bg-secondary-container text-on-secondary-container border-secondary/20",
+                attachments: [{ name: "Invigilation_List_v2.pdf", size: "320 KB", type: "pdf" }]
+            },
+            {
+                title: "Evaluation Checklist Validation Request",
+                text: "A checklists validation sheet for class invigilation performance records has been posted. Invigilators are requested to audit evaluation cards for speaking exams before grades are lock synced.",
+                category: "evaluation",
+                categoryDisplay: "Audit Request",
+                categoryColor: "bg-[#fef3c7] text-[#d97706] border-[#f59e0b]/20",
+                attachments: [{ name: "Audit_Verification_Checklist.docx", size: "48 KB", type: "docx" }]
+            },
+            {
+                title: "Server Maintenance Alert: Grading Portal lock down",
+                text: "The LMS grading portal will undergo routine backend data validation today from 11:00 PM to 12:00 AM. Submission of grade sheets and performance remarks will be briefly disabled during maintenance window.",
+                category: "system",
+                categoryDisplay: "Portal Maintenance",
+                categoryColor: "bg-error-container text-on-error-container border-error/20",
+                attachments: []
+            }
+        ];
+
+        function simulateNewAnnouncement() {
+            // Pick a mock update
+            const mock = mockAnnUpdates[Math.floor(Math.random() * mockAnnUpdates.length)];
+            const newId = `mock_ann_${Date.now()}`;
+            
+            const newAlert = {
+                id: newId,
+                title: mock.title,
+                sender: "Shrivardhan Kanaki",
+                senderRole: "Super Admin",
+                senderInitials: "SK",
+                senderAvatarColor: "bg-tertiary-fixed text-on-tertiary-fixed-variant",
+                time: "Just now",
+                date: "Today",
+                category: mock.category,
+                categoryDisplay: mock.categoryDisplay,
+                categoryColor: mock.categoryColor,
+                text: mock.text,
+                linkText: "Open Evaluations Page",
+                linkUrl: "{% url 'teacher_evaluations' %}",
+                pinned: false,
+                read: false,
+                attachments: mock.attachments
+            };
+
+            // Insert at the beginning of the arrays
+            announcements.unshift(newAlert);
+
+            // Re-render feed
+            renderBulletins();
+            updateSidebarCounts();
+
+            // Play incoming sound visual cue
+            showToast(`New announcement received: ${mock.title}`);
+        }
+    </script>
+
+</body>
+
+</html>
