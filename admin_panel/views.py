@@ -40,3 +40,24 @@ def admin_questionbank(request):
         messages.error(request, 'You do not have permission to access this page')
         return redirect("login_page")
     return render(request, "admin_panel/admin_questionbank.html")
+
+@admin_required
+def admin_display_results(request):
+    if request.user.role != "ADMIN" and not request.user.is_superuser:
+        messages.error(request, 'You do not have permission to access this page')
+        return redirect("login_page")
+    return render(request, "admin_panel/admin_display_results.html")
+
+@admin_required
+def admin_reports(request):
+    if request.user.role != "ADMIN" and not request.user.is_superuser:
+        messages.error(request, 'You do not have permission to access this page')
+        return redirect("login_page")
+    return render(request, "admin_panel/admin_reports.html")
+
+@admin_required
+def admin_notifications(request):
+    if request.user.role != "ADMIN" and not request.user.is_superuser:
+        messages.error(request, 'You do not have permission to access this page')
+        return redirect("login_page")
+    return render(request, "admin_panel/admin_notifications.html")

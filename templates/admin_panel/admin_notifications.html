@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>LinguaTest - Notifications Center</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Inter:wght@400;500&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#1e477b",
+                        "primary-container": "#17324d",
+                        "surface-container-low": "#f2f4f6",
+                        "outline-variant": "#c3c6ce",
+                        "inverse-on-surface": "#eff1f3",
+                        "inverse-primary": "#afc9ea",
+                        "surface-container-highest": "#e0e3e5",
+                        "surface-variant": "#e0e3e5",
+                        "surface-container": "#eceef0",
+                        "tertiary-fixed": "#88f5e3",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#47607e",
+                        "tertiary-fixed-dim": "#6bd9c7",
+                        "on-surface": "#191c1e",
+                        "primary-fixed": "#d1e4ff",
+                        "on-surface-variant": "#43474d",
+                        "on-tertiary-fixed": "#00201c",
+                        "on-background": "#191c1e",
+                        "secondary-container": "#9ec2fe",
+                        "on-tertiary-fixed-variant": "#005047",
+                        "error-container": "#ffdad6",
+                        "secondary": "#395f94",
+                        "surface-bright": "#f7f9fb",
+                        "tertiary": "#00201c",
+                        "primary-fixed-dim": "#afc9ea",
+                        "on-secondary-container": "#284f83",
+                        "on-primary-container": "#819aba",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001d36",
+                        "background": "#f7f9fb",
+                        "secondary-fixed": "#d5e3ff",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#003731",
+                        "outline": "#74777e",
+                        "surface-container-high": "#e6e8ea",
+                        "primary": "#001d36",
+                        "on-tertiary-container": "#34a999",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#d8dadc",
+                        "inverse-surface": "#2d3133",
+                        "on-primary-fixed-variant": "#2f4865",
+                        "surface": "#f7f9fb",
+                        "on-secondary-fixed": "#001c3b",
+                        "secondary-fixed-dim": "#a7c8ff",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "2xl": "48px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "sidebar-width": "260px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "3xl": "64px",
+                        "xl": "32px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "display-lg": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "headline-md": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "body-sm": [
+                            "Inter"
+                        ],
+                        "headline-sm": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "body-md": [
+                            "Inter"
+                        ],
+                        "headline-lg-mobile": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "body-lg": [
+                            "Inter"
+                        ],
+                        "label-sm": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "label-md": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "headline-lg": [
+                            "Plus Jakarta Sans"
+                        ]
+                    },
+                    "fontSize": {
+                        "display-lg": [
+                            "48px",
+                            {
+                                "lineHeight": "60px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                            }
+                        ],
+                        "headline-md": [
+                            "24px",
+                            {
+                                "lineHeight": "32px",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "body-sm": [
+                            "14px",
+                            {
+                                "lineHeight": "20px",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "headline-sm": [
+                            "20px",
+                            {
+                                "lineHeight": "28px",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "body-md": [
+                            "16px",
+                            {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "headline-lg-mobile": [
+                            "28px",
+                            {
+                                "lineHeight": "36px",
+                                "fontWeight": "700"
+                            }
+                        ],
+                        "body-lg": [
+                            "18px",
+                            {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "label-sm": [
+                            "12px",
+                            {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.02em",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "label-md": [
+                            "14px",
+                            {
+                                "lineHeight": "20px",
+                                "letterSpacing": "0.01em",
+                                "fontWeight": "500"
+                            }
+                        ],
+                        "headline-lg": [
+                            "32px",
+                            {
+                                "lineHeight": "40px",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "700"
+                            }
+                        ]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background text-on-background font-body-md antialiased overflow-x-hidden pt-16 pb-20 md:pb-0 md:pl-[260px]">
+    <!-- Top App Bar -->
+    <header
+        class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-16 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md shadow-sm border-b border-outline-variant md:pl-[284px]">
+        <div class="flex items-center gap-sm md:hidden">
+            <button
+                class="p-2 text-on-surface-variant hover:bg-surface-container-highest transition-all rounded-full flex items-center justify-center"
+                id="mobile-menu-btn">
+                <span class="material-symbols-outlined text-primary">menu</span>
+            </button>
+            <span class="font-headline-sm text-headline-sm text-primary">LinguaTest</span>
+        </div>
+        <div class="hidden md:flex items-center">
+            <h1 class="font-headline-sm text-headline-sm text-primary">Notifications Center</h1>
+        </div>
+        <div class="flex items-center gap-md">
+            <button
+                class="p-2 text-on-surface-variant hover:bg-surface-container-highest transition-all rounded-full relative">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+            </button>
+            <div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant overflow-hidden">
+                <img class="w-full h-full object-cover"
+                    data-alt="A small circular avatar showing a professional looking woman with dark hair in a light colored blouse, set against a subtle gray background. The lighting is soft and studio-quality. High-end SaaS profile picture aesthetic."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7NBnPc6qg1StqhMXB-RRFcaomFeWY4OKlx_Qeghy8g0sNrueeOwHgGxHiBXnyq2-ANLghtJ82FurKiQ4DtK8x7YeovTy3MgR7pRxx8FDTXDmXH_fwnPJOCprsUUiWGSTVjZsJsaLxWB1iCxj_3daRAl6lXaTRtQikxus2xIq6AOHel_gRQ4KOhJ02g4lAT7TWSCYIwxe5YzFmHG8rEex-Avq-_r2BnaGD28cEmurR0_GA07FrGbI9Zti91gsluAFUueJRAd_Z4Hk" />
+            </div>
+        </div>
+    </header>
+    <!-- Navigation Drawer -->
+    {% include 'admin_panel/sidebar.html' %}
+    <!-- Overlay for mobile drawer -->
+    <div class="fixed inset-0 bg-on-background/20 backdrop-blur-sm z-30 hidden md:hidden" id="drawer-overlay"></div>
+    <!-- Main Content -->
+    <main class="p-md md:p-lg max-w-container-max mx-auto flex flex-col gap-2xl">
+        <!-- Page Header -->
+        <div class="flex flex-col gap-md md:flex-row md:items-end md:justify-between">
+            <div class="flex flex-col gap-xs">
+                <h2
+                    class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">
+                    Notifications Center</h2>
+                <p class="font-body-md text-body-md text-on-surface-variant">Manage communications and monitor platform
+                    activities.</p>
+            </div>
+            <button
+                class="bg-primary text-on-primary font-label-md text-label-md h-12 px-lg rounded-full flex items-center justify-center gap-sm hover:-translate-y-px hover:shadow-[0_10px_15px_-3px_rgba(15,23,42,0.08)] transition-all">
+                <span class="material-symbols-outlined text-[20px]">send</span>
+                Send Announcement
+            </button>
+        </div>
+        <!-- KPI Overview (Horizontal Scroll) -->
+        <section class="flex gap-md overflow-x-auto hide-scrollbar pb-sm -mx-md px-md md:mx-0 md:px-0">
+            <!-- Unread -->
+            <div
+                class="min-w-[160px] bg-surface-container-lowest rounded-xl p-lg shadow-[0_1px_3px_rgba(15,23,42,0.05)] border border-surface-container-highest flex flex-col gap-md">
+                <div class="flex justify-between items-start">
+                    <div
+                        class="w-10 h-10 rounded-full bg-secondary-container/30 flex items-center justify-center text-secondary">
+                        <span class="material-symbols-outlined">mark_email_unread</span>
+                    </div>
+                    <span class="text-on-tertiary-container font-label-sm flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">trending_up</span>
+                        2%
+                    </span>
+                </div>
+                <div>
+                    <h3 class="font-display-lg text-display-lg text-primary">12</h3>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Unread</p>
+                </div>
+            </div>
+            <!-- Pending Emails -->
+            <div
+                class="min-w-[160px] bg-surface-container-lowest rounded-xl p-lg shadow-[0_1px_3px_rgba(15,23,42,0.05)] border border-surface-container-highest flex flex-col gap-md">
+                <div class="flex justify-between items-start">
+                    <div
+                        class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+                        <span class="material-symbols-outlined">schedule_send</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-display-lg text-display-lg text-primary">4</h3>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Pending Emails</p>
+                </div>
+            </div>
+            <!-- Today's Activities -->
+            <div
+                class="min-w-[160px] bg-surface-container-lowest rounded-xl p-lg shadow-[0_1px_3px_rgba(15,23,42,0.05)] border border-surface-container-highest flex flex-col gap-md">
+                <div class="flex justify-between items-start">
+                    <div
+                        class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+                        <span class="material-symbols-outlined">local_activity</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-display-lg text-display-lg text-primary">8</h3>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Today's Activities</p>
+                </div>
+            </div>
+            <!-- Failed -->
+            <div
+                class="min-w-[160px] bg-surface-container-lowest rounded-xl p-lg shadow-[0_1px_3px_rgba(15,23,42,0.05)] border border-surface-container-highest flex flex-col gap-md">
+                <div class="flex justify-between items-start">
+                    <div
+                        class="w-10 h-10 rounded-full bg-error-container/30 flex items-center justify-center text-error">
+                        <span class="material-symbols-outlined">error</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-display-lg text-display-lg text-primary">0</h3>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Failed</p>
+                </div>
+            </div>
+        </section>
+        <!-- Complex Layout Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+            <!-- Left Column: Activity Feed & Timeline -->
+            <div class="lg:col-span-2 flex flex-col gap-lg">
+                <!-- Quick Actions Grid -->
+                <section class="grid grid-cols-1 sm:grid-cols-3 gap-sm">
+                    <button
+                        class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-sm hover:shadow-[0_4px_6px_-2px_rgba(15,23,42,0.04)] transition-all text-left">
+                        <div
+                            class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed">
+                            <span class="material-symbols-outlined text-[18px]">alarm</span>
+                        </div>
+                        <span class="font-label-md text-label-md text-primary">Send Reminder</span>
+                    </button>
+                    <button
+                        class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-sm hover:shadow-[0_4px_6px_-2px_rgba(15,23,42,0.04)] transition-all text-left">
+                        <div
+                            class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed">
+                            <span class="material-symbols-outlined text-[18px]">key</span>
+                        </div>
+                        <span class="font-label-md text-label-md text-primary">Send Exam Credentials</span>
+                    </button>
+                    <button
+                        class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-sm hover:shadow-[0_4px_6px_-2px_rgba(15,23,42,0.04)] transition-all text-left">
+                        <div
+                            class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed">
+                            <span class="material-symbols-outlined text-[18px]">edit_note</span>
+                        </div>
+                        <span class="font-label-md text-label-md text-primary">Evaluation Reminder</span>
+                    </button>
+                </section>
+                <!-- Activity Feed -->
+                <section
+                    class="bg-surface-container-lowest rounded-xl shadow-[0_1px_3px_rgba(15,23,42,0.05)] border border-surface-container-highest overflow-hidden">
+                    <div
+                        class="p-lg border-b border-surface-container-highest flex justify-between items-center bg-surface-bright">
+                        <h3 class="font-headline-sm text-headline-sm text-primary">Activity Feed</h3>
+                        <button class="text-secondary font-label-md hover:underline">View All</button>
+                    </div>
+                    <div class="flex flex-col">
+                        <!-- Card 1 -->
+                        <div
+                            class="p-lg border-b border-surface-container-highest flex gap-md items-start hover:bg-surface-bright transition-colors cursor-pointer">
+                            <div
+                                class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center flex-shrink-0 text-on-surface-variant">
+                                <span class="material-symbols-outlined">quiz</span>
+                            </div>
+                            <div class="flex-1 flex flex-col gap-1">
+                                <div class="flex justify-between items-start gap-sm">
+                                    <h4 class="font-label-md text-label-md text-primary">New Question Submitted</h4>
+                                    <span
+                                        class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider bg-surface-container-high px-2 py-1 rounded-sm">Medium</span>
+                                </div>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">B1 Grammar • Submitted by
+                                    Dr. Schmidt</p>
+                                <span class="font-body-sm text-body-sm text-outline text-[12px] mt-1">10 mins ago</span>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div
+                            class="p-lg border-b border-surface-container-highest flex gap-md items-start hover:bg-surface-bright transition-colors cursor-pointer bg-error-container/10">
+                            <div
+                                class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center flex-shrink-0 text-error">
+                                <span class="material-symbols-outlined">fact_check</span>
+                            </div>
+                            <div class="flex-1 flex flex-col gap-1">
+                                <div class="flex justify-between items-start gap-sm">
+                                    <h4 class="font-label-md text-label-md text-primary">Exam Results Verified</h4>
+                                    <span
+                                        class="text-[10px] uppercase font-bold text-error tracking-wider bg-error-container px-2 py-1 rounded-sm">High</span>
+                                </div>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">A2 German Session 4 •
+                                    Requires final approval</p>
+                                <span class="font-body-sm text-body-sm text-outline text-[12px] mt-1">45 mins ago</span>
+                            </div>
+                        </div>
+                        <!-- Card 3 -->
+                        <div
+                            class="p-lg flex gap-md items-start hover:bg-surface-bright transition-colors cursor-pointer">
+                            <div
+                                class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center flex-shrink-0 text-on-tertiary-fixed">
+                                <span class="material-symbols-outlined">workspace_premium</span>
+                            </div>
+                            <div class="flex-1 flex flex-col gap-1">
+                                <div class="flex justify-between items-start gap-sm">
+                                    <h4 class="font-label-md text-label-md text-primary">Bulk Certificates Generated
+                                    </h4>
+                                    <span
+                                        class="text-[10px] uppercase font-bold text-on-tertiary-container tracking-wider bg-tertiary-fixed px-2 py-1 rounded-sm">Success</span>
+                                </div>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">42 students processed
+                                    successfully</p>
+                                <span class="font-body-sm text-body-sm text-outline text-[12px] mt-1">2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <!-- Right Column: Productivity Widgets -->
+            <div class="flex flex-col gap-lg">
+                <!-- Upcoming Tasks Widget -->
+                <section
+                    class="bg-primary text-on-primary rounded-xl p-lg shadow-[0_10px_15px_-3px_rgba(15,23,42,0.08)] relative overflow-hidden">
+                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-white/5 rounded-full blur-xl"></div>
+                    <div
+                        class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-tertiary-fixed to-secondary-container">
+                    </div>
+                    <h3 class="font-headline-sm text-headline-sm mb-md relative z-10">Attention Required</h3>
+                    <div class="flex flex-col gap-sm relative z-10">
+                        <div class="bg-white/10 rounded-lg p-md flex items-center gap-md backdrop-blur-sm">
+                            <span class="material-symbols-outlined text-tertiary-fixed">pending_actions</span>
+                            <div class="flex-1">
+                                <h4 class="font-label-md text-label-md">3 Evaluations Pending</h4>
+                                <p class="font-body-sm text-[12px] text-white/70">Requires immediate attention</p>
+                            </div>
+                        </div>
+                        <div class="bg-white/10 rounded-lg p-md flex items-center gap-md backdrop-blur-sm">
+                            <span class="material-symbols-outlined text-secondary-container">event</span>
+                            <div class="flex-1">
+                                <h4 class="font-label-md text-label-md">2 Exams Starting Tomorrow</h4>
+                                <p class="font-body-sm text-[12px] text-white/70">B2 Oral and C1 Written</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- System Timeline -->
+                <section
+                    class="bg-surface-container-lowest rounded-xl p-lg shadow-[0_1px_3px_rgba(15,23,42,0.05)] border border-surface-container-highest">
+                    <h3 class="font-headline-sm text-headline-sm text-primary mb-lg">System Timeline</h3>
+                    <div class="relative pl-6 border-l-2 border-surface-container-high space-y-6">
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-secondary-fixed border-4 border-surface-container-lowest">
+                            </div>
+                            <span class="text-xs font-bold text-on-surface-variant block mb-1">09:30 AM</span>
+                            <h4 class="font-label-md text-primary">Results Verified</h4>
+                            <p class="font-body-sm text-on-surface-variant mt-1">Admin verified 12 results for A1 level.
+                            </p>
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-surface-container-high border-4 border-surface-container-lowest">
+                            </div>
+                            <span class="text-xs font-bold text-on-surface-variant block mb-1">10:15 AM</span>
+                            <h4 class="font-label-md text-primary">Automated Backup</h4>
+                            <p class="font-body-sm text-on-surface-variant mt-1">Server automated backup completed
+                                successfully.</p>
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-tertiary-fixed border-4 border-surface-container-lowest">
+                            </div>
+                            <span class="text-xs font-bold text-on-surface-variant block mb-1">11:00 AM</span>
+                            <h4 class="font-label-md text-primary">Results Published</h4>
+                            <p class="font-body-sm text-on-surface-variant mt-1">Results published for B1 Oral
+                                examinations.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    <!-- Bottom Nav Bar (Mobile Only) -->
+    <nav
+        class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-md md:hidden bg-surface dark:bg-surface-container-lowest shadow-[0_-1px_3px_rgba(15,23,42,0.05)] rounded-t-xl">
+        <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed"
+            href="#">
+            <span class="material-symbols-outlined">home</span>
+            <span class="font-label-sm text-label-sm-mobile">Home</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed font-bold bg-secondary-container/30 rounded-full px-4 py-1 scale-95 transition-transform duration-150"
+            href="#">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+            <span class="font-label-sm text-label-sm-mobile">Activity</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed"
+            href="#">
+            <span class="material-symbols-outlined">search</span>
+            <span class="font-label-sm text-label-sm-mobile">Search</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed"
+            href="#">
+            <span class="material-symbols-outlined">person</span>
+            <span class="font-label-sm text-label-sm-mobile">Profile</span>
+        </a>
+    </nav>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const navDrawer = document.getElementById('nav-drawer');
+            const drawerOverlay = document.getElementById('drawer-overlay');
+
+            function toggleDrawer() {
+                const isClosed = navDrawer.classList.contains('-translate-x-full');
+                if (isClosed) {
+                    navDrawer.classList.remove('-translate-x-full');
+                    drawerOverlay.classList.remove('hidden');
+                } else {
+                    navDrawer.classList.add('-translate-x-full');
+                    drawerOverlay.classList.add('hidden');
+                }
+            }
+
+            if (menuBtn) {
+                menuBtn.addEventListener('click', toggleDrawer);
+            }
+
+            if (drawerOverlay) {
+                drawerOverlay.addEventListener('click', toggleDrawer);
+            }
+        });
+    </script>
+</body>
+
+</html>

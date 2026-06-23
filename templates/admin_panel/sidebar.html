@@ -257,7 +257,7 @@
             <span class="nav-tooltip">Question Bank</span>
         </a>
         <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-            href="#">
+            href="{% url 'admin_display_results' %}">
             <span class="material-symbols-outlined">analytics</span>
             <span class="sidebar-label font-label-md text-label-md">Results</span>
             <span class="nav-tooltip">Results</span>
@@ -269,28 +269,22 @@
             <span class="nav-tooltip">Certificates</span>
         </a>
         <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-            href="#">
+            href="{% url 'admin_reports' %}">
             <span class="material-symbols-outlined">assessment</span>
             <span class="sidebar-label font-label-md text-label-md">Reports</span>
             <span class="nav-tooltip">Reports</span>
         </a>
         <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform"
-            href="#">
+            href="{% url 'admin_notifications' %}">
             <span class="material-symbols-outlined">notifications</span>
             <span class="sidebar-label font-label-md text-label-md">Notifications</span>
             <span class="nav-tooltip">Notifications</span>
-        </a>
-        <a class="nav-item flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 cursor-pointer active:scale-95 transition-transform mt-auto"
-            href="#">
-            <span class="material-symbols-outlined">settings</span>
-            <span class="sidebar-label font-label-md text-label-md">Settings</span>
-            <span class="nav-tooltip">Settings</span>
         </a>
     </nav>
 
     <!-- Footer -->
     <div class="p-md border-t border-outline-variant/30 flex items-center justify-between">
-        <p class="sidebar-version font-label-sm text-label-sm text-on-surface-variant">v2.1.0</p>
+        <p class="sidebar-version font-label-sm text-label-sm text-on-surface-variant">v1.1.0</p>
         <a href="{% url 'logout' %}" class="flex items-center gap-xs text-on-surface-variant hover:text-error transition-colors">
             <span class="material-symbols-outlined" style="font-size: 18px;">logout</span>
         </a>
